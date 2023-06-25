@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-Route::prefix('user')->middleware(['auth', 'verified'])->name('user.')->group(function () {
+Route::prefix('user')->middleware(['auth'])->name('user.')->group(function () {
     Route::get('/dashboard', [UserController::class, 'dashboard'])->name('dashboard');
 
 });

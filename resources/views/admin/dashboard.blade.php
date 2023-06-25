@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title')
+@section('title', 'Dashboard')
 
 @section('content')
 <div class="dash-wrapper bg-dark">
@@ -129,7 +129,7 @@
 
                <div class="row mb-4">
                    <div class="col-2">
-                       <img src="assets/images/icons/united-states.png" width="42" alt="">
+                       <img src="{{ asset('asset') }}/images/icons/united-states.png" width="42" alt="">
                    </div>
                    <div class="col">
                        <p class="mb-2">United States <strong class="float-end">445,85</strong></p>
@@ -140,7 +140,7 @@
                </div>
                <div class="row mb-4">
                    <div class="col-2">
-                       <img src="assets/images/icons/germany.png" width="42" alt="">
+                       <img src="{{ asset('asset') }}/images/icons/germany.png" width="42" alt="">
                    </div>
                    <div class="col">
                        <p class="mb-2">Germany <strong class="float-end">683,46</strong></p>
@@ -151,7 +151,7 @@
                </div>
                <div class="row mb-4">
                    <div class="col-2">
-                       <img src="assets/images/icons/canada.png" width="42" alt="">
+                       <img src="{{ asset('asset') }}/images/icons/canada.png" width="42" alt="">
                    </div>
                    <div class="col">
                        <p class="mb-2">Canada <strong class="float-end">982,43</strong></p>
@@ -162,7 +162,7 @@
                </div>
                <div class="row mb-4">
                    <div class="col-2">
-                       <img src="assets/images/icons/india.png" width="42" alt="">
+                       <img src="{{ asset('asset') }}/images/icons/india.png" width="42" alt="">
                    </div>
                    <div class="col">
                        <p class="mb-2">India <strong class="float-end">852,35</strong></p>
@@ -173,7 +173,7 @@
                </div>
                <div class="row mb-4">
                    <div class="col-2">
-                       <img src="assets/images/icons/netherlands.png" width="42" alt="">
+                       <img src="{{ asset('asset') }}/images/icons/netherlands.png" width="42" alt="">
                    </div>
                    <div class="col">
                        <p class="mb-2">Netherlands <strong class="float-end">785,24</strong></p>
@@ -184,7 +184,7 @@
                </div>
                <div class="row mb-0">
                    <div class="col-2">
-                       <img src="assets/images/icons/malaysia.png" width="42" alt="">
+                       <img src="{{ asset('asset') }}/images/icons/malaysia.png" width="42" alt="">
                    </div>
                    <div class="col">
                        <p class="mb-2">Malaysia <strong class="float-end">387,56</strong></p>

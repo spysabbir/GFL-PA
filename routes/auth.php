@@ -1,10 +1,10 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
-use App\Http\Controllers\Auth\ConfirmablePasswordController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
@@ -21,12 +21,9 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-    Route::get('confirm-password', [ConfirmablePasswordController::class, 'show'])->name('password.confirm');
-    Route::post('confirm-password', [ConfirmablePasswordController::class, 'store']);
-
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 
     Route::get('/profile', [ProfileController::class, 'profile'])->name('profile');
     Route::patch('/profile/update', [ProfileController::class, 'profileUpdate'])->name('profile.update');
-    Route::put('password/update', [PasswordController::class, 'passwordUpdate'])->name('password.update');
+    Route::put('password/update', [ProfileController::class, 'passwordUpdate'])->name('password.update');
 });
