@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('washes', function (Blueprint $table) {
+        Schema::create('styles', function (Blueprint $table) {
             $table->id();
             $table->integer('created_by');
             $table->integer('updated_by')->nullable();
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('washes');
+        Schema::dropIfExists('styles');
     }
 };
