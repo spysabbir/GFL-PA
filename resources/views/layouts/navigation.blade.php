@@ -1,303 +1,243 @@
-<ul class="metismenu" id="menu">
-    <li>
-        <a href="widgets.html">
-            <div class="parent-icon"><i class='bx bx-home'></i>
-            </div>
-            <div class="menu-title">Dashboard</div>
-        </a>
-    </li>
-    <li>
-        <a href="javascript:;" class="has-arrow">
-            <div class="parent-icon"><i class='bx bx-spa' ></i>
-            </div>
-            <div class="menu-title">Application</div>
-        </a>
-        <ul>
-            <li> <a href="app-emailbox.html"><i class="bx bx-right-arrow-alt"></i>Email</a>
-            </li>
-            <li> <a href="app-chat-box.html"><i class="bx bx-right-arrow-alt"></i>Chat Box</a>
-            </li>
-            <li> <a href="app-file-manager.html"><i class="bx bx-right-arrow-alt"></i>File Manager</a>
-            </li>
-            <li> <a href="app-contact-list.html"><i class="bx bx-right-arrow-alt"></i>Contatcs</a>
-            </li>
-            <li> <a href="app-to-do.html"><i class="bx bx-right-arrow-alt"></i>Todo List</a>
-            </li>
-            <li> <a href="app-invoice.html"><i class="bx bx-right-arrow-alt"></i>Invoice</a>
-            </li>
-            <li> <a href="app-fullcalender.html"><i class="bx bx-right-arrow-alt"></i>Calendar</a>
-            </li>
-        </ul>
-    </li>
-    <li class="menu-label">UI Elements</li>
-    <li>
-        <a href="widgets.html">
-            <div class="parent-icon"><i class='bx bx-briefcase-alt-2'></i>
-            </div>
-            <div class="menu-title">Widgets</div>
-        </a>
-    </li>
-    <li>
-        <a href="javascript:;" class="has-arrow">
-            <div class="parent-icon"><i class='bx bx-cart-alt' ></i>
-            </div>
-            <div class="menu-title">eCommerce</div>
-        </a>
-        <ul>
-            <li> <a href="ecommerce-products.html"><i class="bx bx-right-arrow-alt"></i>Products</a>
-            </li>
-            <li> <a href="ecommerce-products-details.html"><i class="bx bx-right-arrow-alt"></i>Product Details</a>
-            </li>
-            <li> <a href="ecommerce-add-new-products.html"><i class="bx bx-right-arrow-alt"></i>Add New Products</a>
-            </li>
-            <li> <a href="ecommerce-orders.html"><i class="bx bx-right-arrow-alt"></i>Orders</a>
-            </li>
-        </ul>
-    </li>
-    <li>
-        <a class="has-arrow" href="javascript:;">
-            <div class="parent-icon"><i class='bx bx-gift'></i>
-            </div>
-            <div class="menu-title">Components</div>
-        </a>
-        <ul>
-            <li> <a href="component-alerts.html"><i class="bx bx-right-arrow-alt"></i>Alerts</a>
-            </li>
-            <li> <a href="component-accordions.html"><i class="bx bx-right-arrow-alt"></i>Accordions</a>
-            </li>
-            <li> <a href="component-badges.html"><i class="bx bx-right-arrow-alt"></i>Badges</a>
-            </li>
-            <li> <a href="component-buttons.html"><i class="bx bx-right-arrow-alt"></i>Buttons</a>
-            </li>
-            <li> <a href="component-cards.html"><i class="bx bx-right-arrow-alt"></i>Cards</a>
-            </li>
-            <li> <a href="component-carousels.html"><i class="bx bx-right-arrow-alt"></i>Carousels</a>
-            </li>
-            <li> <a href="component-list-groups.html"><i class="bx bx-right-arrow-alt"></i>List Groups</a>
-            </li>
-            <li> <a href="component-media-object.html"><i class="bx bx-right-arrow-alt"></i>Media Objects</a>
-            </li>
-            <li> <a href="component-modals.html"><i class="bx bx-right-arrow-alt"></i>Modals</a>
-            </li>
-            <li> <a href="component-navs-tabs.html"><i class="bx bx-right-arrow-alt"></i>Navs & Tabs</a>
-            </li>
-            <li> <a href="component-navbar.html"><i class="bx bx-right-arrow-alt"></i>Navbar</a>
-            </li>
-            <li> <a href="component-paginations.html"><i class="bx bx-right-arrow-alt"></i>Pagination</a>
-            </li>
-            <li> <a href="component-popovers-tooltips.html"><i class="bx bx-right-arrow-alt"></i>Popovers & Tooltips</a>
-            </li>
-            <li> <a href="component-progress-bars.html"><i class="bx bx-right-arrow-alt"></i>Progress</a>
-            </li>
-            <li> <a href="component-spinners.html"><i class="bx bx-right-arrow-alt"></i>Spinners</a>
-            </li>
-            <li> <a href="component-notifications.html"><i class="bx bx-right-arrow-alt"></i>Notifications</a>
-            </li>
-            <li> <a href="component-avtars-chips.html"><i class="bx bx-right-arrow-alt"></i>Avatrs & Chips</a>
-            </li>
-        </ul>
-    </li>
-    <li>
-        <a class="has-arrow" href="javascript:;">
-            <div class="parent-icon"><i class='bx bx-command' ></i>
-            </div>
-            <div class="menu-title">Content</div>
-        </a>
-        <ul>
-            <li> <a href="content-grid-system.html"><i class="bx bx-right-arrow-alt"></i>Grid System</a>
-            </li>
-            <li> <a href="content-typography.html"><i class="bx bx-right-arrow-alt"></i>Typography</a>
-            </li>
-            <li> <a href="content-text-utilities.html"><i class="bx bx-right-arrow-alt"></i>Text Utilities</a>
-            </li>
-        </ul>
-    </li>
-    <li>
-        <a class="has-arrow" href="javascript:;">
-            <div class="parent-icon"> <i class='bx bx-atom'></i>
-            </div>
-            <div class="menu-title">Icons</div>
-        </a>
-        <ul>
-            <li> <a href="icons-line-icons.html"><i class="bx bx-right-arrow-alt"></i>Line Icons</a>
-            </li>
-            <li> <a href="icons-boxicons.html"><i class="bx bx-right-arrow-alt"></i>Boxicons</a>
-            </li>
-            <li> <a href="icons-feather-icons.html"><i class="bx bx-right-arrow-alt"></i>Feather Icons</a>
-            </li>
-        </ul>
-    </li>
-    <li class="menu-label">Forms & Tables</li>
-    <li>
-        <a class="has-arrow" href="javascript:;">
-            <div class="parent-icon"><i class='bx bx-hourglass' ></i>
-            </div>
-            <div class="menu-title">Forms</div>
-        </a>
-        <ul>
-            <li> <a href="form-elements.html"><i class="bx bx-right-arrow-alt"></i>Form Elements</a>
-            </li>
-            <li> <a href="form-input-group.html"><i class="bx bx-right-arrow-alt"></i>Input Groups</a>
-            </li>
-            <li> <a href="form-layouts.html"><i class="bx bx-right-arrow-alt"></i>Forms Layouts</a>
-            </li>
-            <li> <a href="form-validations.html"><i class="bx bx-right-arrow-alt"></i>Form Validation</a>
-            </li>
-            <li> <a href="form-wizard.html"><i class="bx bx-right-arrow-alt"></i>Form Wizard</a>
-            </li>
-            <li> <a href="form-text-editor.html"><i class="bx bx-right-arrow-alt"></i>Text Editor</a>
-            </li>
-            <li> <a href="form-file-upload.html"><i class="bx bx-right-arrow-alt"></i>File Upload</a>
-            </li>
-            <li> <a href="form-date-time-pickes.html"><i class="bx bx-right-arrow-alt"></i>Date Pickers</a>
-            </li>
-            <li> <a href="form-select2.html"><i class="bx bx-right-arrow-alt"></i>Select2</a>
-            </li>
-        </ul>
-    </li>
-    <li>
-        <a class="has-arrow" href="javascript:;">
-            <div class="parent-icon"><i class="bx bx-grid-alt"></i>
-            </div>
-            <div class="menu-title">Tables</div>
-        </a>
-        <ul>
-            <li> <a href="table-basic-table.html"><i class="bx bx-right-arrow-alt"></i>Basic Table</a>
-            </li>
-            <li> <a href="table-datatable.html"><i class="bx bx-right-arrow-alt"></i>Data Table</a>
-            </li>
-        </ul>
-    </li>
-    <li class="menu-label">Pages</li>
-    <li>
-        <a class="has-arrow" href="javascript:;">
-            <div class="parent-icon"><i class='bx bx-lock-open-alt'></i>
-            </div>
-            <div class="menu-title">Authentication</div>
-        </a>
-        <ul>
-            <li> <a href="authentication-signin.html" target="_blank"><i class="bx bx-right-arrow-alt"></i>Sign In</a>
-            </li>
-            <li> <a href="authentication-signup.html" target="_blank"><i class="bx bx-right-arrow-alt"></i>Sign Up</a>
-            </li>
-            <li> <a href="authentication-signin-with-header-footer.html" target="_blank"><i class="bx bx-right-arrow-alt"></i>Sign In with Header & Footer</a>
-            </li>
-            <li> <a href="authentication-signup-with-header-footer.html" target="_blank"><i class="bx bx-right-arrow-alt"></i>Sign Up with Header & Footer</a>
-            </li>
-            <li> <a href="authentication-forgot-password.html" target="_blank"><i class="bx bx-right-arrow-alt"></i>Forgot Password</a>
-            </li>
-            <li> <a href="authentication-reset-password.html" target="_blank"><i class="bx bx-right-arrow-alt"></i>Reset Password</a>
-            </li>
-            <li> <a href="authentication-lock-screen.html" target="_blank"><i class="bx bx-right-arrow-alt"></i>Lock Screen</a>
-            </li>
-        </ul>
-    </li>
-    <li>
-        <a href="user-profile.html">
-            <div class="parent-icon"><i class='bx bx-user-pin' ></i>
-            </div>
-            <div class="menu-title">User Profile</div>
-        </a>
-    </li>
-    <li>
-        <a href="timeline.html">
-            <div class="parent-icon"> <i class="bx bx-video-recording"></i>
-            </div>
-            <div class="menu-title">Timeline</div>
-        </a>
-    </li>
-    <li>
-        <a class="has-arrow" href="javascript:;">
-            <div class="parent-icon"><i class="bx bx-error"></i>
-            </div>
-            <div class="menu-title">Errors</div>
-        </a>
-        <ul>
-            <li> <a href="errors-404-error.html" target="_blank"><i class="bx bx-right-arrow-alt"></i>404 Error</a>
-            </li>
-            <li> <a href="errors-500-error.html" target="_blank"><i class="bx bx-right-arrow-alt"></i>500 Error</a>
-            </li>
-            <li> <a href="errors-coming-soon.html" target="_blank"><i class="bx bx-right-arrow-alt"></i>Coming Soon</a>
-            </li>
-            <li> <a href="error-blank-page.html" target="_blank"><i class="bx bx-right-arrow-alt"></i>Blank Page</a>
-            </li>
-        </ul>
-    </li>
-    <li>
-        <a href="faq.html">
-            <div class="parent-icon"><i class="bx bx-help-circle"></i>
-            </div>
-            <div class="menu-title">FAQ</div>
-        </a>
-    </li>
-    <li>
-        <a href="pricing-table.html">
-            <div class="parent-icon"><i class='bx bx-dollar-circle'></i>
-            </div>
-            <div class="menu-title">Pricing</div>
-        </a>
-    </li>
-    <li class="menu-label">Charts & Maps</li>
-    <li>
-        <a class="has-arrow" href="javascript:;">
-            <div class="parent-icon"><i class="bx bx-line-chart"></i>
-            </div>
-            <div class="menu-title">Charts</div>
-        </a>
-        <ul>
-            <li> <a href="charts-apex-chart.html"><i class="bx bx-right-arrow-alt"></i>Apex</a>
-            </li>
-            <li> <a href="charts-chartjs.html"><i class="bx bx-right-arrow-alt"></i>Chartjs</a>
-            </li>
-            <li> <a href="charts-highcharts.html"><i class="bx bx-right-arrow-alt"></i>Highcharts</a>
-            </li>
-        </ul>
-    </li>
-    <li>
-        <a class="has-arrow" href="javascript:;">
-            <div class="parent-icon"><i class='bx bx-map-pin' ></i>
-            </div>
-            <div class="menu-title">Maps</div>
-        </a>
-        <ul>
-            <li> <a href="map-google-maps.html"><i class="bx bx-right-arrow-alt"></i>Google Maps</a>
-            </li>
-            <li> <a href="map-vector-maps.html"><i class="bx bx-right-arrow-alt"></i>Vector Maps</a>
-            </li>
-        </ul>
-    </li>
-    <li class="menu-label">Others</li>
-    <li>
-        <a class="has-arrow" href="javascript:;">
-            <div class="parent-icon"><i class="bx bx-menu"></i>
-            </div>
-            <div class="menu-title">Menu Levels</div>
-        </a>
-        <ul>
-            <li> <a class="has-arrow" href="javascript:;"><i class="bx bx-right-arrow-alt"></i>Level One</a>
-                <ul>
-                    <li> <a class="has-arrow" href="javascript:;"><i class="bx bx-right-arrow-alt"></i>Level Two</a>
-                        <ul>
-                            <li> <a href="javascript:;"><i class="bx bx-right-arrow-alt"></i>Level Three</a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </li>
-        </ul>
-    </li>
-    <li>
-        <a href="https://codervent.com/synadmin/documentation/index.html" target="_blank">
-            <div class="parent-icon"><i class='bx bx-file' ></i>
-            </div>
-            <div class="menu-title">Documentation</div>
-        </a>
-    </li>
-    <li>
-        <a href="https://themeforest.net/user/codervent" target="_blank">
-            <div class="parent-icon"><i class='bx bx-headphone' ></i>
-            </div>
-            <div class="menu-title">Support</div>
-        </a>
-    </li>
+<ul class="nav nav-tabs b-none">
+    <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#all-tab"><i class="fa fa-list-ul"></i>All</a></li>
+    <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#report-tab">Report</a></li>
+    <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#setting-tab">Settings</a></li>
 </ul>
+<div class="tab-content">
+    <div class="tab-pane fade active show" id="all-tab">
+        <nav class="sidebar-nav">
+            <ul class="metismenu ci-effect-1">
+                <li class="g_heading">Master Form</li>
+                <li class="active">
+                    <a href="javascript:void(0)" class="has-arrow arrow-b"><i class="icon-home"></i><span data-hover="Style Resources">Style Resources</span></a>
+                    <ul>
+                        <li class="active"><a href="{{ route('admin.buyer.index') }}"><span data-hover="Buyer">Buyer</span></a></li>
+                        <li><a href="{{ route('admin.season.index') }}"><span data-hover="Season">Season</span></a></li>
+                        <li><a href="{{ route('admin.color.index') }}"><span data-hover="Color">Color</span></a></li>
+                        <li><a href="{{ route('admin.wash.index') }}"><span data-hover="Wash">Wash</span></a></li>
+                        {{-- <li><a href="{{ route('admin.style.index') }}"><span data-hover="Style">Style</span></a></li> --}}
+                    </ul>
+                </li>
+                <li><a href="app-calendar.html"><i class="icon-calendar"></i><span data-hover="Calendar">Calendar</span></a></li>
+                <li><a href="app-chat.html"><i class="icon-speech"></i><span data-hover="Chat">Chat</span></a></li>
+                <li><a href="app-contact.html"><i class="icon-notebook"></i><span data-hover="Contact">Contact</span></a></li>
+                <li><a href="app-blog.html"><i class="icon-globe"></i><span data-hover="Blog">Blog</span></a></li>
+                <li><a href="app-filemanager.html"><i class="icon-folder-alt"></i><span data-hover="FileManager">File Manager</span></a></li>
+                <li><a href="page-gallery.html"><i class="icon-picture"></i><span data-hover="Gallery">Gallery</span></a></li>
+                <li class="g_heading">Utilities</li>
+                <li>
+                    <a href="javascript:void(0)" class="has-arrow arrow-b"><i class="icon-tag"></i><span data-hover="Icons">Icons</span></a>
+                    <ul>
+                        <li><a href="icons-feather.html"><span data-hover="Feather">Feather Icons</span></a></li>
+                        <li><a href="icons-line.html"><span data-hover="Line">Line Icons</span></a></li>
+                        <li><a href="icons-fontawesome.html"><span data-hover="FontAwesome">FontAwesome</span></a></li>
+                        <li><a href="icons-flags.html"><span data-hover="Flags">Flags Icons</span></a></li>
+                        <li><a href="icons-payments.html"><span data-hover="Payments">Payments Icons</span></a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="javascript:void(0)" class="has-arrow arrow-b"><i class="icon-bar-chart"></i><span data-hover="Charts">Charts</span></a>
+                    <ul>
+                        <li><a href="charts-apex.html"><span data-hover="ChartsApex">Charts Apex</span></a></li>
+                        <li><a href="charts-e.html"><span data-hover="EChart">EChart</span></a></li>
+                        <li><a href="charts-c3.html"><span data-hover="C3Chart">C3 Chart</span></a></li>
+                        <li><a href="charts-knob.html"><span data-hover="JQueryKnob">JQuery Knob</span></a></li>
+                        <li><a href="charts-sparkline.html"><span data-hover="SparklineChart">Sparkline Chart</span></a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="javascript:void(0)" class="has-arrow arrow-b"><i class="icon-layers"></i><span data-hover="Forms">Forms</span></a>
+                    <ul>
+                        <li><a href="form-elements.html"><span data-hover="BasicElements">Basic Elements</span></a></li>
+                        <li><a href="form-advanced.html"><span data-hover="AdvancedElements">Advanced Elements</span></a></li>
+                        <li><a href="form-validation.html"><span data-hover="FormValidation">Form Validation</span></a></li>
+                        <li><a href="form-wizard.html"><span data-hover="FormWizard">Form Wizard</span></a></li>
+                        <li><a href="form-summernote.html"><span data-hover="Summernote">Summernote</span></a></li>
+
+                    </ul>
+                </li>
+                <li>
+                    <a href="javascript:void(0)" class="has-arrow arrow-b"><i class="icon-tag"></i><span data-hover="Tables">Tables</span></a>
+                    <ul>
+                        <li><a href="table-normal.html"><span data-hover="Bootstrap">Bootstrap Table</span></a></li>
+                        <li><a href="table-datatable.html"><span data-hover="Datatable">Jquery Datatable</span></a></li>
+                    </ul>
+                </li>
+                <li><a href="widgets.html"><i class="icon-puzzle"></i><span data-hover="Widgets">Widgets</span></a></li>
+                <li class="g_heading">Extra Pages</li>
+                <li>
+                    <a href="javascript:void(0)" class="has-arrow arrow-b"><i class="icon-lock"></i><span data-hover="Authentication">Authentication</span></a>
+                    <ul>
+                        <li><a href="login.html"><span data-hover="Login">Login</span></a></li>
+                        <li><a href="register.html"><span data-hover="Register">Register</span></a></li>
+                        <li><a href="forgot-password.html"><span data-hover="Forgot">Forgot password</span></a></li>
+                        <li><a href="404.html"><span data-hover="404">404 error</span></a></li>
+                        <li><a href="500.html"><span data-hover="500">500 error</span></a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="javascript:void(0)" class="has-arrow arrow-b"><i class="fe fe-file"></i><span data-hover="Pages">Pages</span></a>
+                    <ul>
+                        <li><a href="page-empty.html"><span data-hover="Emptypage">Empty page</span></a></li>
+                        <li><a href="page-profile.html"><span data-hover="Profile">Profile</span></a></li>
+                        <li><a href="page-search.html"><span data-hover="SearchResults">Search Results</span></a></li>
+                        <li><a href="page-timeline.html"><span data-hover="Timeline">Timeline</span></a></li>
+                        <li><a href="page-invoices.html"><span data-hover="Invoices">Invoices</span></a></li>
+                        <li><a href="page-pricing.html"><span data-hover="Pricing">Pricing</span></a></li>
+                        <li><a href="page-carousel.html"><span data-hover="Carousel">Carousel</span></a></li>
+                    </ul>
+                </li>
+                <li><a href="page-maps.html"><i class="icon-map"></i><span data-hover="Maps">Maps</span></a></li>
+            </ul>
+        </nav>
+    </div>
+    <div class="tab-pane fade" id="report-tab">
+        <nav class="sidebar-nav">
+            <ul class="metismenu">
+                <li class="g_heading">Components</li>
+                <li><a href="components/typography.html"><i class="fe fe-type"></i><span>Typography</span></a></li>
+                <li><a href="components/colors.html"><i class="fe fe-feather"></i><span>Colors</span></a></li>
+                <li><a href="components/alerts.html"><i class="fe fe-alert-triangle"></i><span>Alerts</span></a></li>
+                <li><a href="components/avatars.html"><i class="fe fe-user"></i><span>Avatars</span></a></li>
+                <li><a href="components/buttons.html"><i class="fe fe-toggle-right"></i><span>Buttons</span></a></li>
+                <li><a href="components/breadcrumb.html"><i class="fe fe-link-2"></i><span>Breadcrumb</span></a></li>
+                <li><a href="components/forms.html"><i class="fe fe-layers"></i><span>Input group</span></a></li>
+                <li><a href="components/list-group.html"><i class="fe fe-list"></i><span>List group</span></a></li>
+                <li><a href="components/modal.html"><i class="fe fe-square"></i><span>Modal</span></a></li>
+                <li><a href="components/pagination.html"><i class="fe fe-file-text"></i><span>Pagination</span></a></li>
+                <li><a href="components/cards.html"><i class="fe fe-image"></i><span>Cards</span></a></li>
+                <li><a href="components/charts.html"><i class="fe fe-pie-chart"></i><span>Charts</span></a></li>
+                <li><a href="components/form-components.html"><i class="fe fe-check-square"></i><span>Form</span></a></li>
+                <li><a href="components/tags.html"><i class="fe fe-tag"></i><span>Tags</span></a></li>
+                <li><a href="javascript:void(0)"><i class="fe fe-help-circle"></i><span>Documentation</span></a></li>
+                <li><a href="javascript:void(0)"><i class="fe fe-life-buoy"></i><span>Changelog</span></a></li>
+            </ul>
+        </nav>
+    </div>
+    <div class="tab-pane fade" id="setting-tab">
+        <div class="mb-4 mt-3">
+            <h6 class="font-14 font-weight-bold text-muted">Font Style</h6>
+            <div class="custom-controls-stacked font_setting">
+                <label class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" class="custom-control-input" name="font" value="font-opensans" checked="">
+                    <span class="custom-control-label">Open Sans Font</span>
+                </label>
+                <label class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" class="custom-control-input" name="font" value="font-montserrat">
+                    <span class="custom-control-label">Montserrat Google Font</span>
+                </label>
+                <label class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" class="custom-control-input" name="font" value="font-poppins">
+                    <span class="custom-control-label">Poppins Google Font</span>
+                </label>
+            </div>
+        </div>
+        <div class="mb-4">
+            <h6 class="font-14 font-weight-bold text-muted">Dropdown Menu Icon</h6>
+            <div class="custom-controls-stacked arrow_option">
+                <label class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" class="custom-control-input" name="marrow" value="arrow-a" checked="">
+                    <span class="custom-control-label">A</span>
+                </label>
+                <label class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" class="custom-control-input" name="marrow" value="arrow-b">
+                    <span class="custom-control-label">B</span>
+                </label>
+                <label class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" class="custom-control-input" name="marrow" value="arrow-c">
+                    <span class="custom-control-label">C</span>
+                </label>
+            </div>
+            <h6 class="font-14 font-weight-bold mt-4 text-muted">SubMenu List Icon</h6>
+            <div class="custom-controls-stacked list_option">
+                <label class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" class="custom-control-input" name="listicon" value="list-a" checked="">
+                    <span class="custom-control-label">A</span>
+                </label>
+                <label class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" class="custom-control-input" name="listicon" value="list-b">
+                    <span class="custom-control-label">B</span>
+                </label>
+                <label class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" class="custom-control-input" name="listicon" value="list-c">
+                    <span class="custom-control-label">C</span>
+                </label>
+            </div>
+        </div>
+        <div>
+            <h6 class="font-14 font-weight-bold mt-4 text-muted">General Settings</h6>
+            <ul class="setting-list list-unstyled mt-1 setting_switch">
+                <li>
+                    <label class="custom-switch">
+                        <span class="custom-switch-description">Night Mode</span>
+                        <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input btn-darkmode">
+                        <span class="custom-switch-indicator"></span>
+                    </label>
+                </li>
+                <li>
+                    <label class="custom-switch">
+                        <span class="custom-switch-description">Fix Navbar top</span>
+                        <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input btn-fixnavbar">
+                        <span class="custom-switch-indicator"></span>
+                    </label>
+                </li>
+                <li>
+                    <label class="custom-switch">
+                        <span class="custom-switch-description">Header Dark</span>
+                        <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input btn-pageheader">
+                        <span class="custom-switch-indicator"></span>
+                    </label>
+                </li>
+                <li>
+                    <label class="custom-switch">
+                        <span class="custom-switch-description">Min Sidebar Dark</span>
+                        <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input btn-min_sidebar">
+                        <span class="custom-switch-indicator"></span>
+                    </label>
+                </li>
+                <li>
+                    <label class="custom-switch">
+                        <span class="custom-switch-description">Sidebar Dark</span>
+                        <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input btn-sidebar" checked="">
+                        <span class="custom-switch-indicator"></span>
+                    </label>
+                </li>
+                <li>
+                    <label class="custom-switch">
+                        <span class="custom-switch-description">Icon Color</span>
+                        <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input btn-iconcolor" checked="">
+                        <span class="custom-switch-indicator"></span>
+                    </label>
+                </li>
+                <li>
+                    <label class="custom-switch">
+                        <span class="custom-switch-description">Gradient Color</span>
+                        <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input btn-gradient">
+                        <span class="custom-switch-indicator"></span>
+                    </label>
+                </li>
+                <li>
+                    <label class="custom-switch">
+                        <span class="custom-switch-description">Box Shadow</span>
+                        <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input btn-boxshadow">
+                        <span class="custom-switch-indicator"></span>
+                    </label>
+                </li>
+                <li>
+                    <label class="custom-switch">
+                        <span class="custom-switch-description">RTL Support</span>
+                        <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input btn-rtl">
+                        <span class="custom-switch-indicator"></span>
+                    </label>
+                </li>
+                <li>
+                    <label class="custom-switch">
+                        <span class="custom-switch-description">Box Layout</span>
+                        <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input btn-boxlayout">
+                        <span class="custom-switch-indicator"></span>
+                    </label>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

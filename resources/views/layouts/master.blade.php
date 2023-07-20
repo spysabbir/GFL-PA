@@ -1,564 +1,311 @@
 <!doctype html>
 <html lang="en">
-
 <head>
-	<!-- Required meta tags -->
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-	<!--favicon-->
-	<link rel="icon" href="{{ asset('asset') }}/images/favicon-32x32.png" type="image/png" />
-	<!--plugins-->
-	<link href="{{ asset('asset') }}/plugins/simplebar/css/simplebar.css" rel="stylesheet" />
-	<link href="{{ asset('asset') }}/plugins/perfect-scrollbar/css/perfect-scrollbar.css" rel="stylesheet" />
-	<link href="{{ asset('asset') }}/plugins/highcharts/css/highcharts.css" rel="stylesheet" />
-	<link href="{{ asset('asset') }}/plugins/metismenu/css/metisMenu.min.css" rel="stylesheet" />
-	<link href="{{ asset('asset') }}/plugins/vectormap/jquery-jvectormap-2.0.2.css" rel="stylesheet" />
-	<!-- loader-->
-	<link href="{{ asset('asset') }}/css/pace.min.css" rel="stylesheet" />
-	<script src="{{ asset('asset') }}/js/pace.min.js"></script>
-	<!-- Bootstrap CSS -->
-	<link href="{{ asset('asset') }}/css/bootstrap.min.css" rel="stylesheet">
-	<link href="{{ asset('asset') }}/css/bootstrap-extended.css" rel="stylesheet">
-	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
-	<link href="{{ asset('asset') }}/css/app.css" rel="stylesheet">
-	<link href="{{ asset('asset') }}/css/icons.css" rel="stylesheet">
-	<!-- Theme Style CSS -->
-	<link rel="stylesheet" href="{{ asset('asset') }}/css/dark-theme.css" />
-	<link rel="stylesheet" href="{{ asset('asset') }}/css/semi-dark.css" />
-	<link rel="stylesheet" href="{{ asset('asset') }}/css/header-colors.css" />
-	<title>{{ env('APP_NAME') }} – @yield('title')</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta name="description" content="Crush it Able The most popular Admin Dashboard template and ui kit">
+<meta name="author" content="PuffinTheme the theme designer">
+
+<link rel="icon" href="favicon.ico" type="image/x-icon"/>
+
+<title>:: Crush it :: Home</title>
+
+<!-- Bootstrap Core and vandor -->
+<link rel="stylesheet" href="{{ asset('asset') }}/plugins/bootstrap/css/bootstrap.min.css" />
+
+<!-- Plugins css -->
+<link rel="stylesheet" href="{{ asset('asset') }}/plugins/charts-c3/c3.min.css"/>
+<link rel="stylesheet" href="{{ asset('asset') }}/plugins/jvectormap/jvectormap-2.0.3.css" />
+
+<!-- Core css -->
+<link rel="stylesheet" href="{{ asset('asset') }}/css/main.css"/>
+<link rel="stylesheet" href="{{ asset('asset') }}/css/theme1.css" id="stylesheet"/>
 </head>
 
-<body>
-	<!--wrapper-->
-	<div class="wrapper">
-		<!--sidebar wrapper -->
-		<div class="sidebar-wrapper" data-simplebar="true">
-			<div class="sidebar-header">
-				<div>
-					<img src="{{ asset('asset') }}/images/logo-icon.png" class="logo-icon" alt="logo icon">
-				</div>
-				<div>
-					<a href="#"><h4 class="logo-text">Synadmin</h4></a>
-				</div>
-				<div class="toggle-icon ms-auto"><i class='bx bx-first-page'></i>
-				</div>
-			</div>
-			<!--navigation-->
-			@include('layouts.navigation')
-			<!--end navigation-->
-		</div>
-		<!--end sidebar wrapper -->
-		<!--start header -->
-		<header>
-			<div class="topbar d-flex align-items-center bg-dark shadow-none border-light-2 border-bottom">
-				<nav class="navbar navbar-expand">
-					<div class="mobile-toggle-menu text-white me-3"><i class='bx bx-menu'></i>
-					</div>
-					<div class="top-menu-left d-none d-lg-block">
-				 	 <ul class="nav">
-						<li class="nav-item">
-						  <a class="nav-link text-white" href="app-emailbox.html"><i class='bx bx-envelope'></i></a>
-						</li>
-						<li class="nav-item">
-						  <a class="nav-link text-white" href="app-chat-box.html"><i class='bx bx-message'></i></a>
-						</li>
-						<li class="nav-item">
-						  <a class="nav-link text-white" href="app-fullcalender.html"><i class='bx bx-calendar'></i></a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link text-white" href="app-to-do.html"><i class='bx bx-check-square'></i></a>
-						</li>
-					</ul>
-				   </div>
-					<div class="search-bar flex-grow-1">
-						<div class="position-relative search-bar-box">
-							<form>
-							  <input type="text" class="form-control search-control" autofocus placeholder="Type to search..."> <span class="position-absolute top-50 search-show translate-middle-y"><i class='bx bx-search'></i></span>
-							   <span class="position-absolute top-50 search-close translate-middle-y"><i class='bx bx-x'></i></span>
-						    </form>
-						</div>
-					</div>
-					<div class="top-menu ms-auto">
-						<ul class="navbar-nav align-items-center">
-							<li class="nav-item mobile-search-icon">
-								<a class="nav-link text-white" href="javascript:;">	<i class='bx bx-search'></i>
-								</a>
-							</li>
-							<li class="nav-item dropdown dropdown-large">
-								<a class="nav-link dropdown-toggle dropdown-toggle-nocaret text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">	<i class='bx bx-category'></i>
-								</a>
-								<div class="dropdown-menu dropdown-menu-end">
-									<div class="row row-cols-3 g-3 p-3">
-										<div class="col text-center">
-											<div class="app-box mx-auto bg-gradient-cosmic text-white"><i class='bx bx-group'></i>
-											</div>
-											<div class="app-title">Teams</div>
-										</div>
-										<div class="col text-center">
-											<div class="app-box mx-auto bg-gradient-burning text-white"><i class='bx bx-atom'></i>
-											</div>
-											<div class="app-title">Projects</div>
-										</div>
-										<div class="col text-center">
-											<div class="app-box mx-auto bg-gradient-lush text-white"><i class='bx bx-shield'></i>
-											</div>
-											<div class="app-title">Tasks</div>
-										</div>
-										<div class="col text-center">
-											<div class="app-box mx-auto bg-gradient-kyoto text-dark"><i class='bx bx-notification'></i>
-											</div>
-											<div class="app-title">Feeds</div>
-										</div>
-										<div class="col text-center">
-											<div class="app-box mx-auto bg-gradient-blues text-dark"><i class='bx bx-file'></i>
-											</div>
-											<div class="app-title">Files</div>
-										</div>
-										<div class="col text-center">
-											<div class="app-box mx-auto bg-gradient-moonlit text-white"><i class='bx bx-filter-alt'></i>
-											</div>
-											<div class="app-title">Alerts</div>
-										</div>
-									</div>
-								</div>
-							</li>
-							<li class="nav-item dropdown dropdown-large">
-								<a class="nav-link dropdown-toggle dropdown-toggle-nocaret position-relative text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"> <span class="alert-count">7</span>
-									<i class='bx bx-bell'></i>
-								</a>
-								<div class="dropdown-menu dropdown-menu-end">
-									<a href="javascript:;">
-										<div class="msg-header">
-											<p class="msg-header-title">Notifications</p>
-											<p class="msg-header-clear ms-auto">Marks all as read</p>
-										</div>
-									</a>
-									<div class="header-notifications-list">
-										<a class="dropdown-item" href="javascript:;">
-											<div class="d-flex align-items-center">
-												<div class="notify bg-light-primary text-primary"><i class="bx bx-group"></i>
-												</div>
-												<div class="flex-grow-1">
-													<h6 class="msg-name">New Customers<span class="msg-time float-end">14 Sec
-												ago</span></h6>
-													<p class="msg-info">5 new user registered</p>
-												</div>
-											</div>
-										</a>
-										<a class="dropdown-item" href="javascript:;">
-											<div class="d-flex align-items-center">
-												<div class="notify bg-light-danger text-danger"><i class="bx bx-cart-alt"></i>
-												</div>
-												<div class="flex-grow-1">
-													<h6 class="msg-name">New Orders <span class="msg-time float-end">2 min
-												ago</span></h6>
-													<p class="msg-info">You have recived new orders</p>
-												</div>
-											</div>
-										</a>
-										<a class="dropdown-item" href="javascript:;">
-											<div class="d-flex align-items-center">
-												<div class="notify bg-light-success text-success"><i class="bx bx-file"></i>
-												</div>
-												<div class="flex-grow-1">
-													<h6 class="msg-name">24 PDF File<span class="msg-time float-end">19 min
-												ago</span></h6>
-													<p class="msg-info">The pdf files generated</p>
-												</div>
-											</div>
-										</a>
-										<a class="dropdown-item" href="javascript:;">
-											<div class="d-flex align-items-center">
-												<div class="notify bg-light-warning text-warning"><i class="bx bx-send"></i>
-												</div>
-												<div class="flex-grow-1">
-													<h6 class="msg-name">Time Response <span class="msg-time float-end">28 min
-												ago</span></h6>
-													<p class="msg-info">5.1 min avarage time response</p>
-												</div>
-											</div>
-										</a>
-										<a class="dropdown-item" href="javascript:;">
-											<div class="d-flex align-items-center">
-												<div class="notify bg-light-info text-info"><i class="bx bx-home-circle"></i>
-												</div>
-												<div class="flex-grow-1">
-													<h6 class="msg-name">New Product Approved <span
-												class="msg-time float-end">2 hrs ago</span></h6>
-													<p class="msg-info">Your new product has approved</p>
-												</div>
-											</div>
-										</a>
-										<a class="dropdown-item" href="javascript:;">
-											<div class="d-flex align-items-center">
-												<div class="notify bg-light-danger text-danger"><i class="bx bx-message-detail"></i>
-												</div>
-												<div class="flex-grow-1">
-													<h6 class="msg-name">New Comments <span class="msg-time float-end">4 hrs
-												ago</span></h6>
-													<p class="msg-info">New customer comments recived</p>
-												</div>
-											</div>
-										</a>
-										<a class="dropdown-item" href="javascript:;">
-											<div class="d-flex align-items-center">
-												<div class="notify bg-light-success text-success"><i class='bx bx-check-square'></i>
-												</div>
-												<div class="flex-grow-1">
-													<h6 class="msg-name">Your item is shipped <span class="msg-time float-end">5 hrs
-												ago</span></h6>
-													<p class="msg-info">Successfully shipped your item</p>
-												</div>
-											</div>
-										</a>
-										<a class="dropdown-item" href="javascript:;">
-											<div class="d-flex align-items-center">
-												<div class="notify bg-light-primary text-primary"><i class='bx bx-user-pin'></i>
-												</div>
-												<div class="flex-grow-1">
-													<h6 class="msg-name">New 24 authors<span class="msg-time float-end">1 day
-												ago</span></h6>
-													<p class="msg-info">24 new authors joined last week</p>
-												</div>
-											</div>
-										</a>
-										<a class="dropdown-item" href="javascript:;">
-											<div class="d-flex align-items-center">
-												<div class="notify bg-light-warning text-warning"><i class='bx bx-door-open'></i>
-												</div>
-												<div class="flex-grow-1">
-													<h6 class="msg-name">Defense Alerts <span class="msg-time float-end">2 weeks
-												ago</span></h6>
-													<p class="msg-info">45% less alerts last 4 weeks</p>
-												</div>
-											</div>
-										</a>
-									</div>
-									<a href="javascript:;">
-										<div class="text-center msg-footer">View All Notifications</div>
-									</a>
-								</div>
-							</li>
-							<li class="nav-item dropdown dropdown-large">
-								<a class="nav-link dropdown-toggle dropdown-toggle-nocaret position-relative text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"> <span class="alert-count">8</span>
-									<i class='bx bx-comment'></i>
-								</a>
-								<div class="dropdown-menu dropdown-menu-end">
-									<a href="javascript:;">
-										<div class="msg-header">
-											<p class="msg-header-title">Messages</p>
-											<p class="msg-header-clear ms-auto">Marks all as read</p>
-										</div>
-									</a>
-									<div class="header-message-list">
-										<a class="dropdown-item" href="javascript:;">
-											<div class="d-flex align-items-center">
-												<div class="user-online">
-													<img src="{{ asset('asset') }}/images/avatars/avatar-1.png" class="msg-avatar" alt="user avatar">
-												</div>
-												<div class="flex-grow-1">
-													<h6 class="msg-name">Daisy Anderson <span class="msg-time float-end">5 sec
-												ago</span></h6>
-													<p class="msg-info">The standard chunk of lorem</p>
-												</div>
-											</div>
-										</a>
-										<a class="dropdown-item" href="javascript:;">
-											<div class="d-flex align-items-center">
-												<div class="user-online">
-													<img src="{{ asset('asset') }}/images/avatars/avatar-2.png" class="msg-avatar" alt="user avatar">
-												</div>
-												<div class="flex-grow-1">
-													<h6 class="msg-name">Althea Cabardo <span class="msg-time float-end">14
-												sec ago</span></h6>
-													<p class="msg-info">Many desktop publishing packages</p>
-												</div>
-											</div>
-										</a>
-										<a class="dropdown-item" href="javascript:;">
-											<div class="d-flex align-items-center">
-												<div class="user-online">
-													<img src="{{ asset('asset') }}/images/avatars/avatar-3.png" class="msg-avatar" alt="user avatar">
-												</div>
-												<div class="flex-grow-1">
-													<h6 class="msg-name">Oscar Garner <span class="msg-time float-end">8 min
-												ago</span></h6>
-													<p class="msg-info">Various versions have evolved over</p>
-												</div>
-											</div>
-										</a>
-										<a class="dropdown-item" href="javascript:;">
-											<div class="d-flex align-items-center">
-												<div class="user-online">
-													<img src="{{ asset('asset') }}/images/avatars/avatar-4.png" class="msg-avatar" alt="user avatar">
-												</div>
-												<div class="flex-grow-1">
-													<h6 class="msg-name">Katherine Pechon <span class="msg-time float-end">15
-												min ago</span></h6>
-													<p class="msg-info">Making this the first true generator</p>
-												</div>
-											</div>
-										</a>
-										<a class="dropdown-item" href="javascript:;">
-											<div class="d-flex align-items-center">
-												<div class="user-online">
-													<img src="{{ asset('asset') }}/images/avatars/avatar-5.png" class="msg-avatar" alt="user avatar">
-												</div>
-												<div class="flex-grow-1">
-													<h6 class="msg-name">Amelia Doe <span class="msg-time float-end">22 min
-												ago</span></h6>
-													<p class="msg-info">Duis aute irure dolor in reprehenderit</p>
-												</div>
-											</div>
-										</a>
-										<a class="dropdown-item" href="javascript:;">
-											<div class="d-flex align-items-center">
-												<div class="user-online">
-													<img src="{{ asset('asset') }}/images/avatars/avatar-6.png" class="msg-avatar" alt="user avatar">
-												</div>
-												<div class="flex-grow-1">
-													<h6 class="msg-name">Cristina Jhons <span class="msg-time float-end">2 hrs
-												ago</span></h6>
-													<p class="msg-info">The passage is attributed to an unknown</p>
-												</div>
-											</div>
-										</a>
-										<a class="dropdown-item" href="javascript:;">
-											<div class="d-flex align-items-center">
-												<div class="user-online">
-													<img src="{{ asset('asset') }}/images/avatars/avatar-7.png" class="msg-avatar" alt="user avatar">
-												</div>
-												<div class="flex-grow-1">
-													<h6 class="msg-name">James Caviness <span class="msg-time float-end">4 hrs
-												ago</span></h6>
-													<p class="msg-info">The point of using Lorem</p>
-												</div>
-											</div>
-										</a>
-										<a class="dropdown-item" href="javascript:;">
-											<div class="d-flex align-items-center">
-												<div class="user-online">
-													<img src="{{ asset('asset') }}/images/avatars/avatar-8.png" class="msg-avatar" alt="user avatar">
-												</div>
-												<div class="flex-grow-1">
-													<h6 class="msg-name">Peter Costanzo <span class="msg-time float-end">6 hrs
-												ago</span></h6>
-													<p class="msg-info">It was popularised in the 1960s</p>
-												</div>
-											</div>
-										</a>
-										<a class="dropdown-item" href="javascript:;">
-											<div class="d-flex align-items-center">
-												<div class="user-online">
-													<img src="{{ asset('asset') }}/images/avatars/avatar-9.png" class="msg-avatar" alt="user avatar">
-												</div>
-												<div class="flex-grow-1">
-													<h6 class="msg-name">David Buckley <span class="msg-time float-end">2 hrs
-												ago</span></h6>
-													<p class="msg-info">Various versions have evolved over</p>
-												</div>
-											</div>
-										</a>
-										<a class="dropdown-item" href="javascript:;">
-											<div class="d-flex align-items-center">
-												<div class="user-online">
-													<img src="{{ asset('asset') }}/images/avatars/avatar-10.png" class="msg-avatar" alt="user avatar">
-												</div>
-												<div class="flex-grow-1">
-													<h6 class="msg-name">Thomas Wheeler <span class="msg-time float-end">2 days
-												ago</span></h6>
-													<p class="msg-info">If you are going to use a passage</p>
-												</div>
-											</div>
-										</a>
-										<a class="dropdown-item" href="javascript:;">
-											<div class="d-flex align-items-center">
-												<div class="user-online">
-													<img src="{{ asset('asset') }}/images/avatars/avatar-11.png" class="msg-avatar" alt="user avatar">
-												</div>
-												<div class="flex-grow-1">
-													<h6 class="msg-name">Johnny Seitz <span class="msg-time float-end">5 days
-												ago</span></h6>
-													<p class="msg-info">All the Lorem Ipsum generators</p>
-												</div>
-											</div>
-										</a>
-									</div>
-									<a href="javascript:;">
-										<div class="text-center msg-footer">View All Messages</div>
-									</a>
-								</div>
-							</li>
-						</ul>
-					</div>
-					<div class="user-box dropdown border-light-2">
-						<a class="d-flex align-items-center nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-							<img src="{{ asset('asset') }}/images/avatars/avatar-2.png" class="user-img" alt="user avatar">
-							<div class="user-info ps-3">
-								<p class="user-name mb-0 text-white">Pauline Seitz</p>
-								<p class="designattion mb-0">Web Designer</p>
-							</div>
-						</a>
-						<ul class="dropdown-menu dropdown-menu-end">
-							<li>
-                                <a class="dropdown-item" href="{{ route('profile') }}"><i class="bx bx-user"></i><span>Profile</span></a>
-							</li>
-							<li>
-								<div class="dropdown-divider mb-0"></div>
-							</li>
-							<li>
-                                <form method="POST" action="{{ route('logout') }}">
-                                    @csrf
-                                    <a class="dropdown-item" href="route('logout')" onclick="event.preventDefault(); this.closest('form').submit();">
-                                        <i class='bx bx-log-out-circle'></i><span>Logout</span>
-                                    </a>
-                                </form>
-							</li>
-						</ul>
-					</div>
-				</nav>
-			</div>
-		</header>
-		<!--end header -->
-		<!--start page wrapper -->
-		<div class="page-wrapper">
-			<div class="page-content">
+<body class="font-opensans iconcolor sidebar_dark">
 
-             @yield('content')
+<!-- Page Loader -->
+<div class="page-loader-wrapper">
+    <div class="loader">
+    </div>
+</div>
 
-			</div>
-		</div>
-		<!--end page wrapper -->
-		<!--start overlay-->
-		<div class="search-overlay"></div>
-		<div class="overlay toggle-icon"></div>
-		<!--end overlay-->
-		<!--Start Back To Top Button--> <a href="javaScript:;" class="back-to-top"><i class='bx bxs-up-arrow-alt'></i></a>
-		<!--End Back To Top Button-->
-		<footer class="page-footer">
-			<p class="mb-0">Copyright © 2021. All right reserved.</p>
-		</footer>
-	</div>
-	<!--end wrapper-->
-	<!--start switcher-->
-	<div class="switcher-wrapper">
-		<div class="switcher-btn"> <i class='bx bx-cog bx-spin'></i>
-		</div>
-		<div class="switcher-body">
-			<div class="d-flex align-items-center">
-				<h5 class="mb-0 text-uppercase">Theme Customizer</h5>
-				<button type="button" class="btn-close ms-auto close-switcher" aria-label="Close"></button>
-			</div>
-			<hr/>
-			<h6 class="mb-0">Theme Styles</h6>
-			<hr/>
-			<div class="d-flex align-items-center justify-content-between">
-				<div class="form-check">
-					<input class="form-check-input" type="radio" name="flexRadioDefault" id="lightmode" checked>
-					<label class="form-check-label" for="lightmode">Light</label>
-				</div>
-				<div class="form-check">
-					<input class="form-check-input" type="radio" name="flexRadioDefault" id="darkmode">
-					<label class="form-check-label" for="darkmode">Dark</label>
-				</div>
-				<div class="form-check">
-					<input class="form-check-input" type="radio" name="flexRadioDefault" id="semidark">
-					<label class="form-check-label" for="semidark">Semi Dark</label>
-				</div>
-			</div>
-			<hr/>
-			<div class="form-check">
-				<input class="form-check-input" type="radio" id="minimaltheme" name="flexRadioDefault">
-				<label class="form-check-label" for="minimaltheme">Minimal Theme</label>
-			</div>
-			<hr/>
-			<h6 class="mb-0">Header Colors</h6>
-			<hr/>
-			<div class="header-colors-indigators">
-				<div class="row row-cols-auto g-3">
-					<div class="col">
-						<div class="indigator headercolor1" id="headercolor1"></div>
-					</div>
-					<div class="col">
-						<div class="indigator headercolor2" id="headercolor2"></div>
-					</div>
-					<div class="col">
-						<div class="indigator headercolor3" id="headercolor3"></div>
-					</div>
-					<div class="col">
-						<div class="indigator headercolor4" id="headercolor4"></div>
-					</div>
-					<div class="col">
-						<div class="indigator headercolor5" id="headercolor5"></div>
-					</div>
-					<div class="col">
-						<div class="indigator headercolor6" id="headercolor6"></div>
-					</div>
-					<div class="col">
-						<div class="indigator headercolor7" id="headercolor7"></div>
-					</div>
-					<div class="col">
-						<div class="indigator headercolor8" id="headercolor8"></div>
-					</div>
-				</div>
-			</div>
-			<hr/>
-			<h6 class="mb-0">Sidebar Backgrounds</h6>
-			<hr/>
-			<div class="header-colors-indigators">
-				<div class="row row-cols-auto g-3">
-					<div class="col">
-						<div class="indigator sidebarcolor1" id="sidebarcolor1"></div>
-					</div>
-					<div class="col">
-						<div class="indigator sidebarcolor2" id="sidebarcolor2"></div>
-					</div>
-					<div class="col">
-						<div class="indigator sidebarcolor3" id="sidebarcolor3"></div>
-					</div>
-					<div class="col">
-						<div class="indigator sidebarcolor4" id="sidebarcolor4"></div>
-					</div>
-					<div class="col">
-						<div class="indigator sidebarcolor5" id="sidebarcolor5"></div>
-					</div>
-					<div class="col">
-						<div class="indigator sidebarcolor6" id="sidebarcolor6"></div>
-					</div>
-					<div class="col">
-						<div class="indigator sidebarcolor7" id="sidebarcolor7"></div>
-					</div>
-					<div class="col">
-						<div class="indigator sidebarcolor8" id="sidebarcolor8"></div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!--end switcher-->
-	<!-- Bootstrap JS -->
-	<script src="{{ asset('asset') }}/js/bootstrap.bundle.min.js"></script>
-	<!--plugins-->
-	<script src="{{ asset('asset') }}/js/jquery.min.js"></script>
-	<script src="{{ asset('asset') }}/plugins/simplebar/js/simplebar.min.js"></script>
-	<script src="{{ asset('asset') }}/plugins/metismenu/js/metisMenu.min.js"></script>
-	<script src="{{ asset('asset') }}/plugins/perfect-scrollbar/js/perfect-scrollbar.js"></script>
-	<script src="{{ asset('asset') }}/plugins/vectormap/jquery-jvectormap-2.0.2.min.js"></script>
-	<script src="{{ asset('asset') }}/plugins/vectormap/jquery-jvectormap-world-mill-en.js"></script>
-	<script src="{{ asset('asset') }}/plugins/highcharts/js/highcharts.js"></script>
-	<script src="{{ asset('asset') }}/plugins/highcharts/js/exporting.js"></script>
-	<script src="{{ asset('asset') }}/plugins/highcharts/js/variable-pie.js"></script>
-	<script src="{{ asset('asset') }}/plugins/highcharts/js/export-data.js"></script>
-	<script src="{{ asset('asset') }}/plugins/highcharts/js/accessibility.js"></script>
-	<script src="{{ asset('asset') }}/plugins/apexcharts-bundle/js/apexcharts.min.js"></script>
-    <script>
-		new PerfectScrollbar('.dashboard-top-countries');
-	</script>
-	<script src="{{ asset('asset') }}/js/index.js"></script>
-	<!--app JS-->
-	<script src="{{ asset('asset') }}/js/app.js"></script>
+<!-- Start main html -->
+<div id="main_content">
+
+    <!-- Small icon top menu -->
+    <div id="header_top" class="header_top">
+        <div class="container">
+            <div class="hleft">
+                <div class="dropdown">
+                    <a href="javascript:void(0)" class="nav-link user_btn"><img class="avatar" src="{{ asset('asset') }}/images/user.png" alt=""/></a>
+                    <a href="{{ route('admin.dashboard') }}" class="nav-link icon"><i class="fa fa-home"></i></a>
+                    <a href="app-email.html"  class="nav-link icon app_inbox"><i class="fa fa-envelope"></i></a>
+                    <a href="app-chat.html"  class="nav-link icon xs-hide"><i class="fa fa-comments"></i></a>
+                    <a href="app-filemanager.html"  class="nav-link icon app_file xs-hide"><i class="fa fa-folder"></i></a>
+                </div>
+            </div>
+            <div class="hright">
+                <div class="dropdown">
+                    <a href="javascript:void(0)" class="nav-link icon settingbar"><i class="fa fa-bell"></i></a>
+                    <a href="javascript:void(0)" class="nav-link icon menu_toggle"><i class="fa fa-navicon"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification and  Activity-->
+    <div id="rightsidebar" class="right_sidebar">
+        <a href="javascript:void(0)" class="p-3 settingbar float-right"><i class="fa fa-close"></i></a>
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#notification" aria-expanded="true">Notification</a></li>
+            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#activity" aria-expanded="false">Activity</a></li>
+        </ul>
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane   active" id="notification" aria-expanded="true">
+                <ul class="list-unstyled feeds_widget">
+                    <li>
+                        <div class="feeds-left"><i class="fa fa-check"></i></div>
+                        <div class="feeds-body">
+                            <h4 class="title text-danger">Issue Fixed</h4>
+                            <small>WE have fix all Design bug with Responsive</small>
+                            <small class="text-muted">11:05</small>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="feeds-left"><i class="fa fa-user"></i></div>
+                        <div class="feeds-body">
+                            <h4 class="title">New User</h4>
+                            <small>I feel great! Thanks team</small>
+                            <small class="text-muted">10:45</small>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="feeds-left"><i class="fa fa-thumbs-o-up"></i></div>
+                        <div class="feeds-body">
+                            <h4 class="title">7 New Feedback</h4>
+                            <small>It will give a smart finishing to your site</small>
+                            <small class="text-muted">Today</small>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="feeds-left"><i class="fa fa-question-circle"></i></div>
+                        <div class="feeds-body">
+                            <h4 class="title text-warning">Server Warning</h4>
+                            <small>Your connection is not private</small>
+                            <small class="text-muted">10:50</small>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="feeds-left"><i class="fa fa-shopping-cart"></i></div>
+                        <div class="feeds-body">
+                            <h4 class="title">7 New Orders</h4>
+                            <small>You received a new oder from Tina.</small>
+                            <small class="text-muted">11:35</small>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div role="tabpanel" class="tab-pane  " id="activity" aria-expanded="false">
+                <ul class="new_timeline mt-3">
+                    <li>
+                        <div class="bullet pink"></div>
+                        <div class="time">11:00am</div>
+                        <div class="desc">
+                            <h3>Attendance</h3>
+                            <h4>Computer Class</h4>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="bullet pink"></div>
+                        <div class="time">11:30am</div>
+                        <div class="desc">
+                            <h3>Added an interest</h3>
+                            <h4>“Volunteer Activities”</h4>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="bullet green"></div>
+                        <div class="time">12:00pm</div>
+                        <div class="desc">
+                            <h3>Developer Team</h3>
+                            <h4>Hangouts</h4>
+                            <ul class="list-unstyled team-info margin-0 p-t-5">
+                                <li><img src="{{ asset('asset') }}/images/xs/avatar1.jpg" alt="Avatar"></li>
+                                <li><img src="{{ asset('asset') }}/images/xs/avatar2.jpg" alt="Avatar"></li>
+                                <li><img src="{{ asset('asset') }}/images/xs/avatar3.jpg" alt="Avatar"></li>
+                                <li><img src="{{ asset('asset') }}/images/xs/avatar4.jpg" alt="Avatar"></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="bullet green"></div>
+                        <div class="time">2:00pm</div>
+                        <div class="desc">
+                            <h3>Responded to need</h3>
+                            <a href="javascript:void(0)">“In-Kind Opportunity”</a>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="bullet orange"></div>
+                        <div class="time">1:30pm</div>
+                        <div class="desc">
+                            <h3>Lunch Break</h3>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="bullet green"></div>
+                        <div class="time">2:38pm</div>
+                        <div class="desc">
+                            <h3>Finish</h3>
+                            <h4>Go to Home</h4>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- start User detail -->
+    <div class="user_div">
+        <h5 class="brand-name mb-4">User Profile<a href="javascript:void(0)" class="user_btn"><i class="icon-close"></i></a></h5>
+        <div class="card">
+            <img class="card-img-top" src="{{ asset('asset') }}/images/gallery/6.jpg" alt="Card image cap">
+            {{-- <div class="card-body">
+                <h5 class="card-title">{{ Auth::user()->name }}</h5>
+                <p class="card-text">{{ Auth::user()->role }}</p>
+                <div class="row">
+                    <div class="col-4">
+                        <h6><strong>3265</strong></h6>
+                        <small>Post</small>
+                    </div>
+                    <div class="col-4">
+                        <h6><strong>1358</strong></h6>
+                        <small>Followers</small>
+                    </div>
+                    <div class="col-4">
+                        <h6><strong>10K</strong></h6>
+                        <small>Likes</small>
+                    </div>
+                </div>
+            </div> --}}
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">{{ Auth::user()->email }}</li>
+                <li class="list-group-item">+ 202-555-2828</li>
+                <li class="list-group-item">October 22th, 1990</li>
+            </ul>
+            <div class="card-body">
+                <a href="javascript:void(0);" class="card-link">View More</a>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <div class="form-group">
+                    <label class="d-block">Total Income<span class="float-right">77%</span></label>
+                    <div class="progress progress-xs">
+                        <div class="progress-bar bg-blue" role="progressbar" aria-valuenow="77" aria-valuemin="0" aria-valuemax="100" style="width: 77%;"></div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="d-block">Total Expenses <span class="float-right">50%</span></label>
+                    <div class="progress progress-xs">
+                        <div class="progress-bar bg-danger" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;"></div>
+                    </div>
+                </div>
+                <div class="form-group mb-0">
+                    <label class="d-block">Gross Profit <span class="float-right">23%</span></label>
+                    <div class="progress progress-xs">
+                        <div class="progress-bar bg-green" role="progressbar" aria-valuenow="23" aria-valuemin="0" aria-valuemax="100" style="width: 23%;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="d-block">Storage <span class="float-right">77%</span></label>
+            <div class="progress progress-sm">
+                <div class="progress-bar" role="progressbar" aria-valuenow="77" aria-valuemin="0" aria-valuemax="100" style="width: 77%;"></div>
+            </div>
+            <button type="button" class="btn btn-primary btn-block mt-3">Upgrade Storage</button>
+        </div>
+    </div>
+
+    <!-- start Main menu -->
+    <div id="left-sidebar" class="sidebar">
+        <div class="d-flex justify-content-between brand_name">
+            <h5 class="brand-name">{{ env('APP_NAME') }}</h5>
+            <div class="theme_btn">
+                <a class="theme1" data-toggle="tooltip" title="Theme Radical" href="javascript:void(0)" onclick="setStyleSheet('{{ asset('asset') }}/css/theme1.css', 0);"></a>
+                <a class="theme2" data-toggle="tooltip" title="Theme Turmeric" href="javascript:void(0)" onclick="setStyleSheet('{{ asset('asset') }}/css/theme2.css', 0);"></a>
+                <a class="theme3" data-toggle="tooltip" title="Theme Caribbean" href="javascript:void(0)" onclick="setStyleSheet('{{ asset('asset') }}/css/theme3.css', 0);"></a>
+                <a class="theme4" data-toggle="tooltip" title="Theme Cascade" href="javascript:void(0)" onclick="setStyleSheet('{{ asset('asset') }}/css/theme4.css', 0);"></a>
+            </div>
+        </div>
+        <div class="input-icon">
+            <span class="input-icon-addon">
+                <i class="fe fe-search"></i>
+            </span>
+            <input type="text" class="form-control" placeholder="Search...">
+        </div>
+        @include('layouts.navigation')
+    </div>
+
+    <!-- start main body part-->
+    <div class="page">
+
+        <!-- start body header -->
+        <div id="page_top" class="section-body ">
+            <div class="container-fluid">
+                <div class="page-header">
+                    <div class="left">
+                        <h1 class="page-title">@yield('title')</h1>
+                    </div>
+                    <div class="right">
+                        <div class="notification d-flex">
+                            <button type="button" class="btn btn-facebook"><i class="fa fa-info-circle mr-2"></i>Need Help</button>
+                            <button type="button" class="btn btn-facebook"><i class="fa fa-file-text mr-2"></i>Data export</button>
+                            <button type="button" class="btn btn-facebook"><i class="fa fa-power-off mr-2"></i>Sign Out</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="section-body">
+            <div class="container-fluid">
+                @yield('content')
+            </div>
+        </div>
+
+        <!-- Start page footer -->
+        <div class="section-body">
+            <footer class="footer">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12">
+                            Copyright © {{ date('Y') }} <a href="{{ env('APP_URL') }}">{{ env('APP_NAME') }}</a>.
+                        </div>
+                        <div class="col-md-6 col-sm-12 text-md-right">
+                            <ul class="list-inline mb-0">
+                                <li class="list-inline-item"><a href="javascript:void(0)">FAQ</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+</div>
+
+
+<!-- jQuery and bootstrtap js -->
+<script src="{{ asset('asset') }}/bundles/lib.vendor.bundle.js"></script>
+
+<!-- start plugin js file  -->
+<script src="{{ asset('asset') }}/bundles/counterup.bundle.js"></script>
+<script src="{{ asset('asset') }}/bundles/apexcharts.bundle.js"></script>
+<script src="{{ asset('asset') }}/bundles/c3.bundle.js"></script>
+
+<!-- Start core js and page js -->
+<script src="{{ asset('asset') }}/js/core.js"></script>
+<script src="{{ asset('asset') }}/js/page/index2.js"></script>
 </body>
-
 </html>
