@@ -21,6 +21,11 @@ Route::prefix('admin')->middleware(['auth'])->name('admin.')->group(function () 
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
 
     Route::resource('buyer', BuyerController::class);
+    Route::get('/buyer-trashed', [BuyerController::class, 'trashed'])->name('buyer.trashed');
+    Route::get('/buyer/status/{id}', [BuyerController::class, 'status'])->name('buyer.status');
+    Route::get('/buyer/restore/{id}', [BuyerController::class, 'restore'])->name('buyer.restore');
+    Route::get('/buyer/force/delete/{id}', [BuyerController::class, 'forceDelete'])->name('buyer.force.delete');
+
     Route::resource('color', ColorController::class);
     Route::resource('wash', WashController::class);
     Route::resource('season', SeasonController::class);
