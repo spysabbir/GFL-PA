@@ -3,33 +3,33 @@
 @section('title', 'Forgot Password')
 
 @section('content')
-<div class="authentication-forgot d-flex align-items-center justify-content-center">
-    <div class="card forgot-box">
+<div class="auth">
+    <div class="card">
+        <div class="text-center mb-5">
+            <a class="header-brand" href="index.html"><i class="fe fe-command brand-logo"></i></a>
+        </div>
         <div class="card-body">
-            <div class="p-4 rounded">
-                <div class="text-center">
-                    <img src="{{ asset('asset') }}/images/icons/lock.png" width="120" alt="" />
+            <div class="card-title">Forgot password</div>
+            <p class="text-muted">Enter your email address and your password will be reset and emailed to you.</p>
+            @if (session('status'))
+                <div class="alert alert-info" role="alert">
+                    <strong>{{ session('status') }}</strong>
                 </div>
-                <h4 class="mt-5 font-weight-bold">Forgot Password?</h4>
-                <p class="text-muted">Enter your registered email ID to reset the password</p>
-                @if (session('status'))
-                    <div class="alert alert-info" role="alert">
-                        <strong>{{ session('status') }}</strong>
-                    </div>
-                @endif
-                <form action="{{ route('password.email') }}" method="POST">
-                    @csrf
-                    <div class="my-4">
-                        <label class="form-label">Email Address</label>
-                        <input type="text" class="form-control form-control-lg" name="email" value="{{ old('email') }}" placeholder="Enter Email Address" />
-                        @error('email')<span class="text-danger">{{ $message }}</span>@enderror
-                    </div>
-                    <div class="d-grid gap-2">
-                        <button type="submit" class="btn btn-primary btn-lg">Send</button>
-                        <a href="{{ route('login') }}" class="btn btn-white btn-lg"><i class='bx bx-arrow-back me-1'></i>Back to Login</a>
-                    </div>
-                </form>
-            </div>
+            @endif
+            <form action="{{ route('password.email') }}" method="POST">
+                @csrf
+                <div class="form-group style2">
+                    <label class="form-label" for="exampleInputEmail1">Email address</label>
+                    <input type="email" class="form-control" name="email" value="{{ old('email') }}" placeholder="Enter your email">
+                    @error('email')<span class="text-danger">{{ $message }}</span>@enderror
+                </div>
+                <div class="form-footer">
+                    <button type="submit" class="btn btn-primary btn-block">Send me new password</button>
+                </div>
+            </form>
+        </div>
+        <div class="text-center text-muted">
+            Forget it, <a href="{{ route('login') }}">Send me Back</a> to the Sign in screen.
         </div>
     </div>
 </div>
