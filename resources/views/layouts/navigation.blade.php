@@ -8,10 +8,10 @@
         <nav class="sidebar-nav">
             <ul class="metismenu ci-effect-1">
                 <li class="g_heading">Master Form</li>
-                <li class="active">
+                <li class="{{ request()->routeIs('admin.buyer.index') ? 'active' : '' }}">
                     <a href="javascript:void(0)" class="has-arrow arrow-b"><i class="icon-home"></i><span data-hover="Style Resources">Style Resources</span></a>
                     <ul>
-                        <li class="active"><a href="{{ route('admin.buyer.index') }}"><span data-hover="Buyer">Buyer</span></a></li>
+                        <li class="{{ request()->routeIs('admin.buyer.index') ? 'active' : '' }}"><a href="{{ route('admin.buyer.index') }}"><span data-hover="Buyer">Buyer</span></a></li>
                         <li><a href="{{ route('admin.season.index') }}"><span data-hover="Season">Season</span></a></li>
                         <li><a href="{{ route('admin.color.index') }}"><span data-hover="Color">Color</span></a></li>
                         <li><a href="{{ route('admin.wash.index') }}"><span data-hover="Wash">Wash</span></a></li>
