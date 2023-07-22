@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Season;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -13,17 +14,17 @@ class SeasonController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $query = Buyer::select('buyers.*');
+            $query = Season::select('seasons.*');
 
             if ($request->status) {
-                $query->where('buyers.status', $request->status);
+                $query->where('seasons.status', $request->status);
             }
 
             $query->orderBy('created_at', 'desc');
 
-            $buyers = $query->get();
+            $seasons = $query->get();
 
-            return DataTables::of($buyers)
+            return DataTables::of($seasons)
                 ->addIndexColumn()
                 ->editColumn('status', function ($row) {
                     if ($row->status == 'Active') {
@@ -44,13 +45,13 @@ class SeasonController extends Controller
                 ->make(true);
         }
 
-        return view('admin.buyer.index');
+        return view('admin.season.index');
     }
 
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'buyer_name' => 'required|string|max:255|unique:buyers,buyer_name',
+            'season_name' => 'required|string|max:255|unique:seasons,season_name',
         ]);
 
         if($validator->fails()){
@@ -59,7 +60,7 @@ class SeasonController extends Controller
                 'error'=> $validator->errors()->toArray()
             ]);
         }else{
-            Buyer::create($request->all()+[
+            Season::create($request->all()+[
                 'created_by' => Auth::user()->id,
             ]);
 
@@ -71,15 +72,15 @@ class SeasonController extends Controller
 
     public function edit(string $id)
     {
-        $buyer = Buyer::where('id', $id)->first();
-        return response()->json($buyer);
+        $season = Season::where('id', $id)->first();
+        return response()->json($season);
     }
 
     public function update(Request $request, string $id)
     {
 
         $validator = Validator::make($request->all(), [
-            'buyer_name' => 'required|string|max:255|unique:buyers,buyer_name,' . $id,
+            'season_name' => 'required|string|max:255|unique:seasons,season_name,' . $id,
 
         ]);
 
@@ -89,8 +90,8 @@ class SeasonController extends Controller
                 'error' => $validator->errors()->toArray()
             ]);
         } else {
-            $buyer = Buyer::findOrFail($id);
-            $buyer->update($request->all() + [
+            $season = Season::findOrFail($id);
+            $season->update($request->all() + [
                 'updated_by' => Auth::user()->id,
             ]);
 
@@ -102,21 +103,21 @@ class SeasonController extends Controller
 
     public function destroy(string $id)
     {
-        $buyer = Buyer::findOrFail($id);
-        $buyer->updated_by = Auth::user()->id;
-        $buyer->deleted_by = Auth::user()->id;
-        $buyer->save();
-        $buyer->delete();
+        $season = Season::findOrFail($id);
+        $season->updated_by = Auth::user()->id;
+        $season->deleted_by = Auth::user()->id;
+        $season->save();
+        $season->delete();
     }
 
     public function trashed(Request $request)
     {
         if ($request->ajax()) {
-            $trashed_buyers = Buyer::onlyTrashed();
+            $trashed_seasons = Season::onlyTrashed();
 
-            $trashed_buyers->orderBy('deleted_at', 'desc');
+            $trashed_seasons->orderBy('deleted_at', 'desc');
 
-            return DataTables::of($trashed_buyers)
+            return DataTables::of($trashed_seasons)
                 ->addColumn('action', function ($row) {
                     $btn = '
                         <button type="button" data-id="'.$row->id.'" class="btn text-white bg-lime restoreBtn"><i class="fe fe-refresh-ccw"></i></button>
@@ -128,35 +129,35 @@ class SeasonController extends Controller
                 ->make(true);
         }
 
-        return view('admin.buyer.index');
+        return view('admin.season.index');
     }
 
     public function restore(string $id)
     {
-        Buyer::onlyTrashed()->where('id', $id)->update([
+        Season::onlyTrashed()->where('id', $id)->update([
             'deleted_by' => NULL
         ]);
 
-        Buyer::onlyTrashed()->where('id', $id)->restore();
+        Season::onlyTrashed()->where('id', $id)->restore();
     }
 
     public function forceDelete(string $id)
     {
-        $buyer = Buyer::onlyTrashed()->where('id', $id)->first();
-        $buyer->forceDelete();
+        $season = Season::onlyTrashed()->where('id', $id)->first();
+        $season->forceDelete();
     }
 
     public function status(string $id)
     {
-        $buyer = Buyer::findOrFail($id);
+        $season = Season::findOrFail($id);
 
-        if ($buyer->status == "Active") {
-            $buyer->status = "Inactive";
+        if ($season->status == "Active") {
+            $season->status = "Inactive";
         } else {
-            $buyer->status = "Active";
+            $season->status = "Active";
         }
 
-        $buyer->updated_by = Auth::user()->id;
-        $buyer->save();
+        $season->updated_by = Auth::user()->id;
+        $season->save();
     }
 }

@@ -28,7 +28,12 @@ Route::prefix('admin')->middleware(['auth'])->name('admin.')->group(function () 
 
     Route::resource('color', ColorController::class);
     Route::resource('wash', WashController::class);
+
     Route::resource('season', SeasonController::class);
+    Route::get('/season-trashed', [SeasonController::class, 'trashed'])->name('season.trashed');
+    Route::get('/season/status/{id}', [SeasonController::class, 'status'])->name('season.status');
+    Route::get('/season/restore/{id}', [SeasonController::class, 'restore'])->name('season.restore');
+    Route::get('/season/force/delete/{id}', [SeasonController::class, 'forceDelete'])->name('season.force.delete');
 
 });
 
