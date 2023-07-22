@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('washes', function (Blueprint $table) {
             $table->id();
+            $table->string('wash_name');
+            $table->enum('status', ['Active', 'Inactive'])->default('Active');
             $table->integer('created_by');
             $table->integer('updated_by')->nullable();
             $table->integer('deleted_by')->nullable();

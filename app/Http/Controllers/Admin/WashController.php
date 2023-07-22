@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Wash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -13,17 +14,17 @@ class WashController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $query = Buyer::select('buyers.*');
+            $query = Wash::select('washes.*');
 
             if ($request->status) {
-                $query->where('buyers.status', $request->status);
+                $query->where('washes.status', $request->status);
             }
 
             $query->orderBy('created_at', 'desc');
 
-            $buyers = $query->get();
+            $washes = $query->get();
 
-            return DataTables::of($buyers)
+            return DataTables::of($washes)
                 ->addIndexColumn()
                 ->editColumn('status', function ($row) {
                     if ($row->status == 'Active') {
@@ -44,13 +45,13 @@ class WashController extends Controller
                 ->make(true);
         }
 
-        return view('admin.buyer.index');
+        return view('admin.wash.index');
     }
 
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'buyer_name' => 'required|string|max:255|unique:buyers,buyer_name',
+            'wash_name' => 'required|string|max:255|unique:washes,wash_name',
         ]);
 
         if($validator->fails()){
@@ -59,7 +60,7 @@ class WashController extends Controller
                 'error'=> $validator->errors()->toArray()
             ]);
         }else{
-            Buyer::create($request->all()+[
+            Wash::create($request->all()+[
                 'created_by' => Auth::user()->id,
             ]);
 
@@ -71,15 +72,15 @@ class WashController extends Controller
 
     public function edit(string $id)
     {
-        $buyer = Buyer::where('id', $id)->first();
-        return response()->json($buyer);
+        $wash = Wash::where('id', $id)->first();
+        return response()->json($wash);
     }
 
     public function update(Request $request, string $id)
     {
 
         $validator = Validator::make($request->all(), [
-            'buyer_name' => 'required|string|max:255|unique:buyers,buyer_name,' . $id,
+            'wash_name' => 'required|string|max:255|unique:washes,wash_name,' . $id,
 
         ]);
 
@@ -89,8 +90,8 @@ class WashController extends Controller
                 'error' => $validator->errors()->toArray()
             ]);
         } else {
-            $buyer = Buyer::findOrFail($id);
-            $buyer->update($request->all() + [
+            $wash = Wash::findOrFail($id);
+            $wash->update($request->all() + [
                 'updated_by' => Auth::user()->id,
             ]);
 
@@ -102,21 +103,21 @@ class WashController extends Controller
 
     public function destroy(string $id)
     {
-        $buyer = Buyer::findOrFail($id);
-        $buyer->updated_by = Auth::user()->id;
-        $buyer->deleted_by = Auth::user()->id;
-        $buyer->save();
-        $buyer->delete();
+        $wash = Wash::findOrFail($id);
+        $wash->updated_by = Auth::user()->id;
+        $wash->deleted_by = Auth::user()->id;
+        $wash->save();
+        $wash->delete();
     }
 
     public function trashed(Request $request)
     {
         if ($request->ajax()) {
-            $trashed_buyers = Buyer::onlyTrashed();
+            $trashed_washes = Wash::onlyTrashed();
 
-            $trashed_buyers->orderBy('deleted_at', 'desc');
+            $trashed_washes->orderBy('deleted_at', 'desc');
 
-            return DataTables::of($trashed_buyers)
+            return DataTables::of($trashed_washes)
                 ->addColumn('action', function ($row) {
                     $btn = '
                         <button type="button" data-id="'.$row->id.'" class="btn text-white bg-lime restoreBtn"><i class="fe fe-refresh-ccw"></i></button>
@@ -128,35 +129,35 @@ class WashController extends Controller
                 ->make(true);
         }
 
-        return view('admin.buyer.index');
+        return view('admin.wash.index');
     }
 
     public function restore(string $id)
     {
-        Buyer::onlyTrashed()->where('id', $id)->update([
+        Wash::onlyTrashed()->where('id', $id)->update([
             'deleted_by' => NULL
         ]);
 
-        Buyer::onlyTrashed()->where('id', $id)->restore();
+        Wash::onlyTrashed()->where('id', $id)->restore();
     }
 
     public function forceDelete(string $id)
     {
-        $buyer = Buyer::onlyTrashed()->where('id', $id)->first();
-        $buyer->forceDelete();
+        $wash = Wash::onlyTrashed()->where('id', $id)->first();
+        $wash->forceDelete();
     }
 
     public function status(string $id)
     {
-        $buyer = Buyer::findOrFail($id);
+        $wash = Wash::findOrFail($id);
 
-        if ($buyer->status == "Active") {
-            $buyer->status = "Inactive";
+        if ($wash->status == "Active") {
+            $wash->status = "Inactive";
         } else {
-            $buyer->status = "Active";
+            $wash->status = "Active";
         }
 
-        $buyer->updated_by = Auth::user()->id;
-        $buyer->save();
+        $wash->updated_by = Auth::user()->id;
+        $wash->save();
     }
 }

@@ -1,13 +1,13 @@
 @extends('layouts.master')
 
-@section('title', 'Buyer')
+@section('title', 'Wash')
 
 @section('content')
 <div class="row clearfix">
     <div class="col-lg-12">
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Create Buyer</h3>
+                <h3 class="card-title">Create Wash</h3>
                 <div class="card-options">
                     <a href="#" class="card-options-fullscreen text-white bg-indigo px-1" data-toggle="card-fullscreen"><i class="fe fe-maximize"></i></a>
                     <a href="javascript:void(0)" class="card-options-remove text-white bg-orange px-1" data-toggle="card-remove"><i class="fe fe-x"></i></a>
@@ -19,9 +19,9 @@
                     <div class="row">
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label class="form-label">Buyer Name</label>
-                                <input type="text" class="form-control" name="buyer_name" placeholder="Buyer Name">
-                                <span class="text-danger error-text buyer_name_error"></span>
+                                <label class="form-label">Wash Name</label>
+                                <input type="text" class="form-control" name="wash_name" placeholder="Wash Name">
+                                <span class="text-danger error-text wash_name_error"></span>
                             </div>
                         </div>
                         <div class="col-md-2">
@@ -35,7 +35,7 @@
         </div>
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Buyer List</h3>
+                <h3 class="card-title">Wash List</h3>
                 <div class="card-options">
                     <!-- Trashed Btn -->
                     <button type="button" class="btn text-white bg-pink" data-toggle="modal" data-target="#trashedModal"><i class="fe fe-trash-2"></i></button>
@@ -54,7 +54,7 @@
                                         <table class="table table-striped" id="trashedDataTable" style="width: 100%">
                                             <thead>
                                                 <tr>
-                                                    <th>Buyer Name</th>
+                                                    <th>Wash Name</th>
                                                     <th>Action</th>
                                                 </tr>
                                             </thead>
@@ -63,7 +63,7 @@
                                             </tbody>
                                             <tfoot>
                                                 <tr>
-                                                    <th>Buyer Name</th>
+                                                    <th>Wash Name</th>
                                                     <th>Action</th>
                                                 </tr>
                                             </tfoot>
@@ -101,7 +101,7 @@
                         <thead>
                             <tr>
                                 <th>Sl No</th>
-                                <th>Buyer Name</th>
+                                <th>Wash Name</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
@@ -120,13 +120,13 @@
                                         <div class="modal-body">
                                             <form id="editForm">
                                                 @csrf
-                                                <input type="hidden" id="buyer_id">
+                                                <input type="hidden" id="wash_id">
                                                 <div class="row">
                                                     <div class="col-md-8">
                                                         <div class="form-group">
-                                                            <label class="form-label">Buyer Name</label>
-                                                            <input type="text" class="form-control" name="buyer_name" id="buyer_name">
-                                                            <span class="text-danger error-text update_buyer_name_error"></span>
+                                                            <label class="form-label">Wash Name</label>
+                                                            <input type="text" class="form-control" name="wash_name" id="wash_name">
+                                                            <span class="text-danger error-text update_wash_name_error"></span>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-4">
@@ -147,7 +147,7 @@
                         <tfoot>
                             <tr>
                                 <th>Sl No</th>
-                                <th>Buyer Name</th>
+                                <th>Wash Name</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
@@ -175,14 +175,14 @@
             serverSide: true,
             searching: true,
             ajax: {
-                url: "{{ route('admin.buyer.index') }}",
+                url: "{{ route('admin.wash.index') }}",
                 "data":function(e){
                     e.status = $('#status').val();
                 },
             },
             columns: [
                 { data: 'DT_RowIndex', name: 'DT_RowIndex' },
-                { data: 'buyer_name', name: 'buyer_name' },
+                { data: 'wash_name', name: 'wash_name' },
                 { data: 'status', name: 'status' },
                 { data: 'action', name: 'action', orderable: false, searchable: false }
             ]
@@ -199,7 +199,7 @@
             event.preventDefault();
             var formData = $(this).serialize();
             $.ajax({
-                url: "{{ route('admin.buyer.store') }}",
+                url: "{{ route('admin.wash.store') }}",
                 type: 'POST',
                 data: formData,
                 dataType: 'json',
@@ -214,7 +214,7 @@
                     }else{
                         $('#createForm')[0].reset();
                         $('#allDataTable').DataTable().ajax.reload();
-                        toastr.success('Buyer store successfully.');
+                        toastr.success('Wash store successfully.');
                     }
                 }
             });
@@ -223,14 +223,14 @@
         // Edit Data
         $(document).on('click', '.editBtn', function () {
             var id = $(this).data('id');
-            var url = "{{ route('admin.buyer.edit', ":id") }}";
+            var url = "{{ route('admin.wash.edit', ":id") }}";
             url = url.replace(':id', id)
             $.ajax({
                 url: url,
                 type: "GET",
                 success: function (response) {
-                    $('#buyer_id').val(response.id);
-                    $('#buyer_name').val(response.buyer_name);
+                    $('#wash_id').val(response.id);
+                    $('#wash_name').val(response.wash_name);
                 },
             });
         });
@@ -238,8 +238,8 @@
         // Update Data
         $('#editForm').submit(function (event) {
             event.preventDefault();
-            var id = $('#buyer_id').val();
-            var url = "{{ route('admin.buyer.update', ":id") }}";
+            var id = $('#wash_id').val();
+            var url = "{{ route('admin.wash.update', ":id") }}";
             url = url.replace(':id', id)
             $.ajax({
                 url: url,
@@ -265,7 +265,7 @@
         // Delete Data
         $(document).on('click', '.deleteBtn', function(){
             var id = $(this).data('id');
-            var url = "{{ route('admin.buyer.destroy', ":id") }}";
+            var url = "{{ route('admin.wash.destroy', ":id") }}";
             url = url.replace(':id', id)
             Swal.fire({
                 title: 'Are you sure?',
@@ -282,7 +282,7 @@
                         method: 'DELETE',
                         success: function(response) {
                             $('#allDataTable').DataTable().ajax.reload();
-                            toastr.warning('Buyer delete successfully.');
+                            toastr.warning('Wash delete successfully.');
                             $('#trashedDataTable').DataTable().ajax.reload();
                         }
                     });
@@ -296,10 +296,10 @@
             serverSide: true,
             searching: true,
             ajax: {
-                url: "{{ route('admin.buyer.trashed') }}",
+                url: "{{ route('admin.wash.trashed') }}",
             },
             columns: [
-                { data: 'buyer_name', name: 'buyer_name' },
+                { data: 'wash_name', name: 'wash_name' },
                 { data: 'action', name: 'action', orderable: false, searchable: false }
             ]
         });
@@ -307,7 +307,7 @@
         // Restore Data
         $(document).on('click', '.restoreBtn', function () {
             var id = $(this).data('id');
-            var url = "{{ route('admin.buyer.restore', ":id") }}";
+            var url = "{{ route('admin.wash.restore', ":id") }}";
             url = url.replace(':id', id)
             $.ajax({
                 url: url,
@@ -316,7 +316,7 @@
                     $("#trashedModal").modal('hide');
                     $('#allDataTable').DataTable().ajax.reload();
                     $('#trashedDataTable').DataTable().ajax.reload();
-                    toastr.success('Buyer restore successfully.');
+                    toastr.success('Wash restore successfully.');
                 },
             });
         });
@@ -324,7 +324,7 @@
         // Force Delete Data
         $(document).on('click', '.forceDeleteBtn', function(){
             var id = $(this).data('id');
-            var url = "{{ route('admin.buyer.force.delete', ":id") }}";
+            var url = "{{ route('admin.wash.force.delete', ":id") }}";
             url = url.replace(':id', id)
             Swal.fire({
                 title: 'Are you sure?',
@@ -342,7 +342,7 @@
                         success: function(response) {
                             $("#trashedModal").modal('hide');
                             $('#trashedDataTable').DataTable().ajax.reload();
-                            toastr.error('Buyer force delete successfully.');
+                            toastr.error('Wash force delete successfully.');
                         }
                     });
                 }
@@ -352,14 +352,14 @@
         // Status Change Data
         $(document).on('click', '.statusBtn', function () {
             var id = $(this).data('id');
-            var url = "{{ route('admin.buyer.status', ":id") }}";
+            var url = "{{ route('admin.wash.status', ":id") }}";
             url = url.replace(':id', id)
             $.ajax({
                 url: url,
                 type: "GET",
                 success: function (response) {
                     $('#allDataTable').DataTable().ajax.reload();
-                    toastr.success('Buyer status change successfully.');
+                    toastr.success('Wash status change successfully.');
                 },
             });
         });

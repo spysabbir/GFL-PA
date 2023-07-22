@@ -33,6 +33,10 @@ Route::prefix('admin')->middleware(['auth'])->name('admin.')->group(function () 
     Route::get('/color/force/delete/{id}', [ColorController::class, 'forceDelete'])->name('color.force.delete');
 
     Route::resource('wash', WashController::class);
+    Route::get('/wash-trashed', [WashController::class, 'trashed'])->name('wash.trashed');
+    Route::get('/wash/status/{id}', [WashController::class, 'status'])->name('wash.status');
+    Route::get('/wash/restore/{id}', [WashController::class, 'restore'])->name('wash.restore');
+    Route::get('/wash/force/delete/{id}', [WashController::class, 'forceDelete'])->name('wash.force.delete');
 
     Route::resource('season', SeasonController::class);
     Route::get('/season-trashed', [SeasonController::class, 'trashed'])->name('season.trashed');
