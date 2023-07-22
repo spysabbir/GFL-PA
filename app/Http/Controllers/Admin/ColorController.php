@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Color;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -13,17 +14,17 @@ class ColorController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $query = Buyer::select('buyers.*');
+            $query = Color::select('colors.*');
 
             if ($request->status) {
-                $query->where('buyers.status', $request->status);
+                $query->where('colors.status', $request->status);
             }
 
             $query->orderBy('created_at', 'desc');
 
-            $buyers = $query->get();
+            $colors = $query->get();
 
-            return DataTables::of($buyers)
+            return DataTables::of($colors)
                 ->addIndexColumn()
                 ->editColumn('status', function ($row) {
                     if ($row->status == 'Active') {
@@ -44,13 +45,13 @@ class ColorController extends Controller
                 ->make(true);
         }
 
-        return view('admin.buyer.index');
+        return view('admin.color.index');
     }
 
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'buyer_name' => 'required|string|max:255|unique:buyers,buyer_name',
+            'color_name' => 'required|string|max:255|unique:colors,color_name',
         ]);
 
         if($validator->fails()){
@@ -59,7 +60,7 @@ class ColorController extends Controller
                 'error'=> $validator->errors()->toArray()
             ]);
         }else{
-            Buyer::create($request->all()+[
+            Color::create($request->all()+[
                 'created_by' => Auth::user()->id,
             ]);
 
@@ -71,15 +72,15 @@ class ColorController extends Controller
 
     public function edit(string $id)
     {
-        $buyer = Buyer::where('id', $id)->first();
-        return response()->json($buyer);
+        $color = Color::where('id', $id)->first();
+        return response()->json($color);
     }
 
     public function update(Request $request, string $id)
     {
 
         $validator = Validator::make($request->all(), [
-            'buyer_name' => 'required|string|max:255|unique:buyers,buyer_name,' . $id,
+            'color_name' => 'required|string|max:255|unique:colors,color_name,' . $id,
 
         ]);
 
@@ -89,8 +90,8 @@ class ColorController extends Controller
                 'error' => $validator->errors()->toArray()
             ]);
         } else {
-            $buyer = Buyer::findOrFail($id);
-            $buyer->update($request->all() + [
+            $color = Color::findOrFail($id);
+            $color->update($request->all() + [
                 'updated_by' => Auth::user()->id,
             ]);
 
@@ -102,21 +103,21 @@ class ColorController extends Controller
 
     public function destroy(string $id)
     {
-        $buyer = Buyer::findOrFail($id);
-        $buyer->updated_by = Auth::user()->id;
-        $buyer->deleted_by = Auth::user()->id;
-        $buyer->save();
-        $buyer->delete();
+        $color = Color::findOrFail($id);
+        $color->updated_by = Auth::user()->id;
+        $color->deleted_by = Auth::user()->id;
+        $color->save();
+        $color->delete();
     }
 
     public function trashed(Request $request)
     {
         if ($request->ajax()) {
-            $trashed_buyers = Buyer::onlyTrashed();
+            $trashed_colors = Color::onlyTrashed();
 
-            $trashed_buyers->orderBy('deleted_at', 'desc');
+            $trashed_colors->orderBy('deleted_at', 'desc');
 
-            return DataTables::of($trashed_buyers)
+            return DataTables::of($trashed_colors)
                 ->addColumn('action', function ($row) {
                     $btn = '
                         <button type="button" data-id="'.$row->id.'" class="btn text-white bg-lime restoreBtn"><i class="fe fe-refresh-ccw"></i></button>
@@ -128,35 +129,35 @@ class ColorController extends Controller
                 ->make(true);
         }
 
-        return view('admin.buyer.index');
+        return view('admin.color.index');
     }
 
     public function restore(string $id)
     {
-        Buyer::onlyTrashed()->where('id', $id)->update([
+        Color::onlyTrashed()->where('id', $id)->update([
             'deleted_by' => NULL
         ]);
 
-        Buyer::onlyTrashed()->where('id', $id)->restore();
+        Color::onlyTrashed()->where('id', $id)->restore();
     }
 
     public function forceDelete(string $id)
     {
-        $buyer = Buyer::onlyTrashed()->where('id', $id)->first();
-        $buyer->forceDelete();
+        $color = Color::onlyTrashed()->where('id', $id)->first();
+        $color->forceDelete();
     }
 
     public function status(string $id)
     {
-        $buyer = Buyer::findOrFail($id);
+        $color = Color::findOrFail($id);
 
-        if ($buyer->status == "Active") {
-            $buyer->status = "Inactive";
+        if ($color->status == "Active") {
+            $color->status = "Inactive";
         } else {
-            $buyer->status = "Active";
+            $color->status = "Active";
         }
 
-        $buyer->updated_by = Auth::user()->id;
-        $buyer->save();
+        $color->updated_by = Auth::user()->id;
+        $color->save();
     }
 }
