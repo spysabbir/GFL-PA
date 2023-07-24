@@ -20,7 +20,7 @@ return new class extends Migration
             $table->integer('color_id');
             $table->integer('wash_id');
             $table->string('type_of_garments');
-            $table->enum('status', ['Running', 'Close', 'Cancel'])->default('Running');
+            $table->enum('status', ['Hold', 'Running', 'Close', 'Cancel'])->default('Hold');
             $table->date('closing_date')->nullable();
             $table->integer('created_by');
             $table->integer('updated_by')->nullable();

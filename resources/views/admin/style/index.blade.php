@@ -1,41 +1,13 @@
 @extends('layouts.master')
 
-@section('title', 'Wash')
+@section('title', 'Style')
 
 @section('content')
 <div class="row clearfix">
     <div class="col-lg-12">
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Create Wash</h3>
-                <div class="card-options">
-                    <a href="#" class="card-options-fullscreen text-white bg-indigo px-1" data-toggle="card-fullscreen"><i class="fe fe-maximize"></i></a>
-                    <a href="javascript:void(0)" class="card-options-remove text-white bg-orange px-1" data-toggle="card-remove"><i class="fe fe-x"></i></a>
-                </div>
-            </div>
-            <div class="card-body">
-                <form id="createForm">
-                    @csrf
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label class="form-label">Wash Name</label>
-                                <input type="text" class="form-control" name="wash_name" placeholder="Wash Name">
-                                <span class="text-danger error-text wash_name_error"></span>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="form-group mt-1">
-                                <button type="submit" class="btn text-white bg-cyan mt-4">Create</button>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-        <div class="card">
-            <div class="card-header">
-                <h3 class="card-title">Wash List</h3>
+                <h3 class="card-title">Style List</h3>
                 <div class="card-options">
                     <!-- Trashed Btn -->
                     <button type="button" class="btn text-white bg-pink" data-toggle="modal" data-target="#trashedModal"><i class="fe fe-trash-2"></i></button>
@@ -54,6 +26,10 @@
                                         <table class="table table-striped" id="trashedDataTable" style="width: 100%">
                                             <thead>
                                                 <tr>
+                                                    <th>Buyer Name</th>
+                                                    <th>Style Name</th>
+                                                    <th>Season Name</th>
+                                                    <th>Color Name</th>
                                                     <th>Wash Name</th>
                                                     <th>Action</th>
                                                 </tr>
@@ -63,6 +39,10 @@
                                             </tbody>
                                             <tfoot>
                                                 <tr>
+                                                    <th>Buyer Name</th>
+                                                    <th>Style Name</th>
+                                                    <th>Season Name</th>
+                                                    <th>Color Name</th>
                                                     <th>Wash Name</th>
                                                     <th>Action</th>
                                                 </tr>
@@ -89,64 +69,38 @@
                             <label class="form-label">Select Status</label>
                             <select class="form-control custom-select filter_data" id="status">
                                 <option value="">--All--</option>
-                                <option value="Active">Active</option>
-                                <option value="Inactive">Inactive</option>
+                                <option value="Hole">Hole</option>
+                                <option value="Running">Running</option>
+                                <option value="Close">Close</option>
+                                <option value="Cancel">Cancel</option>
                             </select>
                         </div>
                     </div>
-
                 </div>
                 <div class="table-responsive">
                     <table class="table table-striped" id="allDataTable" style="width: 100%">
                         <thead>
                             <tr>
                                 <th>Sl No</th>
+                                <th>Buyer Name</th>
+                                <th>Style Name</th>
+                                <th>Season Name</th>
+                                <th>Color Name</th>
                                 <th>Wash Name</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- Modal -->
-                            <div class="modal fade bd-example-modal-lg" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-lg" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Edit</h5>
-                                            <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <form id="editForm">
-                                                @csrf
-                                                <input type="hidden" id="wash_id">
-                                                <div class="row">
-                                                    <div class="col-md-8">
-                                                        <div class="form-group">
-                                                            <label class="form-label">Wash Name</label>
-                                                            <input type="text" class="form-control" name="wash_name" id="wash_name">
-                                                            <span class="text-danger error-text update_wash_name_error"></span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="form-group mt-1">
-                                                            <button type="submit" class="btn text-white bg-teal mt-4">Edit</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+
                         </tbody>
                         <tfoot>
                             <tr>
                                 <th>Sl No</th>
+                                <th>Buyer Name</th>
+                                <th>Style Name</th>
+                                <th>Season Name</th>
+                                <th>Color Name</th>
                                 <th>Wash Name</th>
                                 <th>Status</th>
                                 <th>Action</th>
@@ -175,13 +129,17 @@
             serverSide: true,
             searching: true,
             ajax: {
-                url: "{{ route('admin.wash.index') }}",
+                url: "{{ route('admin.style.index') }}",
                 "data":function(e){
                     e.status = $('#status').val();
                 },
             },
             columns: [
                 { data: 'DT_RowIndex', name: 'DT_RowIndex' },
+                { data: 'buyer_name', name: 'buyer_name' },
+                { data: 'style_name', name: 'style_name' },
+                { data: 'season_name', name: 'season_name' },
+                { data: 'color_name', name: 'color_name' },
                 { data: 'wash_name', name: 'wash_name' },
                 { data: 'status', name: 'status' },
                 { data: 'action', name: 'action', orderable: false, searchable: false }
@@ -194,78 +152,10 @@
             $('#allDataTable').DataTable().ajax.reload();
         })
 
-        // Store Data
-        $('#createForm').submit(function(event) {
-            event.preventDefault();
-            var formData = $(this).serialize();
-            $.ajax({
-                url: "{{ route('admin.wash.store') }}",
-                type: 'POST',
-                data: formData,
-                dataType: 'json',
-                beforeSend:function(){
-                    $(document).find('span.error-text').text('');
-                },
-                success: function(response) {
-                    if (response.status == 400) {
-                        $.each(response.error, function(prefix, val){
-                            $('span.'+prefix+'_error').text(val[0]);
-                        })
-                    }else{
-                        $('#createForm')[0].reset();
-                        $('#allDataTable').DataTable().ajax.reload();
-                        toastr.success('Wash store successfully.');
-                    }
-                }
-            });
-        });
-
-        // Edit Data
-        $(document).on('click', '.editBtn', function () {
-            var id = $(this).data('id');
-            var url = "{{ route('admin.wash.edit', ":id") }}";
-            url = url.replace(':id', id)
-            $.ajax({
-                url: url,
-                type: "GET",
-                success: function (response) {
-                    $('#wash_id').val(response.id);
-                    $('#wash_name').val(response.wash_name);
-                },
-            });
-        });
-
-        // Update Data
-        $('#editForm').submit(function (event) {
-            event.preventDefault();
-            var id = $('#wash_id').val();
-            var url = "{{ route('admin.wash.update', ":id") }}";
-            url = url.replace(':id', id)
-            $.ajax({
-                url: url,
-                type: "PUT",
-                data: $(this).serialize(),
-                beforeSend:function(){
-                    $(document).find('span.error-text').text('');
-                },
-                success: function (response) {
-                    if (response.status == 400) {
-                        $.each(response.error, function(prefix, val){
-                            $('span.update_'+prefix+'_error').text(val[0]);
-                        })
-                    }else{
-                        $("#editModal").modal('hide');
-                        $('#allDataTable').DataTable().ajax.reload();
-                        toastr.success('Branch update successfully.');
-                    }
-                },
-            });
-        });
-
         // Delete Data
         $(document).on('click', '.deleteBtn', function(){
             var id = $(this).data('id');
-            var url = "{{ route('admin.wash.destroy', ":id") }}";
+            var url = "{{ route('admin.style.destroy', ":id") }}";
             url = url.replace(':id', id)
             Swal.fire({
                 title: 'Are you sure?',
@@ -282,7 +172,7 @@
                         method: 'DELETE',
                         success: function(response) {
                             $('#allDataTable').DataTable().ajax.reload();
-                            toastr.warning('Wash delete successfully.');
+                            toastr.warning('Style delete successfully.');
                             $('#trashedDataTable').DataTable().ajax.reload();
                         }
                     });
@@ -296,9 +186,13 @@
             serverSide: true,
             searching: true,
             ajax: {
-                url: "{{ route('admin.wash.trashed') }}",
+                url: "{{ route('admin.style.trashed') }}",
             },
             columns: [
+                { data: 'buyer_name', name: 'buyer_name' },
+                { data: 'style_name', name: 'style_name' },
+                { data: 'season_name', name: 'season_name' },
+                { data: 'color_name', name: 'color_name' },
                 { data: 'wash_name', name: 'wash_name' },
                 { data: 'action', name: 'action', orderable: false, searchable: false }
             ]
@@ -307,7 +201,7 @@
         // Restore Data
         $(document).on('click', '.restoreBtn', function () {
             var id = $(this).data('id');
-            var url = "{{ route('admin.wash.restore', ":id") }}";
+            var url = "{{ route('admin.style.restore', ":id") }}";
             url = url.replace(':id', id)
             $.ajax({
                 url: url,
@@ -316,7 +210,7 @@
                     $("#trashedModal").modal('hide');
                     $('#allDataTable').DataTable().ajax.reload();
                     $('#trashedDataTable').DataTable().ajax.reload();
-                    toastr.success('Wash restore successfully.');
+                    toastr.success('Style restore successfully.');
                 },
             });
         });
@@ -324,7 +218,7 @@
         // Force Delete Data
         $(document).on('click', '.forceDeleteBtn', function(){
             var id = $(this).data('id');
-            var url = "{{ route('admin.wash.force.delete', ":id") }}";
+            var url = "{{ route('admin.style.force.delete', ":id") }}";
             url = url.replace(':id', id)
             Swal.fire({
                 title: 'Are you sure?',
@@ -342,27 +236,12 @@
                         success: function(response) {
                             $("#trashedModal").modal('hide');
                             $('#trashedDataTable').DataTable().ajax.reload();
-                            toastr.error('Wash force delete successfully.');
+                            toastr.error('Style force delete successfully.');
                         }
                     });
                 }
             })
         })
-
-        // Status Change Data
-        $(document).on('click', '.statusBtn', function () {
-            var id = $(this).data('id');
-            var url = "{{ route('admin.wash.status', ":id") }}";
-            url = url.replace(':id', id)
-            $.ajax({
-                url: url,
-                type: "GET",
-                success: function (response) {
-                    $('#allDataTable').DataTable().ajax.reload();
-                    toastr.success('Wash status change successfully.');
-                },
-            });
-        });
     });
 </script>
 @endsection

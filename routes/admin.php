@@ -47,7 +47,6 @@ Route::prefix('admin')->middleware(['auth'])->name('admin.')->group(function () 
 
     Route::resource('style', StyleController::class);
     Route::get('/style-trashed', [StyleController::class, 'trashed'])->name('style.trashed');
-    Route::get('/style/status/{id}', [StyleController::class, 'status'])->name('style.status');
     Route::get('/style/restore/{id}', [StyleController::class, 'restore'])->name('style.restore');
     Route::get('/style/force/delete/{id}', [StyleController::class, 'forceDelete'])->name('style.force.delete');
 
