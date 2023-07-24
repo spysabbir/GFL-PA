@@ -13,6 +13,15 @@ return new class extends Migration
     {
         Schema::create('styles', function (Blueprint $table) {
             $table->id();
+            $table->integer('buyer_id');
+            $table->text('style_name');
+            $table->longText('style_description');
+            $table->integer('season_id');
+            $table->integer('color_id');
+            $table->integer('wash_id');
+            $table->string('type_of_garments');
+            $table->enum('status', ['Running', 'Close', 'Cancel'])->default('Running');
+            $table->date('closing_date')->nullable();
             $table->integer('created_by');
             $table->integer('updated_by')->nullable();
             $table->integer('deleted_by')->nullable();

@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\BuyerController;
 use App\Http\Controllers\Admin\ColorController;
 use App\Http\Controllers\Admin\SeasonController;
+use App\Http\Controllers\Admin\StyleController;
 use App\Http\Controllers\Admin\WashController;
 use Illuminate\Support\Facades\Route;
 
@@ -43,6 +44,12 @@ Route::prefix('admin')->middleware(['auth'])->name('admin.')->group(function () 
     Route::get('/season/status/{id}', [SeasonController::class, 'status'])->name('season.status');
     Route::get('/season/restore/{id}', [SeasonController::class, 'restore'])->name('season.restore');
     Route::get('/season/force/delete/{id}', [SeasonController::class, 'forceDelete'])->name('season.force.delete');
+
+    Route::resource('style', StyleController::class);
+    Route::get('/style-trashed', [StyleController::class, 'trashed'])->name('style.trashed');
+    Route::get('/style/status/{id}', [StyleController::class, 'status'])->name('style.status');
+    Route::get('/style/restore/{id}', [StyleController::class, 'restore'])->name('style.restore');
+    Route::get('/style/force/delete/{id}', [StyleController::class, 'forceDelete'])->name('style.force.delete');
 
 });
 

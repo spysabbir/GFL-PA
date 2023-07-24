@@ -15,79 +15,48 @@
                         <li class="{{ request()->routeIs('admin.season.index') ? 'active' : '' }}"><a href="{{ route('admin.season.index') }}"><span data-hover="Season">Season</span></a></li>
                         <li class="{{ request()->routeIs('admin.color.index') ? 'active' : '' }}"><a href="{{ route('admin.color.index') }}"><span data-hover="Color">Color</span></a></li>
                         <li class="{{ request()->routeIs('admin.wash.index') ? 'active' : '' }}"><a href="{{ route('admin.wash.index') }}"><span data-hover="Wash">Wash</span></a></li>
-                        {{-- <li><a href="{{ route('admin.style.index') }}"><span data-hover="Style">Style</span></a></li> --}}
                     </ul>
                 </li>
-                <li><a href="app-calendar.html"><i class="icon-calendar"></i><span data-hover="Calendar">Calendar</span></a></li>
-                <li><a href="app-chat.html"><i class="icon-speech"></i><span data-hover="Chat">Chat</span></a></li>
-                <li><a href="app-contact.html"><i class="icon-notebook"></i><span data-hover="Contact">Contact</span></a></li>
-                <li><a href="app-blog.html"><i class="icon-globe"></i><span data-hover="Blog">Blog</span></a></li>
-                <li><a href="app-filemanager.html"><i class="icon-folder-alt"></i><span data-hover="FileManager">File Manager</span></a></li>
-                <li><a href="page-gallery.html"><i class="icon-picture"></i><span data-hover="Gallery">Gallery</span></a></li>
+                <li class="{{ request()->routeIs('admin.style.create') || request()->routeIs('admin.style.index') ? 'active' : '' }}">
+                    <a href="javascript:void(0)" class="has-arrow arrow-b"><i class="icon-home"></i><span data-hover="Style">Style</span></a>
+                    <ul>
+                        <li class="{{ request()->routeIs('admin.style.create') ? 'active' : '' }}"><a href="{{ route('admin.style.create') }}"><span data-hover="Style Create">Style Create</span></a></li>
+                        <li class="{{ request()->routeIs('admin.style.index') ? 'active' : '' }}"><a href="{{ route('admin.style.index') }}"><span data-hover="Style List">Style List</span></a></li>
+                    </ul>
+                </li>
+                <li><a href="#"><i class="icon-notebook"></i><span data-hover="Master Form">Master Form</span></a></li>
                 <li class="g_heading">Utilities</li>
                 <li>
-                    <a href="javascript:void(0)" class="has-arrow arrow-b"><i class="icon-tag"></i><span data-hover="Icons">Icons</span></a>
+                    <a href="javascript:void(0)" class="has-arrow arrow-b"><i class="icon-tag"></i><span data-hover="Cutting">Cutting</span></a>
                     <ul>
-                        <li><a href="icons-feather.html"><span data-hover="Feather">Feather Icons</span></a></li>
-                        <li><a href="icons-line.html"><span data-hover="Line">Line Icons</span></a></li>
-                        <li><a href="icons-fontawesome.html"><span data-hover="FontAwesome">FontAwesome</span></a></li>
-                        <li><a href="icons-flags.html"><span data-hover="Flags">Flags Icons</span></a></li>
-                        <li><a href="icons-payments.html"><span data-hover="Payments">Payments Icons</span></a></li>
+                        <li><a href="#"><span data-hover="Cutting Production">Cutting Production</span></a></li>
+                        <li><a href="#"><span data-hover="Issue To Sewing">Issue To Sewing</span></a></li>
+                    </ul>
+                </li>
+                <li><a href="#"><i class="icon-puzzle"></i><span data-hover="Sewing Production">Sewing Production</span></a></li>
+                <li>
+                    <a href="javascript:void(0)" class="has-arrow arrow-b"><i class="icon-tag"></i><span data-hover="Wash">Wash</span></a>
+                    <ul>
+                        <li><a href="#"><span data-hover="Issue To Wash">Issue To Wash</span></a></li>
+                        <li><a href="#"><span data-hover="Receive From Wash ">Receive From Wash</span></a></li>
                     </ul>
                 </li>
                 <li>
-                    <a href="javascript:void(0)" class="has-arrow arrow-b"><i class="icon-bar-chart"></i><span data-hover="Charts">Charts</span></a>
+                    <a href="javascript:void(0)" class="has-arrow arrow-b"><i class="icon-tag"></i><span data-hover="Finishing">Finishing</span></a>
                     <ul>
-                        <li><a href="charts-apex.html"><span data-hover="ChartsApex">Charts Apex</span></a></li>
-                        <li><a href="charts-e.html"><span data-hover="EChart">EChart</span></a></li>
-                        <li><a href="charts-c3.html"><span data-hover="C3Chart">C3 Chart</span></a></li>
-                        <li><a href="charts-knob.html"><span data-hover="JQueryKnob">JQuery Knob</span></a></li>
-                        <li><a href="charts-sparkline.html"><span data-hover="SparklineChart">Sparkline Chart</span></a></li>
+                        <li><a href="#"><span data-hover="Issue To Finishing">Issue To Finishing</span></a></li>
+                        <li><a href="#"><span data-hover="Finishing Production ">Finishing Production</span></a></li>
                     </ul>
                 </li>
-                <li>
-                    <a href="javascript:void(0)" class="has-arrow arrow-b"><i class="icon-layers"></i><span data-hover="Forms">Forms</span></a>
-                    <ul>
-                        <li><a href="form-elements.html"><span data-hover="BasicElements">Basic Elements</span></a></li>
-                        <li><a href="form-advanced.html"><span data-hover="AdvancedElements">Advanced Elements</span></a></li>
-                        <li><a href="form-validation.html"><span data-hover="FormValidation">Form Validation</span></a></li>
-                        <li><a href="form-wizard.html"><span data-hover="FormWizard">Form Wizard</span></a></li>
-                        <li><a href="form-summernote.html"><span data-hover="Summernote">Summernote</span></a></li>
-
-                    </ul>
-                </li>
-                <li>
-                    <a href="javascript:void(0)" class="has-arrow arrow-b"><i class="icon-tag"></i><span data-hover="Tables">Tables</span></a>
-                    <ul>
-                        <li><a href="table-normal.html"><span data-hover="Bootstrap">Bootstrap Table</span></a></li>
-                        <li><a href="table-datatable.html"><span data-hover="Datatable">Jquery Datatable</span></a></li>
-                    </ul>
-                </li>
-                <li><a href="widgets.html"><i class="icon-puzzle"></i><span data-hover="Widgets">Widgets</span></a></li>
                 <li class="g_heading">Extra Pages</li>
                 <li>
                     <a href="javascript:void(0)" class="has-arrow arrow-b"><i class="icon-lock"></i><span data-hover="Authentication">Authentication</span></a>
                     <ul>
-                        <li><a href="login.html"><span data-hover="Login">Login</span></a></li>
-                        <li><a href="register.html"><span data-hover="Register">Register</span></a></li>
-                        <li><a href="forgot-password.html"><span data-hover="Forgot">Forgot password</span></a></li>
-                        <li><a href="404.html"><span data-hover="404">404 error</span></a></li>
-                        <li><a href="500.html"><span data-hover="500">500 error</span></a></li>
+                        <li><a href="#"><span data-hover="Login">Login</span></a></li>
+                        <li><a href="#"><span data-hover="Register">Register</span></a></li>
                     </ul>
                 </li>
-                <li>
-                    <a href="javascript:void(0)" class="has-arrow arrow-b"><i class="fe fe-file"></i><span data-hover="Pages">Pages</span></a>
-                    <ul>
-                        <li><a href="page-empty.html"><span data-hover="Emptypage">Empty page</span></a></li>
-                        <li><a href="page-profile.html"><span data-hover="Profile">Profile</span></a></li>
-                        <li><a href="page-search.html"><span data-hover="SearchResults">Search Results</span></a></li>
-                        <li><a href="page-timeline.html"><span data-hover="Timeline">Timeline</span></a></li>
-                        <li><a href="page-invoices.html"><span data-hover="Invoices">Invoices</span></a></li>
-                        <li><a href="page-pricing.html"><span data-hover="Pricing">Pricing</span></a></li>
-                        <li><a href="page-carousel.html"><span data-hover="Carousel">Carousel</span></a></li>
-                    </ul>
-                </li>
-                <li><a href="page-maps.html"><i class="icon-map"></i><span data-hover="Maps">Maps</span></a></li>
+                <li><a href="#"><i class="icon-map"></i><span data-hover="Maps">Maps</span></a></li>
             </ul>
         </nav>
     </div>
@@ -95,22 +64,8 @@
         <nav class="sidebar-nav">
             <ul class="metismenu">
                 <li class="g_heading">Components</li>
-                <li><a href="components/typography.html"><i class="fe fe-type"></i><span>Typography</span></a></li>
-                <li><a href="components/colors.html"><i class="fe fe-feather"></i><span>Colors</span></a></li>
-                <li><a href="components/alerts.html"><i class="fe fe-alert-triangle"></i><span>Alerts</span></a></li>
-                <li><a href="components/avatars.html"><i class="fe fe-user"></i><span>Avatars</span></a></li>
-                <li><a href="components/buttons.html"><i class="fe fe-toggle-right"></i><span>Buttons</span></a></li>
-                <li><a href="components/breadcrumb.html"><i class="fe fe-link-2"></i><span>Breadcrumb</span></a></li>
-                <li><a href="components/forms.html"><i class="fe fe-layers"></i><span>Input group</span></a></li>
-                <li><a href="components/list-group.html"><i class="fe fe-list"></i><span>List group</span></a></li>
-                <li><a href="components/modal.html"><i class="fe fe-square"></i><span>Modal</span></a></li>
-                <li><a href="components/pagination.html"><i class="fe fe-file-text"></i><span>Pagination</span></a></li>
-                <li><a href="components/cards.html"><i class="fe fe-image"></i><span>Cards</span></a></li>
-                <li><a href="components/charts.html"><i class="fe fe-pie-chart"></i><span>Charts</span></a></li>
-                <li><a href="components/form-components.html"><i class="fe fe-check-square"></i><span>Form</span></a></li>
-                <li><a href="components/tags.html"><i class="fe fe-tag"></i><span>Tags</span></a></li>
-                <li><a href="javascript:void(0)"><i class="fe fe-help-circle"></i><span>Documentation</span></a></li>
-                <li><a href="javascript:void(0)"><i class="fe fe-life-buoy"></i><span>Changelog</span></a></li>
+                <li><a href="#"><i class="fe fe-type"></i><span>Typography</span></a></li>
+                <li><a href="#"><i class="fe fe-feather"></i><span>Colors</span></a></li>
             </ul>
         </nav>
     </div>
@@ -220,20 +175,6 @@
                     <label class="custom-switch">
                         <span class="custom-switch-description">Box Shadow</span>
                         <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input btn-boxshadow">
-                        <span class="custom-switch-indicator"></span>
-                    </label>
-                </li>
-                <li>
-                    <label class="custom-switch">
-                        <span class="custom-switch-description">RTL Support</span>
-                        <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input btn-rtl">
-                        <span class="custom-switch-indicator"></span>
-                    </label>
-                </li>
-                <li>
-                    <label class="custom-switch">
-                        <span class="custom-switch-description">Box Layout</span>
-                        <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input btn-boxlayout">
                         <span class="custom-switch-indicator"></span>
                     </label>
                 </li>

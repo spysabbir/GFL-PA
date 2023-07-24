@@ -44,9 +44,11 @@
                     <div class="dropdown">
                         <a href="javascript:void(0)" class="nav-link user_btn"><img class="avatar" src="{{ asset('asset') }}/images/user.png" alt=""/></a>
                         <a href="{{ route('admin.dashboard') }}" class="nav-link icon"><i class="fa fa-home"></i></a>
-                        <a href="app-email.html"  class="nav-link icon app_inbox"><i class="fa fa-envelope"></i></a>
-                        <a href="app-chat.html"  class="nav-link icon xs-hide"><i class="fa fa-comments"></i></a>
-                        <a href="app-filemanager.html"  class="nav-link icon app_file xs-hide"><i class="fa fa-folder"></i></a>
+                        <a href="#"  class="nav-link icon app_inbox"><i class="fa fa-envelope"></i></a>
+                        <a href="#"  class="nav-link icon xs-hide"><i class="fa fa-comments"></i></a>
+                        <a href="#"  class="nav-link icon xs-hide"><i class="icon-calendar"></i></a>
+                        <a href="#"  class="nav-link icon xs-hide"><i class="icon-notebook"></i></a>
+                        <a href="#"  class="nav-link icon app_file xs-hide"><i class="fa fa-folder"></i></a>
                     </div>
                 </div>
                 <div class="hright">
