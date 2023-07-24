@@ -48,7 +48,8 @@ class StyleController extends Controller
                 })
                 ->addColumn('action', function ($row) {
                     $btn = '<a href="'.route('admin.style.edit', $row->id).'" class="btn text-white bg-purple btn-sm"><i class="fe fe-edit"></i></a>
-                            <button type="button" data-id="' . $row->id . '" class="btn text-white bg-yellow btn-sm deleteBtn"><i class="fe fe-trash"></i></button>';
+                        <a href="'.route('admin.style.show', $row->id).'" class="btn text-white bg-azure btn-sm"><i class="fe fe-eye"></i></a>
+                        <button type="button" data-id="' . $row->id . '" class="btn text-white bg-yellow btn-sm deleteBtn"><i class="fe fe-trash"></i></button>';
                     return $btn;
                 })
                 ->rawColumns(['status', 'action'])
@@ -87,6 +88,13 @@ class StyleController extends Controller
                 'status' => 200,
             ]);
         }
+    }
+
+    public function show(string $id)
+    {
+        $style = Style::findOrFail($id);
+
+        return view('admin.style.view', compact('style'));
     }
 
     public function edit(string $id)

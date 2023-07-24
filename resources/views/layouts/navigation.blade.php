@@ -17,7 +17,7 @@
                         <li class="{{ request()->routeIs('admin.wash.index') ? 'active' : '' }}"><a href="{{ route('admin.wash.index') }}"><span data-hover="Wash">Wash</span></a></li>
                     </ul>
                 </li>
-                <li class="{{ request()->routeIs('admin.style.create') || request()->routeIs('admin.style.index') ? 'active' : '' }}">
+                <li class="{{ request()->routeIs('admin.style.create') || request()->routeIs('admin.style.index') || request()->routeIs('admin.style.edit') || request()->routeIs('admin.style.show') ? 'active' : '' }}">
                     <a href="javascript:void(0)" class="has-arrow arrow-b"><i class="icon-home"></i><span data-hover="Style">Style</span></a>
                     <ul>
                         <li class="{{ request()->routeIs('admin.style.create') ? 'active' : '' }}"><a href="{{ route('admin.style.create') }}"><span data-hover="Style Create">Style Create</span></a></li>

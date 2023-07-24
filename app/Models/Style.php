@@ -11,4 +11,29 @@ class Style extends Model
 {
     use HasFactory, SoftDeletes;
     protected $guarded = [];
+
+    public function buyer()
+    {
+        return $this->belongsTo(Buyer::class, 'buyer_id');
+    }
+
+    public function season()
+    {
+        return $this->belongsTo(Season::class, 'season_id');
+    }
+
+    public function color()
+    {
+        return $this->belongsTo(Color::class, 'color_id');
+    }
+
+    public function wash()
+    {
+        return $this->belongsTo(Wash::class, 'wash_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
 }

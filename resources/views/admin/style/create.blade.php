@@ -9,8 +9,9 @@
             <div class="card-header">
                 <h3 class="card-title">Create Style</h3>
                 <div class="card-options">
-                    <a href="#" class="card-options-fullscreen text-white bg-indigo px-1" data-toggle="card-fullscreen"><i class="fe fe-maximize"></i></a>
-                    <a href="javascript:void(0)" class="card-options-remove text-white bg-orange px-1" data-toggle="card-remove"><i class="fe fe-x"></i></a>
+                    <a href="{{ route('admin.style.index') }}" class="btn text-white bg-pink"><i class="fe fe-database"></i></a>
+                    <a href="#" class="card-options-fullscreen btn text-white bg-indigo" data-toggle="card-fullscreen"><i class="fe fe-maximize"></i></a>
+                    <a href="javascript:void(0)" class="card-options-remove btn text-white bg-orange" data-toggle="card-remove"><i class="fe fe-x"></i></a>
                 </div>
             </div>
             <div class="card-body">

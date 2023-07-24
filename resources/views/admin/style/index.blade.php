@@ -9,8 +9,9 @@
             <div class="card-header">
                 <h3 class="card-title">Style List</h3>
                 <div class="card-options">
+                    <a href="{{ route('admin.style.create') }}" class="btn text-white bg-green"><i class="fe fe-plus-circle"></i></a>
                     <!-- Trashed Btn -->
-                    <button type="button" class="btn text-white bg-pink" data-toggle="modal" data-target="#trashedModal"><i class="fe fe-trash-2"></i></button>
+                    <button type="button" class="btn text-white bg-pink ml-3" data-toggle="modal" data-target="#trashedModal"><i class="fe fe-trash-2"></i></button>
                     <!-- Trashed Modal -->
                     <div class="modal fade bd-example-modal-lg" id="trashedModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-lg" role="document">
