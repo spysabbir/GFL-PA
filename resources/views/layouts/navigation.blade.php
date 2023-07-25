@@ -8,23 +8,17 @@
         <nav class="sidebar-nav">
             <ul class="metismenu ci-effect-1">
                 <li class="g_heading">Master Form</li>
-                <li class="{{ request()->routeIs('admin.buyer.index') || request()->routeIs('admin.season.index') || request()->routeIs('admin.color.index') || request()->routeIs('admin.wash.index') ? 'active' : '' }}">
+                <li class="{{ request()->routeIs('admin.buyer.index') || request()->routeIs('admin.style.index') || request()->routeIs('admin.season.index') || request()->routeIs('admin.color.index') || request()->routeIs('admin.wash.index') ? 'active' : '' }}">
                     <a href="javascript:void(0)" class="has-arrow arrow-b"><i class="icon-home"></i><span data-hover="Style Resources">Style Resources</span></a>
                     <ul>
                         <li class="{{ request()->routeIs('admin.buyer.index') ? 'active' : '' }}"><a href="{{ route('admin.buyer.index') }}"><span data-hover="Buyer">Buyer</span></a></li>
+                        <li class="{{ request()->routeIs('admin.style.index') ? 'active' : '' }}"><a href="{{ route('admin.style.index') }}"><span data-hover="Style">Style</span></a></li>
                         <li class="{{ request()->routeIs('admin.season.index') ? 'active' : '' }}"><a href="{{ route('admin.season.index') }}"><span data-hover="Season">Season</span></a></li>
                         <li class="{{ request()->routeIs('admin.color.index') ? 'active' : '' }}"><a href="{{ route('admin.color.index') }}"><span data-hover="Color">Color</span></a></li>
                         <li class="{{ request()->routeIs('admin.wash.index') ? 'active' : '' }}"><a href="{{ route('admin.wash.index') }}"><span data-hover="Wash">Wash</span></a></li>
                     </ul>
                 </li>
-                <li class="{{ request()->routeIs('admin.style.create') || request()->routeIs('admin.style.index') || request()->routeIs('admin.style.edit') || request()->routeIs('admin.style.show') ? 'active' : '' }}">
-                    <a href="javascript:void(0)" class="has-arrow arrow-b"><i class="icon-home"></i><span data-hover="Style">Style</span></a>
-                    <ul>
-                        <li class="{{ request()->routeIs('admin.style.create') ? 'active' : '' }}"><a href="{{ route('admin.style.create') }}"><span data-hover="Style Create">Style Create</span></a></li>
-                        <li class="{{ request()->routeIs('admin.style.index') ? 'active' : '' }}"><a href="{{ route('admin.style.index') }}"><span data-hover="Style List">Style List</span></a></li>
-                    </ul>
-                </li>
-                <li><a href="#"><i class="icon-notebook"></i><span data-hover="Master Form">Master Form</span></a></li>
+                <li class="{{ request()->routeIs('admin.master-style.create') ? 'active' : '' }}"><a href="{{ route('admin.master-style.index') }}"><i class="icon-notebook"></i><span data-hover="Master Style">Master Style</span></a></li>
                 <li class="g_heading">Utilities</li>
                 <li>
                     <a href="javascript:void(0)" class="has-arrow arrow-b"><i class="icon-tag"></i><span data-hover="Cutting">Cutting</span></a>

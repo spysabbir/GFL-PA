@@ -17,6 +17,11 @@ class Style extends Model
         return $this->belongsTo(Buyer::class, 'buyer_id');
     }
 
+    public function style()
+    {
+        return $this->belongsTo(Style::class, 'style_id');
+    }
+
     public function season()
     {
         return $this->belongsTo(Season::class, 'season_id');

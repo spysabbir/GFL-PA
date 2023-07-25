@@ -16,12 +16,7 @@ return new class extends Migration
             $table->integer('buyer_id');
             $table->text('style_name');
             $table->longText('style_description');
-            $table->integer('season_id');
-            $table->integer('color_id');
-            $table->integer('wash_id');
-            $table->string('type_of_garments');
-            $table->enum('status', ['Hold', 'Running', 'Close', 'Cancel'])->default('Hold');
-            $table->date('closing_date')->nullable();
+            $table->enum('status', ['Active', 'Inactive'])->default('Active');
             $table->integer('created_by');
             $table->integer('updated_by')->nullable();
             $table->integer('deleted_by')->nullable();

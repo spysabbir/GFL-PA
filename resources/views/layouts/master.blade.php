@@ -200,9 +200,6 @@
                     <li class="list-group-item">+ 202-555-2828</li>
                     <li class="list-group-item">October 22th, 1990</li>
                 </ul>
-                <div class="card-body">
-                    <a href="javascript:void(0);" class="card-link">View More</a>
-                </div>
             </div>
             <div class="card">
                 <div class="card-body">
@@ -231,7 +228,7 @@
                 <div class="progress progress-sm">
                     <div class="progress-bar" role="progressbar" aria-valuenow="77" aria-valuemin="0" aria-valuemax="100" style="width: 77%;"></div>
                 </div>
-                <button type="button" class="btn btn-primary btn-block mt-3">Upgrade Storage</button>
+                <a href="{{ route('profile') }}" class="btn btn-primary btn-block mt-3">View Profile</a>
             </div>
         </div>
 

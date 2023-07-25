@@ -4,10 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Buyer;
-use App\Models\Color;
-use App\Models\Season;
 use App\Models\Style;
-use App\Models\Wash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -18,10 +15,7 @@ class StyleController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $query = Style::leftJoin('buyers', 'styles.buyer_id', '=', 'buyers.id')
-                        ->leftJoin('seasons', 'styles.season_id', '=', 'seasons.id')
-                        ->leftJoin('colors', 'styles.color_id', '=', 'colors.id')
-                        ->leftJoin('washes', 'styles.wash_id', '=', 'washes.id');
+            $query = Style::leftJoin('buyers', 'styles.buyer_id', '=', 'buyers.id');
 
             if ($request->status) {
                 $query->where('styles.status', $request->status);
@@ -29,43 +23,32 @@ class StyleController extends Controller
 
             $query->orderBy('created_at', 'desc');
 
-            $styles = $query->select('styles.*', 'buyers.buyer_name', 'seasons.season_name', 'colors.color_name', 'washes.wash_name')
+            $styles = $query->select('styles.*', 'buyers.buyer_name')
                             ->get();
 
             return DataTables::of($styles)
                 ->addIndexColumn()
                 ->editColumn('status', function ($row) {
-                    if ($row->status == 'Hole') {
-                        $status = '<span class="badge text-white bg-warning">' . $row->status . '</span>';
-                    }elseif ($row->status == 'Running') {
-                        $status = '<span class="badge text-white bg-green">' . $row->status . '</span>';
-                    }elseif ($row->status == 'Close') {
-                        $status = '<span class="badge text-white bg-info">' . $row->status . '</span>';
-                    }else{
-                        $status = '<span class="badge text-white bg-danger">' . $row->status . '</span>';
+                    if ($row->status == 'Active') {
+                        $status = '<span class="badge text-white bg-green">' . $row->status . '</span>
+                                   <button type="button" data-id="' . $row->id . '" class="btn text-white bg-green btn-sm statusBtn"><i class="fe fe-check"></i></button>';
+                    } else {
+                        $status = '<span class="badge text-white bg-orange">' . $row->status . '</span>
+                                   <button type="button" data-id="' . $row->id . '" class="btn text-white bg-orange btn-sm statusBtn"><i class="fe fe-slash"></i></button>';
                     }
                     return $status;
                 })
                 ->addColumn('action', function ($row) {
-                    $btn = '<a href="'.route('admin.style.edit', $row->id).'" class="btn text-white bg-purple btn-sm"><i class="fe fe-edit"></i></a>
-                        <a href="'.route('admin.style.show', $row->id).'" class="btn text-white bg-azure btn-sm"><i class="fe fe-eye"></i></a>
-                        <button type="button" data-id="' . $row->id . '" class="btn text-white bg-yellow btn-sm deleteBtn"><i class="fe fe-trash"></i></button>';
+                    $btn = '<button type="button" data-id="' . $row->id . '" class="btn text-white bg-purple btn-sm editBtn" data-toggle="modal" data-target="#editModal"><i class="fe fe-edit"></i></button>
+                            <button type="button" data-id="' . $row->id . '" class="btn text-white bg-yellow btn-sm deleteBtn"><i class="fe fe-trash"></i></button>';
                     return $btn;
                 })
                 ->rawColumns(['status', 'action'])
                 ->make(true);
         }
 
-        return view('admin.style.index');
-    }
-
-    public function create()
-    {
-        $buyers = Buyer::where('status', 'Active')->get();
-        $seasons = Season::where('status', 'Active')->get();
-        $colors = Color::where('status', 'Active')->get();
-        $washs = Wash::where('status', 'Active')->get();
-        return view('admin.style.create', compact('buyers', 'seasons', 'colors', 'washs'));
+        $buyers = Buyer::all();
+        return view('admin.style.index', compact('buyers'));
     }
 
     public function store(Request $request)
@@ -90,23 +73,10 @@ class StyleController extends Controller
         }
     }
 
-    public function show(string $id)
-    {
-        $style = Style::findOrFail($id);
-
-        return view('admin.style.view', compact('style'));
-    }
-
     public function edit(string $id)
     {
-        $style = Style::findOrFail($id);
-
-        $buyers = Buyer::where('status', 'Active')->get();
-        $seasons = Season::where('status', 'Active')->get();
-        $colors = Color::where('status', 'Active')->get();
-        $washs = Wash::where('status', 'Active')->get();
-
-        return view('admin.style.edit', compact('style', 'buyers', 'seasons', 'colors', 'washs'));
+        $style = Style::where('id', $id)->first();
+        return response()->json($style);
     }
 
     public function update(Request $request, string $id)
@@ -144,14 +114,11 @@ class StyleController extends Controller
     public function trashed(Request $request)
     {
         if ($request->ajax()) {
-            $query = Style::onlyTrashed()
-                        ->leftJoin('buyers', 'styles.buyer_id', '=', 'buyers.id')
-                        ->leftJoin('seasons', 'styles.season_id', '=', 'seasons.id')
-                        ->leftJoin('colors', 'styles.color_id', '=', 'colors.id')
-                        ->leftJoin('washes', 'styles.wash_id', '=', 'washes.id');
+            $trashed_styles = Style::onlyTrashed()
+                    ->leftJoin('buyers', 'styles.buyer_id', '=', 'buyers.id');
 
-            $trashed_styles = $query->orderBy('deleted_at', 'desc')
-                        ->select('styles.*', 'buyers.buyer_name', 'seasons.season_name', 'colors.color_name', 'washes.wash_name')
+            $trashed_styles->orderBy('deleted_at', 'desc')
+                        ->select('styles.*', 'buyers.buyer_name')
                         ->get();
 
             return DataTables::of($trashed_styles)
@@ -182,5 +149,19 @@ class StyleController extends Controller
     {
         $style = Style::onlyTrashed()->where('id', $id)->first();
         $style->forceDelete();
+    }
+
+    public function status(string $id)
+    {
+        $style = Style::findOrFail($id);
+
+        if ($style->status == "Active") {
+            $style->status = "Inactive";
+        } else {
+            $style->status = "Active";
+        }
+
+        $style->updated_by = Auth::user()->id;
+        $style->save();
     }
 }
