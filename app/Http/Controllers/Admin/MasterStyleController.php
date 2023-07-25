@@ -37,12 +37,18 @@ class MasterStyleController extends Controller
             return DataTables::of($styles)
                 ->addIndexColumn()
                 ->editColumn('status', function ($row) {
-                    if ($row->status == 'Active') {
+                    if ($row->status == 'Hold') {
+                        $status = '<span class="badge text-white bg-pink">' . $row->status . '</span>
+                        <button type="button" data-id="' . $row->id . '" class="btn text-white bg-green btn-sm statusBtn"><i class="fe fe-check"></i></button>';
+                    } elseif ($row->status == 'Running') {
                         $status = '<span class="badge text-white bg-green">' . $row->status . '</span>
-                                   <button type="button" data-id="' . $row->id . '" class="btn text-white bg-green btn-sm statusBtn"><i class="fe fe-check"></i></button>';
-                    } else {
+                        <button type="button" data-id="' . $row->id . '" class="btn text-white bg-green btn-sm statusBtn"><i class="fe fe-check"></i></button>';
+                    } elseif ($row->status == 'Close') {
                         $status = '<span class="badge text-white bg-orange">' . $row->status . '</span>
-                                   <button type="button" data-id="' . $row->id . '" class="btn text-white bg-orange btn-sm statusBtn"><i class="fe fe-slash"></i></button>';
+                        <button type="button" data-id="' . $row->id . '" class="btn text-white bg-green btn-sm statusBtn"><i class="fe fe-check"></i></button>';
+                    } else {
+                        $status = '<span class="badge text-white bg-red">' . $row->status . '</span>
+                        <button type="button" data-id="' . $row->id . '" class="btn text-white bg-orange btn-sm statusBtn"><i class="fe fe-slash"></i></button>';
                     }
                     return $status;
                 })
@@ -81,7 +87,9 @@ class MasterStyleController extends Controller
                 'error'=> $validator->errors()->toArray()
             ]);
         }else{
+            $unique_id = MasterStyle::latest('unique_id')->value('unique_id')+1;
             MasterStyle::create($request->all()+[
+                'unique_id' => $unique_id,
                 'created_by' => Auth::user()->id,
             ]);
 
@@ -124,6 +132,7 @@ class MasterStyleController extends Controller
             ]);
         } else {
             $masterStyle = MasterStyle::findOrFail($id);
+
             $masterStyle->update($request->all() + [
                 'updated_by' => Auth::user()->id,
             ]);
@@ -147,11 +156,11 @@ class MasterStyleController extends Controller
     {
         if ($request->ajax()) {
             $query = MasterStyle::onlyTrashed()
-                        ->leftJoin('buyers', 'styles.buyer_id', '=', 'buyers.id')
+                        ->leftJoin('buyers', 'master_styles.buyer_id', '=', 'buyers.id')
                         ->leftJoin('styles', 'master_styles.style_id', '=', 'styles.id')
-                        ->leftJoin('seasons', 'styles.season_id', '=', 'seasons.id')
-                        ->leftJoin('colors', 'styles.color_id', '=', 'colors.id')
-                        ->leftJoin('washes', 'styles.wash_id', '=', 'washes.id');
+                        ->leftJoin('seasons', 'master_styles.season_id', '=', 'seasons.id')
+                        ->leftJoin('colors', 'master_styles.color_id', '=', 'colors.id')
+                        ->leftJoin('washes', 'master_styles.wash_id', '=', 'washes.id');
 
             $trashed_masterStyle = $query->orderBy('deleted_at', 'desc')
                         ->select('master_styles.*', 'buyers.buyer_name', 'styles.style_name', 'seasons.season_name', 'colors.color_name', 'washes.wash_name')
@@ -191,10 +200,10 @@ class MasterStyleController extends Controller
     {
         $masterStyle = MasterStyle::findOrFail($id);
 
-        if ($masterStyle->status == "Active") {
-            $masterStyle->status = "Inactive";
+        if ($masterStyle->status == "Running") {
+            $masterStyle->status = "Cancel";
         } else {
-            $masterStyle->status = "Active";
+            $masterStyle->status = "Running";
         }
 
         $masterStyle->updated_by = Auth::user()->id;

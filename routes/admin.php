@@ -53,10 +53,10 @@ Route::prefix('admin')->middleware(['auth'])->name('admin.')->group(function () 
     Route::get('/style/status/{id}', [StyleController::class, 'status'])->name('style.status');
 
     Route::resource('master-style', MasterStyleController::class);
-    Route::get('/style-trashed', [StyleController::class, 'trashed'])->name('style.trashed');
-    Route::get('/style/restore/{id}', [StyleController::class, 'restore'])->name('style.restore');
-    Route::get('/style/force/delete/{id}', [StyleController::class, 'forceDelete'])->name('style.force.delete');
-    Route::get('/style/status/{id}', [StyleController::class, 'status'])->name('style.status');
+    Route::get('/master-style-trashed', [MasterStyleController::class, 'trashed'])->name('master-style.trashed');
+    Route::get('/master-style/restore/{id}', [MasterStyleController::class, 'restore'])->name('master-style.restore');
+    Route::get('/master-style/force/delete/{id}', [MasterStyleController::class, 'forceDelete'])->name('master-style.force.delete');
+    Route::get('/master-style/status/{id}', [MasterStyleController::class, 'status'])->name('master-style.status');
 
 
 });

@@ -19,8 +19,8 @@
                     <table class="table table-striped" style="width: 100%">
                         <thead>
                             <tr>
-                                <th>Sl No</th>
-                                <th>{{ $masterStyle->id }}</th>
+                                <th>Unique Id </th>
+                                <th>{{ $masterStyle->unique_id  }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -31,10 +31,6 @@
                             <tr>
                                 <td>Style Name</td>
                                 <td>{{ $masterStyle->style->style_name }}</td>
-                            </tr>
-                            <tr>
-                                <td>Style Description</td>
-                                <td>{{ $masterStyle->style_description }}</td>
                             </tr>
                             <tr>
                                 <td>Season Name</td>
@@ -49,17 +45,25 @@
                                 <td>{{ $masterStyle->wash->wash_name }}</td>
                             </tr>
                             <tr>
+                                <td>Type of Garment</td>
+                                <td>{{ $masterStyle->wash->wash_name }}</td>
+                            </tr>
+                            <tr>
                                 <td>Status</td>
                                 <td>{{ $masterStyle->status }}</td>
+                            </tr>
+                            <tr>
+                                <td>Closing Date</td>
+                                <td>{{ $masterStyle->status == 'Close' ? $masterStyle->closing_date : 'N/A' }}</td>
                             </tr>
                         </tbody>
                         <tfoot>
                             <tr>
-                                <th>Created by</th>
+                                <th>Created By</th>
                                 <th>{{ $masterStyle->user->name }}</th>
                             </tr>
                             <tr>
-                                <th>Created at</th>
+                                <th>Created At</th>
                                 <th>{{ $masterStyle->created_at->format('Y-m-d H:i:s') }}</th>
                             </tr>
                         </tfoot>

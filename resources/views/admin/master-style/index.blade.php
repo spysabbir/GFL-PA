@@ -70,8 +70,10 @@
                             <label class="form-label">Select Status</label>
                             <select class="form-control custom-select filter_data" id="status">
                                 <option value="">--All--</option>
-                                <option value="Active">Active</option>
-                                <option value="Inactive">Inactive</option>
+                                <option value="Hold">Hold</option>
+                                <option value="Running">Running</option>
+                                <option value="Close">Close</option>
+                                <option value="Cancel">Cancel</option>
                             </select>
                         </div>
                     </div>

@@ -78,6 +78,18 @@
                                 <span class="text-danger error-text wash_id_error"></span>
                             </div>
                         </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="form-label">Type of Garment</label>
+                                <select name="garment_type_id" id="" class="form-control custom-select">
+                                    <option value="">--Select Type--</option>
+                                    @foreach ($washs as $wash)
+                                    <option value="{{ $wash->id }}">{{ $wash->wash_name }}</option>
+                                    @endforeach
+                                </select>
+                                <span class="text-danger error-text garment_type_id_error"></span>
+                            </div>
+                        </div>
                         <div class="col-md-2">
                             <div class="form-group mt-1">
                                 <button type="submit" class="btn text-white bg-cyan mt-4">Create</button>
