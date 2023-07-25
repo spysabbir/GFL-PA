@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Buyer;
 use App\Models\Color;
+use App\Models\GarmentType;
 use App\Models\MasterStyle;
 use App\Models\Season;
 use App\Models\Style;
@@ -72,7 +73,9 @@ class MasterStyleController extends Controller
         $seasons = Season::where('status', 'Active')->get();
         $colors = Color::where('status', 'Active')->get();
         $washs = Wash::where('status', 'Active')->get();
-        return view('admin.master-style.create', compact('buyers', 'styles', 'seasons', 'colors', 'washs'));
+        $garmentTypes = GarmentType::where('status', 'Active')->get();
+
+        return view('admin.master-style.create', compact('buyers', 'styles', 'seasons', 'colors', 'washs', 'garmentTypes'));
     }
 
     public function store(Request $request)
@@ -115,8 +118,9 @@ class MasterStyleController extends Controller
         $seasons = Season::where('status', 'Active')->get();
         $colors = Color::where('status', 'Active')->get();
         $washs = Wash::where('status', 'Active')->get();
+        $garmentTypes = GarmentType::where('status', 'Active')->get();
 
-        return view('admin.master-style.edit', compact('masterStyle', 'buyers', 'styles', 'seasons', 'colors', 'washs'));
+        return view('admin.master-style.edit', compact('masterStyle', 'buyers', 'styles', 'seasons', 'colors', 'washs', 'garmentTypes'));
     }
 
     public function update(Request $request, string $id)

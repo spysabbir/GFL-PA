@@ -7,8 +7,8 @@
     <div class="tab-pane fade active show" id="all-tab">
         <nav class="sidebar-nav">
             <ul class="metismenu ci-effect-1">
-                <li class="g_heading">Master Form</li>
-                <li class="{{ request()->routeIs('admin.buyer.index') || request()->routeIs('admin.style.index') || request()->routeIs('admin.season.index') || request()->routeIs('admin.color.index') || request()->routeIs('admin.wash.index') ? 'active' : '' }}">
+                <li class="g_heading">Admin Panel</li>
+                <li class="{{ request()->routeIs('admin.buyer.index') || request()->routeIs('admin.style.index') || request()->routeIs('admin.season.index') || request()->routeIs('admin.color.index') || request()->routeIs('admin.wash.index') || request()->routeIs('admin.garment-type.index') ? 'active' : '' }}">
                     <a href="javascript:void(0)" class="has-arrow arrow-b"><i class="icon-home"></i><span data-hover="Style Resources">Style Resources</span></a>
                     <ul>
                         <li class="{{ request()->routeIs('admin.buyer.index') ? 'active' : '' }}"><a href="{{ route('admin.buyer.index') }}"><span data-hover="Buyer">Buyer</span></a></li>
@@ -16,9 +16,16 @@
                         <li class="{{ request()->routeIs('admin.season.index') ? 'active' : '' }}"><a href="{{ route('admin.season.index') }}"><span data-hover="Season">Season</span></a></li>
                         <li class="{{ request()->routeIs('admin.color.index') ? 'active' : '' }}"><a href="{{ route('admin.color.index') }}"><span data-hover="Color">Color</span></a></li>
                         <li class="{{ request()->routeIs('admin.wash.index') ? 'active' : '' }}"><a href="{{ route('admin.wash.index') }}"><span data-hover="Wash">Wash</span></a></li>
+                        <li class="{{ request()->routeIs('admin.garment-type.index') ? 'active' : '' }}"><a href="{{ route('admin.garment-type.index') }}"><span data-hover="Garment Type">Garment Type</span></a></li>
                     </ul>
                 </li>
                 <li class="{{ request()->routeIs('admin.master-style.index') ? 'active' : '' }}"><a href="{{ route('admin.master-style.index') }}"><i class="icon-notebook"></i><span data-hover="Master Style">Master Style</span></a></li>
+                <li class="{{ request()->routeIs('admin.line.index') ? 'active' : '' }}">
+                    <a href="javascript:void(0)" class="has-arrow arrow-b"><i class="icon-home"></i><span data-hover="Others Resources">Others Resources</span></a>
+                    <ul>
+                        <li class="{{ request()->routeIs('admin.line.index') ? 'active' : '' }}"><a href="{{ route('admin.line.index') }}"><span data-hover="Line">Line</span></a></li>
+                    </ul>
+                </li>
                 <li class="g_heading">Utilities</li>
                 <li>
                     <a href="javascript:void(0)" class="has-arrow arrow-b"><i class="icon-tag"></i><span data-hover="Cutting">Cutting</span></a>

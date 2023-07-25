@@ -256,7 +256,7 @@
                     }else{
                         $("#editModal").modal('hide');
                         $('#allDataTable').DataTable().ajax.reload();
-                        toastr.success('Branch update successfully.');
+                        toastr.success('Wash update successfully.');
                     }
                 },
             });

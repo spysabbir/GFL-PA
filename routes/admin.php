@@ -3,6 +3,8 @@
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\BuyerController;
 use App\Http\Controllers\Admin\ColorController;
+use App\Http\Controllers\Admin\GarmentTypeController;
+use App\Http\Controllers\Admin\LineController;
 use App\Http\Controllers\Admin\MasterStyleController;
 use App\Http\Controllers\Admin\SeasonController;
 use App\Http\Controllers\Admin\StyleController;
@@ -51,6 +53,18 @@ Route::prefix('admin')->middleware(['auth'])->name('admin.')->group(function () 
     Route::get('/style/restore/{id}', [StyleController::class, 'restore'])->name('style.restore');
     Route::get('/style/force/delete/{id}', [StyleController::class, 'forceDelete'])->name('style.force.delete');
     Route::get('/style/status/{id}', [StyleController::class, 'status'])->name('style.status');
+
+    Route::resource('garment-type', GarmentTypeController::class);
+    Route::get('/garment-type-trashed', [GarmentTypeController::class, 'trashed'])->name('garment-type.trashed');
+    Route::get('/garment-type/restore/{id}', [GarmentTypeController::class, 'restore'])->name('garment-type.restore');
+    Route::get('/garment-type/force/delete/{id}', [GarmentTypeController::class, 'forceDelete'])->name('garment-type.force.delete');
+    Route::get('/garment-type/status/{id}', [GarmentTypeController::class, 'status'])->name('garment-type.status');
+
+    Route::resource('line', LineController::class);
+    Route::get('/line-trashed', [LineController::class, 'trashed'])->name('line.trashed');
+    Route::get('/line/restore/{id}', [LineController::class, 'restore'])->name('line.restore');
+    Route::get('/line/force/delete/{id}', [LineController::class, 'forceDelete'])->name('line.force.delete');
+    Route::get('/line/status/{id}', [LineController::class, 'status'])->name('line.status');
 
     Route::resource('master-style', MasterStyleController::class);
     Route::get('/master-style-trashed', [MasterStyleController::class, 'trashed'])->name('master-style.trashed');

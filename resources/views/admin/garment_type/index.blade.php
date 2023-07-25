@@ -1,13 +1,13 @@
 @extends('layouts.master')
 
-@section('title', 'Color')
+@section('title', 'Garment Type')
 
 @section('content')
 <div class="row clearfix">
     <div class="col-lg-12">
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Create Color</h3>
+                <h3 class="card-title">Create Garment Type</h3>
                 <div class="card-options">
                     <a href="#" class="card-options-fullscreen text-white bg-indigo px-1" data-toggle="card-fullscreen"><i class="fe fe-maximize"></i></a>
                     <a href="javascript:void(0)" class="card-options-remove text-white bg-orange px-1" data-toggle="card-remove"><i class="fe fe-x"></i></a>
@@ -19,9 +19,9 @@
                     <div class="row">
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label class="form-label">Color Name</label>
-                                <input type="text" class="form-control" name="color_name" placeholder="Color Name">
-                                <span class="text-danger error-text color_name_error"></span>
+                                <label class="form-label">Item Name</label>
+                                <input type="text" class="form-control" name="item_name" placeholder="Item Name">
+                                <span class="text-danger error-text item_name_error"></span>
                             </div>
                         </div>
                         <div class="col-md-2">
@@ -35,7 +35,7 @@
         </div>
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Color List</h3>
+                <h3 class="card-title">Garment Type List</h3>
                 <div class="card-options">
                     <!-- Trashed Btn -->
                     <button type="button" class="btn text-white bg-pink" data-toggle="modal" data-target="#trashedModal"><i class="fe fe-trash-2"></i></button>
@@ -54,7 +54,7 @@
                                         <table class="table table-striped" id="trashedDataTable" style="width: 100%">
                                             <thead>
                                                 <tr>
-                                                    <th>Color Name</th>
+                                                    <th>Item Name</th>
                                                     <th>Action</th>
                                                 </tr>
                                             </thead>
@@ -63,7 +63,7 @@
                                             </tbody>
                                             <tfoot>
                                                 <tr>
-                                                    <th>Color Name</th>
+                                                    <th>Item Name</th>
                                                     <th>Action</th>
                                                 </tr>
                                             </tfoot>
@@ -101,7 +101,7 @@
                         <thead>
                             <tr>
                                 <th>Sl No</th>
-                                <th>Color Name</th>
+                                <th>Item Name</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
@@ -120,13 +120,13 @@
                                         <div class="modal-body">
                                             <form id="editForm">
                                                 @csrf
-                                                <input type="hidden" id="color_id">
+                                                <input type="hidden" id="garment_type_id">
                                                 <div class="row">
                                                     <div class="col-md-8">
                                                         <div class="form-group">
-                                                            <label class="form-label">Color Name</label>
-                                                            <input type="text" class="form-control" name="color_name" id="color_name">
-                                                            <span class="text-danger error-text update_color_name_error"></span>
+                                                            <label class="form-label">Item Name</label>
+                                                            <input type="text" class="form-control" name="item_name" id="item_name">
+                                                            <span class="text-danger error-text update_item_name_error"></span>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-4">
@@ -147,7 +147,7 @@
                         <tfoot>
                             <tr>
                                 <th>Sl No</th>
-                                <th>Color Name</th>
+                                <th>Item Name</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
@@ -175,14 +175,14 @@
             serverSide: true,
             searching: true,
             ajax: {
-                url: "{{ route('admin.color.index') }}",
+                url: "{{ route('admin.garment-type.index') }}",
                 "data":function(e){
                     e.status = $('#status').val();
                 },
             },
             columns: [
                 { data: 'DT_RowIndex', name: 'DT_RowIndex' },
-                { data: 'color_name', name: 'color_name' },
+                { data: 'item_name', name: 'item_name' },
                 { data: 'status', name: 'status' },
                 { data: 'action', name: 'action', orderable: false, searchable: false }
             ]
@@ -199,7 +199,7 @@
             event.preventDefault();
             var formData = $(this).serialize();
             $.ajax({
-                url: "{{ route('admin.color.store') }}",
+                url: "{{ route('admin.garment-type.store') }}",
                 type: 'POST',
                 data: formData,
                 dataType: 'json',
@@ -214,7 +214,7 @@
                     }else{
                         $('#createForm')[0].reset();
                         $('#allDataTable').DataTable().ajax.reload();
-                        toastr.success('Color store successfully.');
+                        toastr.success('Garment type store successfully.');
                     }
                 }
             });
@@ -223,14 +223,14 @@
         // Edit Data
         $(document).on('click', '.editBtn', function () {
             var id = $(this).data('id');
-            var url = "{{ route('admin.color.edit', ":id") }}";
+            var url = "{{ route('admin.garment-type.edit', ":id") }}";
             url = url.replace(':id', id)
             $.ajax({
                 url: url,
                 type: "GET",
                 success: function (response) {
-                    $('#color_id').val(response.id);
-                    $('#color_name').val(response.color_name);
+                    $('#garment_type_id').val(response.id);
+                    $('#item_name').val(response.item_name);
                 },
             });
         });
@@ -238,8 +238,8 @@
         // Update Data
         $('#editForm').submit(function (event) {
             event.preventDefault();
-            var id = $('#color_id').val();
-            var url = "{{ route('admin.color.update', ":id") }}";
+            var id = $('#garment_type_id').val();
+            var url = "{{ route('admin.garment-type.update', ":id") }}";
             url = url.replace(':id', id)
             $.ajax({
                 url: url,
@@ -256,7 +256,7 @@
                     }else{
                         $("#editModal").modal('hide');
                         $('#allDataTable').DataTable().ajax.reload();
-                        toastr.success('Color update successfully.');
+                        toastr.success('Garment type update successfully.');
                     }
                 },
             });
@@ -265,7 +265,7 @@
         // Delete Data
         $(document).on('click', '.deleteBtn', function(){
             var id = $(this).data('id');
-            var url = "{{ route('admin.color.destroy', ":id") }}";
+            var url = "{{ route('admin.garment-type.destroy', ":id") }}";
             url = url.replace(':id', id)
             Swal.fire({
                 title: 'Are you sure?',
@@ -282,7 +282,7 @@
                         method: 'DELETE',
                         success: function(response) {
                             $('#allDataTable').DataTable().ajax.reload();
-                            toastr.warning('Color delete successfully.');
+                            toastr.warning('Garment type delete successfully.');
                             $('#trashedDataTable').DataTable().ajax.reload();
                         }
                     });
@@ -296,10 +296,10 @@
             serverSide: true,
             searching: true,
             ajax: {
-                url: "{{ route('admin.color.trashed') }}",
+                url: "{{ route('admin.garment-type.trashed') }}",
             },
             columns: [
-                { data: 'color_name', name: 'color_name' },
+                { data: 'item_name', name: 'item_name' },
                 { data: 'action', name: 'action', orderable: false, searchable: false }
             ]
         });
@@ -307,7 +307,7 @@
         // Restore Data
         $(document).on('click', '.restoreBtn', function () {
             var id = $(this).data('id');
-            var url = "{{ route('admin.color.restore', ":id") }}";
+            var url = "{{ route('admin.garment-type.restore', ":id") }}";
             url = url.replace(':id', id)
             $.ajax({
                 url: url,
@@ -316,7 +316,7 @@
                     $("#trashedModal").modal('hide');
                     $('#allDataTable').DataTable().ajax.reload();
                     $('#trashedDataTable').DataTable().ajax.reload();
-                    toastr.success('Color restore successfully.');
+                    toastr.success('Garment type restore successfully.');
                 },
             });
         });
@@ -324,7 +324,7 @@
         // Force Delete Data
         $(document).on('click', '.forceDeleteBtn', function(){
             var id = $(this).data('id');
-            var url = "{{ route('admin.color.force.delete', ":id") }}";
+            var url = "{{ route('admin.garment-type.force.delete', ":id") }}";
             url = url.replace(':id', id)
             Swal.fire({
                 title: 'Are you sure?',
@@ -342,7 +342,7 @@
                         success: function(response) {
                             $("#trashedModal").modal('hide');
                             $('#trashedDataTable').DataTable().ajax.reload();
-                            toastr.error('Color force delete successfully.');
+                            toastr.error('Garment type force delete successfully.');
                         }
                     });
                 }
@@ -352,14 +352,14 @@
         // Status Change Data
         $(document).on('click', '.statusBtn', function () {
             var id = $(this).data('id');
-            var url = "{{ route('admin.color.status', ":id") }}";
+            var url = "{{ route('admin.garment-type.status', ":id") }}";
             url = url.replace(':id', id)
             $.ajax({
                 url: url,
                 type: "GET",
                 success: function (response) {
                     $('#allDataTable').DataTable().ajax.reload();
-                    toastr.success('Color status change successfully.');
+                    toastr.success('Garment type status change successfully.');
                 },
             });
         });

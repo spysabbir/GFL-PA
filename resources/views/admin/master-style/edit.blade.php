@@ -84,8 +84,8 @@
                                 <label class="form-label">Type of Garment</label>
                                 <select name="garment_type_id" id="" class="form-control custom-select">
                                     <option value="">--Select Type--</option>
-                                    @foreach ($washs as $wash)
-                                    <option value="{{ $wash->id }}" @selected($masterStyle->garment_type_id == $wash->id)>{{ $wash->wash_name }}</option>
+                                    @foreach ($garmentTypes as $garmentType)
+                                    <option value="{{ $garmentType->id }}" @selected($masterStyle->garment_type_id == $garmentType->id)>{{ $garmentType->item_name }}</option>
                                     @endforeach
                                 </select>
                                 <span class="text-danger error-text update_garment_type_id_error"></span>

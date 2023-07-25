@@ -46,7 +46,7 @@
                             </tr>
                             <tr>
                                 <td>Type of Garment</td>
-                                <td>{{ $masterStyle->wash->wash_name }}</td>
+                                <td>{{ $masterStyle->garmentType->item_name }}</td>
                             </tr>
                             <tr>
                                 <td>Status</td>
