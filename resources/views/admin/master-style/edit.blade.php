@@ -102,6 +102,40 @@
         </div>
     </div>
 </div>
+
+<div class="row clearfix">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Bpo and Order</h3>
+                <div class="card-options">
+                    <a href="#" class="card-options-fullscreen btn text-white bg-indigo" data-toggle="card-fullscreen"><i class="fe fe-maximize"></i></a>
+                    <a href="javascript:void(0)" class="card-options-remove btn text-white bg-orange" data-toggle="card-remove"><i class="fe fe-x"></i></a>
+                </div>
+            </div>
+            <div class="card-body">
+                <form id="bpoOrderUploadForm" enctype="multipart/form-data">
+                    @csrf
+                    <div class="row">
+                        <input type="hidden" id="masterStyleId" value="{{ $masterStyle->id }}">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="form-label">Bpo and Order</label>
+                                <input type="file" class="form-control" name="bpo_order_file" accept=".xlsx, .xls">
+                                <span class="text-danger error-text update_bpo_order_file_error"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group mt-1">
+                                <button type="submit" class="btn text-white bg-cyan mt-4">Upload</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 @section('script')
@@ -135,6 +169,38 @@
                         toastr.success('Master style update successfully.');
                     }
                 },
+            });
+        });
+
+
+        $('#bpoOrderUploadForm').submit(function (event) {
+            event.preventDefault();
+
+            var id = $('#masterStyleId').val();
+            var url = "{{ route('admin.bpo-order.upload', ":id") }}";
+            url = url.replace(':id', id);
+
+            var formData = new FormData(this);
+
+            $.ajax({
+                url: url,
+                type: "POST",
+                data: formData,
+                processData: false,
+                contentType: false,
+                beforeSend: function() {
+                    $(document).find('span.error-text').text('');
+                },
+                success: function (response) {
+                    if (response.status === 400) {
+                        $.each(response.error, function(prefix, val) {
+                            $('span.update_' + prefix + '_error').text(val[0]);
+                        });
+                    } else {
+                        $('#bpoOrderUploadForm')[0].reset();
+                        toastr.success('Bpo & Order uploaded successfully.');
+                    }
+                }
             });
         });
     });

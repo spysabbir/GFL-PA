@@ -72,6 +72,8 @@ Route::prefix('admin')->middleware(['auth'])->name('admin.')->group(function () 
     Route::get('/master-style/force/delete/{id}', [MasterStyleController::class, 'forceDelete'])->name('master-style.force.delete');
     Route::get('/master-style/status/{id}', [MasterStyleController::class, 'status'])->name('master-style.status');
 
+    Route::post('/bpo-order/upload/{id}', [MasterStyleController::class, 'bpoOrderUpload'])->name('bpo-order.upload');
+
 
 });
 

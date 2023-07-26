@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Imports\BpoOrderImport;
 use App\Models\Buyer;
 use App\Models\Color;
 use App\Models\GarmentType;
@@ -14,6 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
+use Maatwebsite\Excel\Facades\Excel;
 
 class MasterStyleController extends Controller
 {
@@ -212,5 +214,28 @@ class MasterStyleController extends Controller
 
         $masterStyle->updated_by = Auth::user()->id;
         $masterStyle->save();
+    }
+
+    public function bpoOrderUpload(Request $request, string $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'bpo_order_file' => 'required|mimes:xls,xlsx',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 400,
+                'error' => $validator->errors()->toArray()
+            ]);
+        } else {
+            $masterStyleId = $id;
+            $fileName = $request->file('bpo_order_file');
+            
+            Excel::import(new BpoOrderImport($masterStyleId), $fileName);
+
+            return response()->json([
+                'status' => 200,
+            ]);
+        }
     }
 }
