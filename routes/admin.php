@@ -72,8 +72,12 @@ Route::prefix('admin')->middleware(['auth'])->name('admin.')->group(function () 
     Route::get('/master-style/force/delete/{id}', [MasterStyleController::class, 'forceDelete'])->name('master-style.force.delete');
     Route::get('/master-style/status/{id}', [MasterStyleController::class, 'status'])->name('master-style.status');
 
+    Route::post('/bpo-order/store', [MasterStyleController::class, 'bpoOrderStore'])->name('bpo-order.store');
     Route::post('/bpo-order/upload/{id}', [MasterStyleController::class, 'bpoOrderUpload'])->name('bpo-order.upload');
-
+    Route::get('/bpo-order/list/{id}', [MasterStyleController::class, 'bpoOrderList'])->name('bpo-order.list');
+    Route::get('/bpo-order/edit/{id}', [MasterStyleController::class, 'bpoOrderEdit'])->name('bpo-order.edit');
+    Route::post('/bpo-order/update/{id}', [MasterStyleController::class, 'bpoOrderUpdate'])->name('bpo-order.update');
+    Route::get('/bpo-order/delete/{id}', [MasterStyleController::class, 'bpoOrderDelete'])->name('bpo-order.delete');
 
 });
 

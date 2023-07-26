@@ -10,6 +10,7 @@ use App\Models\GarmentType;
 use App\Models\MasterStyle;
 use App\Models\Season;
 use App\Models\Style;
+use App\Models\StyleBpoOrder;
 use App\Models\Wash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -216,6 +217,28 @@ class MasterStyleController extends Controller
         $masterStyle->save();
     }
 
+    public function bpoOrderStore(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            '*' => 'required',
+        ]);
+
+        if($validator->fails()){
+            return response()->json([
+                'status' => 400,
+                'error'=> $validator->errors()->toArray()
+            ]);
+        }else{
+            StyleBpoOrder::create($request->all()+[
+                'created_by' => Auth::user()->id,
+            ]);
+
+            return response()->json([
+                'status' => 200,
+            ]);
+        }
+    }
+
     public function bpoOrderUpload(Request $request, string $id)
     {
         $validator = Validator::make($request->all(), [
@@ -225,17 +248,84 @@ class MasterStyleController extends Controller
         if ($validator->fails()) {
             return response()->json([
                 'status' => 400,
-                'error' => $validator->errors()->toArray()
+                'error' => $validator->errors()->toArray(),
             ]);
         } else {
             $masterStyleId = $id;
             $fileName = $request->file('bpo_order_file');
-            
-            Excel::import(new BpoOrderImport($masterStyleId), $fileName);
+
+            try {
+                Excel::import(new BpoOrderImport($masterStyleId), $fileName);
+
+                return response()->json([
+                    'status' => 200,
+                ]);
+
+            } catch (\Exception $e) {
+                return response()->json([
+                    'status' => 500 ,
+                    'field_error' => $e->getMessage(),
+                ]);
+            }
+        }
+    }
+
+    public function bpoOrderList(Request $request, $id)
+    {
+        if ($request->ajax()) {
+            $query = StyleBpoOrder::where('master_style_id', $id);
+
+            $query->orderBy('created_at', 'desc');
+
+            $styleBpoOrderList = $query->select('style_bpo_orders.*')->get();
+
+            return DataTables::of($styleBpoOrderList)
+                ->addIndexColumn()
+                ->addColumn('action', function ($row) {
+                    $btn = '<button type="button" data-id="' . $row->id . '" class="btn text-white bg-purple btn-sm editBtn" data-toggle="modal" data-target="#editModal"><i class="fe fe-edit"></i></button>
+                        <button type="button" data-id="' . $row->id . '" class="btn text-white bg-yellow btn-sm deleteBtn"><i class="fe fe-trash"></i></button>';
+                    return $btn;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+
+        return view('admin.master-style.edit');
+    }
+
+
+    public function bpoOrderEdit(string $id)
+    {
+        $styleBpoOrder = StyleBpoOrder::findOrFail($id);
+        return response()->json($styleBpoOrder);
+    }
+
+    public function bpoOrderUpdate(Request $request, string $id)
+    {
+
+        $validator = Validator::make($request->all(), [
+            '*' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 400,
+                'error' => $validator->errors()->toArray()
+            ]);
+        } else {
+            $styleBpoOrder = StyleBpoOrder::findOrFail($id);
+            $styleBpoOrder->update($request->all() + [
+                'updated_by' => Auth::user()->id,
+            ]);
 
             return response()->json([
                 'status' => 200,
             ]);
         }
+    }
+
+    public function bpoOrderDelete(string $id)
+    {
+        StyleBpoOrder::findOrFail($id)->delete();
     }
 }

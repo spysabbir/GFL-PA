@@ -3,10 +3,11 @@
 namespace App\Imports;
 
 use App\Models\StyleBpoOrder;
-use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Concerns\WithValidation;
 
-class BpoOrderImport implements ToModel
+class BpoOrderImport implements ToModel, WithHeadingRow, WithValidation
 {
     protected $masterStyleId;
 
@@ -19,8 +20,16 @@ class BpoOrderImport implements ToModel
     {
         return new StyleBpoOrder([
            'master_style_id'     => $this->masterStyleId,
-           'bpo_name'    => $row[0],
-           'order_quantity' => $row[1],
+           'bpo_no'    => $row['bpo_no'],
+           'order_quantity' => $row['order_quantity'],
         ]);
+    }
+
+    public function rules(): array
+    {
+        return [
+            'bpo_no' => 'required',
+            'order_quantity' => 'required',
+        ];
     }
 }

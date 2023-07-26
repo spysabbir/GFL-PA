@@ -114,8 +114,36 @@
                 </div>
             </div>
             <div class="card-body">
+
+                <form id="bpoOrderCreateForm">
+                    @csrf
+                    <div class="row">
+                        <input type="hidden" name="master_style_id" value="{{ $masterStyle->id }}">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="form-label">Bpo No</label>
+                                <input type="text" class="form-control" name="bpo_no" placeholder="Bpo No">
+                                <span class="text-danger error-text bpo_no_error"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="form-label">Order Quantity</label>
+                                <input type="number" class="form-control" name="order_quantity" placeholder="Order Quantity">
+                                <span class="text-danger error-text order_quantity_error"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group mt-1">
+                                <button type="submit" class="btn text-white bg-cyan mt-4">Create</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
                 <form id="bpoOrderUploadForm" enctype="multipart/form-data">
                     @csrf
+                    <span id="field_error" class="text-danger"></span>
                     <div class="row">
                         <input type="hidden" id="masterStyleId" value="{{ $masterStyle->id }}">
                         <div class="col-md-4">
@@ -133,6 +161,75 @@
                     </div>
                 </form>
             </div>
+
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped" id="allBpoOrderTable" style="width: 100%">
+                        <thead>
+                            <tr>
+                                <th>Sl No</th>
+                                <th>Bpo No</th>
+                                <th>Order Oty</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <!-- Modal -->
+                            <div class="modal fade bd-example-modal-lg" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-lg" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Bpo Order Edit</h5>
+                                            <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form id="bpoOrderEditForm">
+                                                @csrf
+                                                <input type="hidden" id="bpoOrderEditId">
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label class="form-label">Bpo No</label>
+                                                            <input type="text" class="form-control" name="bpo_no" id="bpo_no">
+                                                            <span class="text-danger error-text update_bpo_no_error"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label class="form-label">Order Quantity</label>
+                                                            <input type="number" class="form-control" name="order_quantity" id="order_quantity">
+                                                            <span class="text-danger error-text update_order_quantity_error"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group mt-1">
+                                                            <button type="submit" class="btn text-white bg-teal mt-4">Edit</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>Sl No</th>
+                                <th>Bpo No</th>
+                                <th>Order Oty</th>
+                                <th>Action</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -147,7 +244,7 @@
             }
         });
 
-        // Update Data
+        // Master Style Update Data
         $('#editForm').submit(function (event) {
             event.preventDefault();
             var id = $('#masterStyle_id').val();
@@ -172,16 +269,39 @@
             });
         });
 
+        // Bpo & Order Store Data
+        $('#bpoOrderCreateForm').submit(function(event) {
+            event.preventDefault();
+            var formData = $(this).serialize();
+            $.ajax({
+                url: "{{ route('admin.bpo-order.store') }}",
+                type: 'POST',
+                data: formData,
+                dataType: 'json',
+                beforeSend:function(){
+                    $(document).find('span.error-text').text('');
+                },
+                success: function(response) {
+                    if (response.status == 400) {
+                        $.each(response.error, function(prefix, val){
+                            $('span.'+prefix+'_error').text(val[0]);
+                        })
+                    }else{
+                        $('#bpoOrderCreateForm')[0].reset();
+                        $('#allBpoOrderTable').DataTable().ajax.reload();
+                        toastr.success('Bpo order store successfully.');
+                    }
+                }
+            });
+        });
 
+        // Bpo & Order Upload
         $('#bpoOrderUploadForm').submit(function (event) {
             event.preventDefault();
-
             var id = $('#masterStyleId').val();
             var url = "{{ route('admin.bpo-order.upload', ":id") }}";
             url = url.replace(':id', id);
-
             var formData = new FormData(this);
-
             $.ajax({
                 url: url,
                 type: "POST",
@@ -190,6 +310,7 @@
                 contentType: false,
                 beforeSend: function() {
                     $(document).find('span.error-text').text('');
+                    $('#field_error').text('');
                 },
                 success: function (response) {
                     if (response.status === 400) {
@@ -197,12 +318,107 @@
                             $('span.update_' + prefix + '_error').text(val[0]);
                         });
                     } else {
-                        $('#bpoOrderUploadForm')[0].reset();
-                        toastr.success('Bpo & Order uploaded successfully.');
+                        if (response.status === 500) {
+                            $('#field_error').text(response.field_error);
+                        } else {
+                            $('#bpoOrderUploadForm')[0].reset();
+                            $('#allBpoOrderTable').DataTable().ajax.reload();
+                            toastr.success('Bpo & Order uploaded successfully.');
+                        }
                     }
                 }
             });
         });
+
+        // Read Bpo & Order Data
+        var masterStyle_id = $('#masterStyle_id').val();
+        var bpoOrderListUrl = "{{ route('admin.bpo-order.list', ":masterStyle_id") }}";
+        bpoOrderListUrl = bpoOrderListUrl.replace(':masterStyle_id', masterStyle_id),
+        $('#allBpoOrderTable').DataTable({
+            processing: true,
+            serverSide: true,
+            searching: true,
+            ajax: {
+                url: bpoOrderListUrl,
+            },
+            columns: [
+                { data: 'DT_RowIndex', name: 'DT_RowIndex' },
+                { data: 'bpo_no', name: 'bpo_no' },
+                { data: 'order_quantity', name: 'order_quantity' },
+                { data: 'action', name: 'action', orderable: false, searchable: false }
+            ]
+        });
+
+        // Bpo & Order Edit
+        $(document).on('click', '.editBtn', function () {
+            var id = $(this).data('id');
+            var url = "{{ route('admin.bpo-order.edit', ":id") }}";
+            url = url.replace(':id', id)
+            $.ajax({
+                url: url,
+                type: "GET",
+                success: function (response) {
+                    $('#bpoOrderEditId').val(response.id);
+                    $('#bpo_no').val(response.bpo_no);
+                    $('#order_quantity').val(response.order_quantity);
+                },
+            });
+        });
+
+        // Bpo & Order Update
+        $('#bpoOrderEditForm').submit(function (event) {
+            event.preventDefault();
+            var id = $('#bpoOrderEditId').val();
+            var url = "{{ route('admin.bpo-order.update', ":id") }}";
+            url = url.replace(':id', id)
+            $.ajax({
+                url: url,
+                type: "POST",
+                data: $(this).serialize(),
+                beforeSend:function(){
+                    $(document).find('span.error-text').text('');
+                },
+                success: function (response) {
+                    if (response.status == 400) {
+                        $.each(response.error, function(prefix, val){
+                            $('span.update_'+prefix+'_error').text(val[0]);
+                        })
+                    }else{
+                        $("#editModal").modal('hide');
+                        $('#allBpoOrderTable').DataTable().ajax.reload();
+                        toastr.success('Bpo order update successfully.');
+                    }
+                },
+            });
+        });
+
+        // Bpo & Order Delete
+        $(document).on('click', '.deleteBtn', function(){
+            var id = $(this).data('id');
+            var url = "{{ route('admin.bpo-order.delete', ":id") }}";
+            url = url.replace(':id', id)
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You can bring it back though!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: url,
+                        method: 'GET',
+                        success: function(response) {
+                            $('#allBpoOrderTable').DataTable().ajax.reload();
+                            toastr.warning('Bpo order delete successfully.');
+                        }
+                    });
+                }
+            })
+        })
+
     });
 </script>
 @endsection

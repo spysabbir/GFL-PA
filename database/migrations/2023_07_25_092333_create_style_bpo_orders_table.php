@@ -13,14 +13,12 @@ return new class extends Migration
     {
         Schema::create('style_bpo_orders', function (Blueprint $table) {
             $table->id();
-            // $table->unsignedBigInteger('master_style_id');
-
             $table->integer('master_style_id');
-            $table->longText('bpo_name');
+            $table->longText('bpo_no');
             $table->float('order_quantity');
-
+            $table->integer('created_by');
+            $table->integer('updated_by')->nullable();
             $table->timestamps();
-            // $table->foreign('master_style_id')->references('id')->on('master_styles')->onDelete('cascade');
         });
     }
 
