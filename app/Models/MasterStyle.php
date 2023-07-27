@@ -43,8 +43,18 @@ class MasterStyle extends Model
         return $this->belongsTo(GarmentType::class, 'garment_type_id');
     }
 
-    public function user()
+    public function creater()
     {
         return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function updater()
+    {
+        return $this->belongsTo(User::class, 'updated_by');
+    }
+
+    public function deleter()
+    {
+        return $this->belongsTo(User::class, 'deleted_by');
     }
 }

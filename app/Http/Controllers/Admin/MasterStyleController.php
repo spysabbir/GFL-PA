@@ -43,16 +43,16 @@ class MasterStyleController extends Controller
                 ->editColumn('status', function ($row) {
                     if ($row->status == 'Hold') {
                         $status = '<span class="badge text-white bg-pink">' . $row->status . '</span>
-                        <button type="button" data-id="' . $row->id . '" class="btn text-white bg-purple btn-sm statusEditBtn" data-toggle="modal" data-target="#statusEditModal"><i class="fe fe-edit"></i></button>';
+                        <button type="button" data-id="' . $row->id . '" class="btn text-white bg-teal btn-sm statusEditBtn" data-toggle="modal" data-target="#statusEditModal"><i class="fe fe-edit"></i></button>';
                     } elseif ($row->status == 'Running') {
                         $status = '<span class="badge text-white bg-green">' . $row->status . '</span>
-                        <button type="button" data-id="' . $row->id . '" class="btn text-white bg-purple btn-sm statusEditBtn" data-toggle="modal" data-target="#statusEditModal"><i class="fe fe-edit"></i></button>';
+                        <button type="button" data-id="' . $row->id . '" class="btn text-white bg-teal btn-sm statusEditBtn" data-toggle="modal" data-target="#statusEditModal"><i class="fe fe-edit"></i></button>';
                     } elseif ($row->status == 'Close') {
                         $status = '<span class="badge text-white bg-orange">' . $row->status . '</span>
-                        <button type="button" data-id="' . $row->id . '" class="btn text-white bg-purple btn-sm statusEditBtn" data-toggle="modal" data-target="#statusEditModal"><i class="fe fe-edit"></i></button>';
+                        <button type="button" data-id="' . $row->id . '" class="btn text-white bg-teal btn-sm statusEditBtn" data-toggle="modal" data-target="#statusEditModal"><i class="fe fe-edit"></i></button>';
                     } else {
                         $status = '<span class="badge text-white bg-red">' . $row->status . '</span>
-                        <button type="button" data-id="' . $row->id . '" class="btn text-white bg-purple btn-sm statusEditBtn" data-toggle="modal" data-target="#statusEditModal"><i class="fe fe-edit"></i></button>';
+                        <button type="button" data-id="' . $row->id . '" class="btn text-white bg-teal btn-sm statusEditBtn" data-toggle="modal" data-target="#statusEditModal"><i class="fe fe-edit"></i></button>';
                     }
                     return $status;
                 })
@@ -108,8 +108,9 @@ class MasterStyleController extends Controller
     public function show(string $id)
     {
         $masterStyle = MasterStyle::findOrFail($id);
+        $styleWiseBpoOrder = StyleBpoOrder::where('master_style_id', $id)->get();
 
-        return view('admin.master-style.view', compact('masterStyle'));
+        return view('admin.master-style.view', compact('masterStyle', 'styleWiseBpoOrder'));
     }
 
     public function edit(string $id)
@@ -204,18 +205,51 @@ class MasterStyleController extends Controller
         $masterStyle->forceDelete();
     }
 
-    public function status(string $id)
+    public function statusEdit(string $id)
     {
         $masterStyle = MasterStyle::findOrFail($id);
+        return response()->json($masterStyle);
+    }
 
-        if ($masterStyle->status == "Running") {
-            $masterStyle->status = "Cancel";
-        } else {
-            $masterStyle->status = "Running";
+    public function statusUpdate(Request $request, string $id)
+    {
+        $checkBpoOrder = StyleBpoOrder::where('master_style_id', $id)->exists();
+        if($request->status == 'Running' && !$checkBpoOrder){
+            return response()->json([
+                'status' => 401,
+            ]);
+        }else{
+            $validator = Validator::make($request->all(), [
+                '*' => 'required',
+            ]);
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => 400,
+                    'error' => $validator->errors()->toArray()
+                ]);
+            } else {
+                $masterStyle = MasterStyle::findOrFail($id);
+
+                $masterStyle->update($request->all() + [
+                    'updated_by' => Auth::user()->id,
+                ]);
+
+                return response()->json([
+                    'status' => 200,
+                ]);
+            }
         }
+    }
 
-        $masterStyle->updated_by = Auth::user()->id;
-        $masterStyle->save();
+    public function getMasterStyleDetails($id)
+    {
+        $sumOrder = StyleBpoOrder::where('master_style_id', $id)->sum('order_quantity');
+        $status = MasterStyle::findOrFail($id)->status;
+
+        return response()->json([
+            'sumOrder' => $sumOrder,
+            'status' => $status,
+        ]);
     }
 
     // Bpo Order Method

@@ -15,6 +15,7 @@
                 </div>
             </div>
             <div class="card-body">
+                <h4 class="text-center">Status: <strong id="getStatus"></strong></h4>
                 <form id="editForm">
                     @csrf
                     <div class="row">
@@ -93,7 +94,7 @@
                         </div>
                         <div class="col-md-2">
                             <div class="form-group mt-1">
-                                <button type="submit" class="btn text-white bg-cyan mt-4">Edit</button>
+                                <button type="submit" class="btn text-white bg-cyan mt-4">Update</button>
                             </div>
                         </div>
                     </div>
@@ -170,8 +171,9 @@
             </div>
 
             <div class="card-body">
+                <h3 class="text-center">Total Order Qty: <strong id="getSumOrder"></strong></h3>
                 <div class="table-responsive">
-                    <table class="table table-striped" id="allBpoOrderTable" style="width: 100%">
+                    <table class="table table-striped text-center" id="allBpoOrderTable">
                         <thead>
                             <tr>
                                 <th><input type="checkbox" id="allBpoOrderChecked" > <button type="button" class="btn text-white bg-red btn-sm" id="deleteAll">Delete All</button></th>
@@ -278,6 +280,41 @@
             });
         });
 
+        // Get Sum Order
+        getMasterStyleDetails();
+        function getMasterStyleDetails() {
+            var id = $('#masterStyle_id').val();
+            $.ajax({
+                url: "{{ route('admin.master-style.get.details', ':id') }}".replace(':id', id),
+                type: "GET",
+                dataType: "json",
+                success: function(response) {
+                    $('#getSumOrder').text(response.sumOrder);
+                    $('#getStatus').text(response.status);
+                },
+            });
+        }
+
+        // Read Bpo & Order Data
+        var masterStyle_id = $('#masterStyle_id').val();
+        var bpoOrderListUrl = "{{ route('admin.bpo-order.list', ":masterStyle_id") }}";
+        bpoOrderListUrl = bpoOrderListUrl.replace(':masterStyle_id', masterStyle_id),
+        $('#allBpoOrderTable').DataTable({
+            processing: true,
+            // serverSide: true,
+            searching: true,
+            ajax: {
+                url: bpoOrderListUrl,
+            },
+            columns: [
+                { data: 'checkbox', name: 'checkbox' },
+                { data: 'DT_RowIndex', name: 'DT_RowIndex' },
+                { data: 'bpo_no', name: 'bpo_no' },
+                { data: 'order_quantity', name: 'order_quantity' },
+                { data: 'action', name: 'action', orderable: false, searchable: false }
+            ]
+        });
+
         // Bpo & Order Store Data
         $('#bpoOrderCreateForm').submit(function(event) {
             event.preventDefault();
@@ -299,6 +336,7 @@
                         $('#bpoOrderCreateForm')[0].reset();
                         $('#allBpoOrderTable').DataTable().ajax.reload();
                         toastr.success('Bpo order store successfully.');
+                        getMasterStyleDetails();
                     }
                 }
             });
@@ -333,30 +371,11 @@
                             $('#bpoOrderUploadForm')[0].reset();
                             $('#allBpoOrderTable').DataTable().ajax.reload();
                             toastr.success('Bpo & Order uploaded successfully.');
+                            getMasterStyleDetails();
                         }
                     }
                 }
             });
-        });
-
-        // Read Bpo & Order Data
-        var masterStyle_id = $('#masterStyle_id').val();
-        var bpoOrderListUrl = "{{ route('admin.bpo-order.list', ":masterStyle_id") }}";
-        bpoOrderListUrl = bpoOrderListUrl.replace(':masterStyle_id', masterStyle_id),
-        $('#allBpoOrderTable').DataTable({
-            processing: true,
-            // serverSide: true,
-            searching: true,
-            ajax: {
-                url: bpoOrderListUrl,
-            },
-            columns: [
-                { data: 'checkbox', name: 'checkbox' },
-                { data: 'DT_RowIndex', name: 'DT_RowIndex' },
-                { data: 'bpo_no', name: 'bpo_no' },
-                { data: 'order_quantity', name: 'order_quantity' },
-                { data: 'action', name: 'action', orderable: false, searchable: false }
-            ]
         });
 
         // Bpo & Order Edit
@@ -397,6 +416,7 @@
                         $("#editModal").modal('hide');
                         $('#allBpoOrderTable').DataTable().ajax.reload();
                         toastr.success('Bpo order update successfully.');
+                        getMasterStyleDetails();
                     }
                 },
             });
@@ -423,6 +443,7 @@
                         success: function(response) {
                             $('#allBpoOrderTable').DataTable().ajax.reload();
                             toastr.warning('Bpo order delete successfully.');
+                            getMasterStyleDetails();
                         }
                     });
                 }
@@ -455,6 +476,7 @@
                         toastr.error('Bpo order delete successfully.');
                         $('#allBpoOrderChecked').prop('checked', false);
                         $('#allBpoOrderTable').DataTable().ajax.reload();
+                        getMasterStyleDetails();
                     }
                 },
             });

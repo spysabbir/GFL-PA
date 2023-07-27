@@ -79,7 +79,7 @@
                     </div>
                 </div>
                 <div class="table-responsive">
-                    <table class="table table-striped" id="allDataTable" style="width: 100%">
+                    <table class="table table-striped" id="allDataTable">
                         <thead>
                             <tr>
                                 <th>Sl No</th>
@@ -95,6 +95,55 @@
                         </thead>
                         <tbody>
 
+                            <!-- Modal -->
+                            <div class="modal fade bd-example-modal-lg" id="statusEditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-lg" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Edit Status</h5>
+                                            <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form id="statusEditForm">
+                                                @csrf
+                                                <input type="hidden" id="master_style_id">
+                                                <div class="row">
+                                                    <div class="col-md-5">
+                                                        <div class="form-group">
+                                                            <label class="form-label">Select Status</label>
+                                                            <select class="form-control custom-select" name="status" id="get_status">
+                                                                <option value="">--All--</option>
+                                                                <option value="Hold">Hold</option>
+                                                                <option value="Running">Running</option>
+                                                                <option value="Close">Close</option>
+                                                                <option value="Cancel">Cancel</option>
+                                                            </select>
+                                                            <span class="text-danger error-text update_status_error"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-5">
+                                                        <div class="form-group">
+                                                            <label class="form-label">Status Change Date</label>
+                                                            <input type="date" class="form-control" name="status_change_date" id="get_status_change_date">
+                                                            <span class="text-danger error-text update_status_change_date_error"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <div class="form-group mt-1">
+                                                            <button type="submit" class="btn text-white bg-teal mt-4">Update</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </tbody>
                         <tfoot>
                             <tr>
@@ -247,20 +296,53 @@
             })
         })
 
-        // Status Change Data
-        $(document).on('click', '.statusBtn', function () {
+        // Status Edit Data
+        $(document).on('click', '.statusEditBtn', function () {
             var id = $(this).data('id');
-            var url = "{{ route('admin.master-style.status', ":id") }}";
+            var url = "{{ route('admin.master-style.status.edit', ":id") }}";
             url = url.replace(':id', id)
             $.ajax({
                 url: url,
                 type: "GET",
                 success: function (response) {
-                    $('#allDataTable').DataTable().ajax.reload();
-                    toastr.success('Master style status change successfully.');
+                    $('#master_style_id').val(response.id);
+                    $('#get_status').val(response.status);
+                    $('#get_status_change_date').val(response.status_change_date);
                 },
             });
         });
+
+        // Status Update Data
+        $('#statusEditForm').submit(function (event) {
+            event.preventDefault();
+            var id = $('#master_style_id').val();
+            var url = "{{ route('admin.master-style.status.update', ":id") }}";
+            url = url.replace(':id', id)
+            $.ajax({
+                url: url,
+                type: "POST",
+                data: $(this).serialize(),
+                beforeSend:function(){
+                    $(document).find('span.error-text').text('');
+                },
+                success: function (response) {
+                    if (response.status == 401) {
+                        toastr.error('Master style bpo order not found.');
+                    }else{
+                        if (response.status == 400) {
+                            $.each(response.error, function(prefix, val){
+                                $('span.update_'+prefix+'_error').text(val[0]);
+                            })
+                        } else {
+                            $("#statusEditModal").modal('hide');
+                            $('#allDataTable').DataTable().ajax.reload();
+                            toastr.success('Master style update successfully.');
+                        }
+                    }
+                },
+            });
+        });
+
     });
 </script>
 @endsection
