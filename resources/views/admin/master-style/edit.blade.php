@@ -114,52 +114,59 @@
                 </div>
             </div>
             <div class="card-body">
-
-                <form id="bpoOrderCreateForm">
-                    @csrf
-                    <div class="row">
-                        <input type="hidden" name="master_style_id" value="{{ $masterStyle->id }}">
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label class="form-label">Bpo No</label>
-                                <input type="text" class="form-control" name="bpo_no" placeholder="Bpo No">
-                                <span class="text-danger error-text bpo_no_error"></span>
+                <div class="row">
+                    <div class="col-lg-7 col-md-12">
+                        <form id="bpoOrderCreateForm">
+                            @csrf
+                            <div class="row">
+                                <input type="hidden" name="master_style_id" value="{{ $masterStyle->id }}">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Bpo No</label>
+                                        <input type="text" class="form-control" name="bpo_no" placeholder="Bpo No">
+                                        <span class="text-danger error-text bpo_no_error"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="form-label">Order Quantity</label>
+                                        <input type="number" class="form-control" name="order_quantity" placeholder="Order Quantity">
+                                        <span class="text-danger error-text order_quantity_error"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group mt-1">
+                                        <button type="submit" class="btn text-white bg-cyan mt-4">Create</button>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label class="form-label">Order Quantity</label>
-                                <input type="number" class="form-control" name="order_quantity" placeholder="Order Quantity">
-                                <span class="text-danger error-text order_quantity_error"></span>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="form-group mt-1">
-                                <button type="submit" class="btn text-white bg-cyan mt-4">Create</button>
-                            </div>
-                        </div>
+                        </form>
                     </div>
-                </form>
-
-                <form id="bpoOrderUploadForm" enctype="multipart/form-data">
-                    @csrf
-                    <span id="field_error" class="text-danger"></span>
-                    <div class="row">
-                        <input type="hidden" id="masterStyleId" value="{{ $masterStyle->id }}">
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label class="form-label">Bpo and Order</label>
-                                <input type="file" class="form-control" name="bpo_order_file" accept=".xlsx, .xls">
-                                <span class="text-danger error-text update_bpo_order_file_error"></span>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="form-group mt-1">
-                                <button type="submit" class="btn text-white bg-cyan mt-4">Upload</button>
-                            </div>
-                        </div>
+                    <div class="col-lg-1 col-md-12 pt-2">
+                        <span class="badge tag-pink my-3 p-3">Or</span>
                     </div>
-                </form>
+                    <div class="col-lg-4 col-md-12">
+                        <form id="bpoOrderUploadForm" enctype="multipart/form-data">
+                            @csrf
+                            <span id="field_error" class="text-danger"></span>
+                            <div class="row">
+                                <input type="hidden" id="masterStyleId" value="{{ $masterStyle->id }}">
+                                <div class="col-md-8">
+                                    <div class="form-group">
+                                        <label class="form-label">Bpo and Order File (.xlsx, .xls)</label>
+                                        <input type="file" class="form-control" name="bpo_order_file" accept=".xlsx, .xls">
+                                        <span class="text-danger error-text update_bpo_order_file_error"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group mt-1">
+                                        <button type="submit" class="btn text-white bg-cyan mt-4">Upload</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
 
             <div class="card-body">
@@ -167,6 +174,7 @@
                     <table class="table table-striped" id="allBpoOrderTable" style="width: 100%">
                         <thead>
                             <tr>
+                                <th><input type="checkbox" id="allBpoOrderChecked" > <button type="button" class="btn text-white bg-red btn-sm" id="deleteAll">Delete All</button></th>
                                 <th>Sl No</th>
                                 <th>Bpo No</th>
                                 <th>Order Oty</th>
@@ -221,6 +229,7 @@
                         </tbody>
                         <tfoot>
                             <tr>
+                                <th>Select</th>
                                 <th>Sl No</th>
                                 <th>Bpo No</th>
                                 <th>Order Oty</th>
@@ -336,12 +345,13 @@
         bpoOrderListUrl = bpoOrderListUrl.replace(':masterStyle_id', masterStyle_id),
         $('#allBpoOrderTable').DataTable({
             processing: true,
-            serverSide: true,
+            // serverSide: true,
             searching: true,
             ajax: {
                 url: bpoOrderListUrl,
             },
             columns: [
+                { data: 'checkbox', name: 'checkbox' },
                 { data: 'DT_RowIndex', name: 'DT_RowIndex' },
                 { data: 'bpo_no', name: 'bpo_no' },
                 { data: 'order_quantity', name: 'order_quantity' },
@@ -418,6 +428,37 @@
                 }
             })
         })
+
+        // Select All Checkbox
+        $(document).on('click', '#allBpoOrderChecked', function(){
+            $('.bpoOrderChecked').prop('checked', $(this).prop('checked'));
+        })
+
+        // Select Bpo & Order Delete
+        $(document).on('click', '#deleteAll', function (e) {
+            e.preventDefault();
+            var all_selected_id = [];
+            $('.bpoOrderChecked').each(function(){
+                if($(this).is(":checked")){
+                    all_selected_id.push($(this).val());
+                }
+            });
+            var all_selected_id = all_selected_id.toString();
+            $.ajax({
+                url: "{{ route('admin.bpo-order.delete.all') }}",
+                type: "POST",
+                data: {all_selected_id:all_selected_id},
+                success: function (response) {
+                    if(response.status == 400){
+                        toastr.warning('Please select minimum 1 item.');
+                    }else{
+                        toastr.error('Bpo order delete successfully.');
+                        $('#allBpoOrderChecked').prop('checked', false);
+                        $('#allBpoOrderTable').DataTable().ajax.reload();
+                    }
+                },
+            });
+        });
 
     });
 </script>

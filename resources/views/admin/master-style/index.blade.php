@@ -83,6 +83,7 @@
                         <thead>
                             <tr>
                                 <th>Sl No</th>
+                                <th>Unique Id</th>
                                 <th>Buyer Name</th>
                                 <th>Style Name</th>
                                 <th>Season Name</th>
@@ -98,6 +99,7 @@
                         <tfoot>
                             <tr>
                                 <th>Sl No</th>
+                                <th>Unique Id</th>
                                 <th>Buyer Name</th>
                                 <th>Style Name</th>
                                 <th>Season Name</th>
@@ -137,6 +139,7 @@
             },
             columns: [
                 { data: 'DT_RowIndex', name: 'DT_RowIndex' },
+                { data: 'unique_id', name: 'unique_id' },
                 { data: 'buyer_name', name: 'buyer_name' },
                 { data: 'style_name', name: 'style_name' },
                 { data: 'season_name', name: 'season_name' },

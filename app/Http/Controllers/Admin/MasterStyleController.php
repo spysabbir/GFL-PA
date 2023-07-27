@@ -43,16 +43,16 @@ class MasterStyleController extends Controller
                 ->editColumn('status', function ($row) {
                     if ($row->status == 'Hold') {
                         $status = '<span class="badge text-white bg-pink">' . $row->status . '</span>
-                        <button type="button" data-id="' . $row->id . '" class="btn text-white bg-green btn-sm statusBtn"><i class="fe fe-check"></i></button>';
+                        <button type="button" data-id="' . $row->id . '" class="btn text-white bg-purple btn-sm statusEditBtn" data-toggle="modal" data-target="#statusEditModal"><i class="fe fe-edit"></i></button>';
                     } elseif ($row->status == 'Running') {
                         $status = '<span class="badge text-white bg-green">' . $row->status . '</span>
-                        <button type="button" data-id="' . $row->id . '" class="btn text-white bg-green btn-sm statusBtn"><i class="fe fe-check"></i></button>';
+                        <button type="button" data-id="' . $row->id . '" class="btn text-white bg-purple btn-sm statusEditBtn" data-toggle="modal" data-target="#statusEditModal"><i class="fe fe-edit"></i></button>';
                     } elseif ($row->status == 'Close') {
                         $status = '<span class="badge text-white bg-orange">' . $row->status . '</span>
-                        <button type="button" data-id="' . $row->id . '" class="btn text-white bg-green btn-sm statusBtn"><i class="fe fe-check"></i></button>';
+                        <button type="button" data-id="' . $row->id . '" class="btn text-white bg-purple btn-sm statusEditBtn" data-toggle="modal" data-target="#statusEditModal"><i class="fe fe-edit"></i></button>';
                     } else {
                         $status = '<span class="badge text-white bg-red">' . $row->status . '</span>
-                        <button type="button" data-id="' . $row->id . '" class="btn text-white bg-orange btn-sm statusBtn"><i class="fe fe-slash"></i></button>';
+                        <button type="button" data-id="' . $row->id . '" class="btn text-white bg-purple btn-sm statusEditBtn" data-toggle="modal" data-target="#statusEditModal"><i class="fe fe-edit"></i></button>';
                     }
                     return $status;
                 })
@@ -199,6 +199,7 @@ class MasterStyleController extends Controller
 
     public function forceDelete(string $id)
     {
+        StyleBpoOrder::where('master_style_id', $id)->delete();
         $masterStyle = MasterStyle::onlyTrashed()->where('id', $id)->first();
         $masterStyle->forceDelete();
     }
@@ -217,6 +218,36 @@ class MasterStyleController extends Controller
         $masterStyle->save();
     }
 
+    // Bpo Order Method
+
+    public function bpoOrderList(Request $request, $id)
+    {
+        if ($request->ajax()) {
+            $query = StyleBpoOrder::where('master_style_id', $id);
+
+            $query->orderBy('created_at', 'desc');
+
+            $styleBpoOrderList = $query->select('style_bpo_orders.*')->get();
+
+            return DataTables::of($styleBpoOrderList)
+                ->addIndexColumn()
+                ->editColumn('checkbox', function($row){
+                    return'
+                    <input type="checkbox" class="bpoOrderChecked" value="'.$row->id.'">
+                    ';
+                })
+                ->addColumn('action', function ($row) {
+                    $btn = '<button type="button" data-id="' . $row->id . '" class="btn text-white bg-purple btn-sm editBtn" data-toggle="modal" data-target="#editModal"><i class="fe fe-edit"></i></button>
+                        <button type="button" data-id="' . $row->id . '" class="btn text-white bg-yellow btn-sm deleteBtn"><i class="fe fe-trash"></i></button>';
+                    return $btn;
+                })
+                ->rawColumns(['checkbox', 'action'])
+                ->make(true);
+        }
+
+        return view('admin.master-style.edit');
+    }
+
     public function bpoOrderStore(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -231,6 +262,10 @@ class MasterStyleController extends Controller
         }else{
             StyleBpoOrder::create($request->all()+[
                 'created_by' => Auth::user()->id,
+            ]);
+
+            MasterStyle::findOrFail($request->master_style_id)->update([
+                'status' => 'Running',
             ]);
 
             return response()->json([
@@ -257,6 +292,10 @@ class MasterStyleController extends Controller
             try {
                 Excel::import(new BpoOrderImport($masterStyleId), $fileName);
 
+                MasterStyle::findOrFail($masterStyleId)->update([
+                    'status' => 'Running',
+                ]);
+
                 return response()->json([
                     'status' => 200,
                 ]);
@@ -269,30 +308,6 @@ class MasterStyleController extends Controller
             }
         }
     }
-
-    public function bpoOrderList(Request $request, $id)
-    {
-        if ($request->ajax()) {
-            $query = StyleBpoOrder::where('master_style_id', $id);
-
-            $query->orderBy('created_at', 'desc');
-
-            $styleBpoOrderList = $query->select('style_bpo_orders.*')->get();
-
-            return DataTables::of($styleBpoOrderList)
-                ->addIndexColumn()
-                ->addColumn('action', function ($row) {
-                    $btn = '<button type="button" data-id="' . $row->id . '" class="btn text-white bg-purple btn-sm editBtn" data-toggle="modal" data-target="#editModal"><i class="fe fe-edit"></i></button>
-                        <button type="button" data-id="' . $row->id . '" class="btn text-white bg-yellow btn-sm deleteBtn"><i class="fe fe-trash"></i></button>';
-                    return $btn;
-                })
-                ->rawColumns(['action'])
-                ->make(true);
-        }
-
-        return view('admin.master-style.edit');
-    }
-
 
     public function bpoOrderEdit(string $id)
     {
@@ -326,6 +341,34 @@ class MasterStyleController extends Controller
 
     public function bpoOrderDelete(string $id)
     {
+        $masterStyleId = StyleBpoOrder::findOrFail($id)->master_style_id;
+
+        if (StyleBpoOrder::where('master_style_id', $masterStyleId)->count() == 1) {
+            MasterStyle::findOrFail($masterStyleId)->update([
+                'status' => 'Hold',
+            ]);
+        }
+
         StyleBpoOrder::findOrFail($id)->delete();
     }
+
+    public function bpoOrderDeleteAll(Request $request)
+    {
+        if ($request->all_selected_id) {
+            $all_selected_id = explode( ',', $request->all_selected_id );
+            foreach($all_selected_id as $selected_id){
+                $masterStyleId = StyleBpoOrder::findOrFail($selected_id)->master_style_id;
+                MasterStyle::findOrFail($masterStyleId)->update([
+                    'status' => 'Hold',
+                ]);
+
+                StyleBpoOrder::findOrFail($selected_id)->delete();
+            }
+        }else{
+            return response()->json([
+                'status' => 400,
+            ]);
+        }
+    }
+
 }

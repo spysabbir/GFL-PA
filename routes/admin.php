@@ -78,6 +78,7 @@ Route::prefix('admin')->middleware(['auth'])->name('admin.')->group(function () 
     Route::get('/bpo-order/edit/{id}', [MasterStyleController::class, 'bpoOrderEdit'])->name('bpo-order.edit');
     Route::post('/bpo-order/update/{id}', [MasterStyleController::class, 'bpoOrderUpdate'])->name('bpo-order.update');
     Route::get('/bpo-order/delete/{id}', [MasterStyleController::class, 'bpoOrderDelete'])->name('bpo-order.delete');
+    Route::post('/bpo-order/delete/all', [MasterStyleController::class, 'bpoOrderDeleteAll'])->name('bpo-order.delete.all');
 
 });
 
