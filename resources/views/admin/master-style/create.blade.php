@@ -21,7 +21,7 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label class="form-label">Buyer Name</label>
-                                <select name="buyer_id" id="" class="form-control custom-select">
+                                <select name="buyer_id" id="selectBuyer" class="form-control custom-select">
                                     <option value="">--Select Buyer--</option>
                                     @foreach ($buyers as $buyer)
                                     <option value="{{ $buyer->id }}">{{ $buyer->buyer_name }}</option>
@@ -33,11 +33,8 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label class="form-label">Style Name</label>
-                                <select name="style_id" id="" class="form-control custom-select">
-                                    <option value="">--Select Style--</option>
-                                    @foreach ($styles as $style)
-                                    <option value="{{ $style->id }}">{{ $style->style_name }}</option>
-                                    @endforeach
+                                <select name="style_id" id="get_all_style" class="form-control custom-select">
+                                    <option value="">--Select Buyer First--</option>
                                 </select>
                                 <span class="text-danger error-text style_id_error"></span>
                             </div>
@@ -112,6 +109,19 @@
             }
         });
 
+        // Get Style Info
+        $(document).on('change', '#selectBuyer', function() {
+            var buyer_id = $(this).val();
+            $.ajax({
+                url: "{{ route('admin.get.style.info') }}",
+                type: "POST",
+                data: {buyer_id:buyer_id},
+                success: function (response) {
+                    $('#get_all_style').html(response);
+                },
+            });
+        });
+
         // Store Data
         $('#createForm').submit(function(event) {
             event.preventDefault();
@@ -130,8 +140,12 @@
                             $('span.'+prefix+'_error').text(val[0]);
                         })
                     }else{
-                        $('#createForm')[0].reset();
-                        toastr.success('Master style store successfully.');
+                        if (response.status == 401) {
+                            toastr.error('This master style already added please enter unique style info.');
+                        } else {
+                            $('#createForm')[0].reset();
+                            toastr.success('Master style store successfully.');
+                        }
                     }
                 }
             });

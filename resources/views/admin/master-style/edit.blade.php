@@ -216,7 +216,7 @@
                                                     </div>
                                                     <div class="col-md-4">
                                                         <div class="form-group mt-1">
-                                                            <button type="submit" class="btn text-white bg-teal mt-4">Edit</button>
+                                                            <button type="submit" class="btn text-white bg-teal mt-4">Update</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -274,7 +274,11 @@
                             $('span.update_'+prefix+'_error').text(val[0]);
                         })
                     }else{
-                        toastr.success('Master style update successfully.');
+                        if (response.status == 401) {
+                            toastr.error('This master style already added please enter unique style info.');
+                        } else {
+                            toastr.success('Master style update successfully.');
+                        }
                     }
                 },
             });

@@ -99,6 +99,16 @@ class MasterStyleController extends Controller
         return view('admin.master-style.index', compact('buyers', 'styles', 'seasons', 'colors', 'washs', 'garmentTypes'));
     }
 
+    public function getStyleInfo(Request $request)
+    {
+        $send_data = "<option value=''>--Select Style--</option>";
+        $all_style = Style::where('buyer_id', $request->buyer_id)->get();
+        foreach ($all_style as $style) {
+            $send_data .= "<option value='$style->id'>$style->style_name</option>";
+        }
+        return response()->json($send_data);
+    }
+
     public function create()
     {
         $buyers = Buyer::where('status', 'Active')->get();
@@ -123,15 +133,27 @@ class MasterStyleController extends Controller
                 'error'=> $validator->errors()->toArray()
             ]);
         }else{
-            $unique_id = MasterStyle::latest('unique_id')->value('unique_id')+1;
-            MasterStyle::create($request->all()+[
-                'unique_id' => $unique_id,
-                'created_by' => Auth::user()->id,
-            ]);
+            $exists = MasterStyle::where('buyer_id', $request->buyer_id)
+                                ->where('style_id', $request->style_id)
+                                ->where('season_id', $request->season_id)
+                                ->where('color_id', $request->color_id)
+                                ->where('wash_id', $request->wash_id)
+                                ->exists();
+            if ($exists) {
+                return response()->json([
+                    'status' => 401,
+                ]);
+            } else {
+                $unique_id = MasterStyle::latest('unique_id')->value('unique_id')+1;
+                MasterStyle::create($request->all()+[
+                    'unique_id' => $unique_id,
+                    'created_by' => Auth::user()->id,
+                ]);
 
-            return response()->json([
-                'status' => 200,
-            ]);
+                return response()->json([
+                    'status' => 200,
+                ]);
+            }
         }
     }
 
@@ -169,15 +191,27 @@ class MasterStyleController extends Controller
                 'error' => $validator->errors()->toArray()
             ]);
         } else {
-            $masterStyle = MasterStyle::findOrFail($id);
+            $exists = MasterStyle::where('id', $id)
+                                ->where('buyer_id', $request->buyer_id)
+                                ->where('style_id', $request->style_id)
+                                ->where('season_id', $request->season_id)
+                                ->where('color_id', $request->color_id)
+                                ->where('wash_id', $request->wash_id)
+                                ->exists();
+            if (!$exists) {
+                return response()->json([
+                    'status' => 401,
+                ]);
+            } else {
+                $masterStyle = MasterStyle::findOrFail($id);
+                $masterStyle->update($request->all() + [
+                    'updated_by' => Auth::user()->id,
+                ]);
 
-            $masterStyle->update($request->all() + [
-                'updated_by' => Auth::user()->id,
-            ]);
-
-            return response()->json([
-                'status' => 200,
-            ]);
+                return response()->json([
+                    'status' => 200,
+                ]);
+            }
         }
     }
 

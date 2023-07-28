@@ -36,13 +36,6 @@
                                 <span class="text-danger error-text style_name_error"></span>
                             </div>
                         </div>
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label class="form-label">Style Description</label>
-                                <textarea class="form-control" name="style_description" placeholder="Style Description"></textarea>
-                                <span class="text-danger error-text style_description_error"></span>
-                            </div>
-                        </div>
                         <div class="col-md-2">
                             <div class="form-group mt-1">
                                 <button type="submit" class="btn text-white bg-cyan mt-4">Create</button>
@@ -128,7 +121,7 @@
                     </div>
                 </div>
                 <div class="table-responsive">
-                    <table class="table table-striped" id="allDataTable" style="width: 100%">
+                    <table class="table table-striped" id="allDataTable">
                         <thead>
                             <tr>
                                 <th>Sl No</th>
@@ -173,16 +166,9 @@
                                                             <span class="text-danger error-text update_style_name_error"></span>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <label class="form-label">Style Description</label>
-                                                            <textarea class="form-control" name="style_description" id="style_description"></textarea>
-                                                            <span class="text-danger error-text update_style_description_error"></span>
-                                                        </div>
-                                                    </div>
                                                     <div class="col-md-4">
                                                         <div class="form-group mt-1">
-                                                            <button type="submit" class="btn text-white bg-teal mt-4">Edit</button>
+                                                            <button type="submit" class="btn text-white bg-teal mt-4">Update</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -266,9 +252,13 @@
                             $('span.'+prefix+'_error').text(val[0]);
                         })
                     }else{
-                        $('#createForm')[0].reset();
-                        $('#allDataTable').DataTable().ajax.reload();
-                        toastr.success('Style store successfully.');
+                        if (response.status == 401) {
+                            toastr.error('This style already added please enter unique style.');
+                        } else {
+                            $('#createForm')[0].reset();
+                            $('#allDataTable').DataTable().ajax.reload();
+                            toastr.success('Style store successfully.');
+                        }
                     }
                 }
             });
@@ -286,7 +276,6 @@
                     $('#style_id').val(response.id);
                     $('#buyer_id').val(response.buyer_id);
                     $('#style_name').val(response.style_name);
-                    $('#style_description').val(response.style_description);
                 },
             });
         });
@@ -310,9 +299,13 @@
                             $('span.update_'+prefix+'_error').text(val[0]);
                         })
                     }else{
-                        $("#editModal").modal('hide');
-                        $('#allDataTable').DataTable().ajax.reload();
-                        toastr.success('Style update successfully.');
+                        if (response.status == 401) {
+                            toastr.error('This style already added please enter unique style.');
+                        } else {
+                            $("#editModal").modal('hide');
+                            $('#allDataTable').DataTable().ajax.reload();
+                            toastr.success('Style update successfully.');
+                        }
                     }
                 },
             });

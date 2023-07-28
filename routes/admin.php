@@ -67,6 +67,7 @@ Route::prefix('admin')->middleware(['auth'])->name('admin.')->group(function () 
     Route::get('/line/status/{id}', [LineController::class, 'status'])->name('line.status');
 
     Route::resource('master-style', MasterStyleController::class);
+    Route::post('/get/style/info', [MasterStyleController::class, 'getStyleInfo'])->name('get.style.info');
     Route::get('/master-style-trashed', [MasterStyleController::class, 'trashed'])->name('master-style.trashed');
     Route::get('/master-style/restore/{id}', [MasterStyleController::class, 'restore'])->name('master-style.restore');
     Route::get('/master-style/force/delete/{id}', [MasterStyleController::class, 'forceDelete'])->name('master-style.force.delete');

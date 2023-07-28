@@ -21,8 +21,6 @@
     <link rel="stylesheet" href="{{ asset('asset') }}/plugins/sweetalert2/sweetalert2.min.css">
     <link rel="stylesheet" href="{{ asset('asset') }}/plugins/toastr/toastr.css">
 
-    {{-- <link rel="stylesheet" href="{{ asset('asset') }}/plugins/datatable/css/jquery.dataTables.css"> --}}
-
     <!-- Core css -->
     <link rel="stylesheet" href="{{ asset('asset') }}/css/main.css"/>
     <link rel="stylesheet" href="{{ asset('asset') }}/css/theme1.css" id="stylesheet"/>
@@ -313,10 +311,7 @@
     <script src="{{ asset('asset') }}/plugins/toastr/toastr.min.js"></script>
     <script src="{{ asset('asset') }}/plugins/sweetalert2/sweetalert2.all.min.js"></script>
 
-    <script src="{{ asset('asset') }}/plugins/datatable/js/jquery.dataTables.js"></script>
-
     <script src="{{ asset('asset') }}/bundles/dataTables.bundle.js"></script>
-
 
     <!-- Start core js and page js -->
     <script src="{{ asset('asset') }}/js/core.js"></script>

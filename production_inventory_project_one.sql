@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 25, 2023 at 01:54 PM
+-- Generation Time: Jul 28, 2023 at 01:53 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -44,7 +44,8 @@ CREATE TABLE `buyers` (
 --
 
 INSERT INTO `buyers` (`id`, `buyer_name`, `status`, `created_by`, `updated_by`, `deleted_by`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 'Bestseller A/S', 'Active', 1, NULL, NULL, '2023-07-24 03:39:30', '2023-07-24 03:39:30', NULL);
+(1, 'Bestseller A/S', 'Active', 1, NULL, NULL, '2023-07-24 03:39:30', '2023-07-24 03:39:30', NULL),
+(2, 'G-Star Raw CV', 'Active', 1, NULL, NULL, '2023-07-27 22:33:16', '2023-07-27 22:33:16', NULL);
 
 -- --------------------------------------------------------
 
@@ -69,7 +70,10 @@ CREATE TABLE `colors` (
 --
 
 INSERT INTO `colors` (`id`, `color_name`, `status`, `created_by`, `updated_by`, `deleted_by`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 'Grey', 'Active', 1, NULL, NULL, '2023-07-24 03:39:44', '2023-07-24 03:39:44', NULL);
+(1, 'Grey', 'Active', 1, NULL, NULL, '2023-07-24 03:39:44', '2023-07-24 03:39:44', NULL),
+(2, 'Pitch Black', 'Active', 1, NULL, NULL, '2023-07-28 05:16:51', '2023-07-28 05:16:51', NULL),
+(3, 'Black', 'Active', 1, NULL, NULL, '2023-07-28 05:17:07', '2023-07-28 05:17:07', NULL),
+(4, 'N/A', 'Active', 1, NULL, NULL, '2023-07-28 05:17:41', '2023-07-28 05:17:41', NULL);
 
 -- --------------------------------------------------------
 
@@ -110,7 +114,9 @@ CREATE TABLE `garment_types` (
 --
 
 INSERT INTO `garment_types` (`id`, `item_name`, `status`, `created_by`, `updated_by`, `deleted_by`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 'Long Pant', 'Active', 1, 1, NULL, '2023-07-25 04:38:30', '2023-07-25 04:38:53', NULL);
+(1, 'Long Pant', 'Active', 1, 1, NULL, '2023-07-25 04:38:30', '2023-07-25 04:38:53', NULL),
+(2, 'Short Pant', 'Active', 1, NULL, NULL, '2023-07-27 22:33:50', '2023-07-27 22:33:50', NULL),
+(3, 'Jacket', 'Active', 1, NULL, NULL, '2023-07-28 05:25:10', '2023-07-28 05:25:10', NULL);
 
 -- --------------------------------------------------------
 
@@ -152,8 +158,8 @@ CREATE TABLE `master_styles` (
   `color_id` int(11) NOT NULL,
   `wash_id` int(11) NOT NULL,
   `garment_type_id` int(11) NOT NULL,
-  `status` enum('Hold','Running','Close','Cancel') NOT NULL DEFAULT 'Hold',
-  `closing_date` date DEFAULT NULL,
+  `status` enum('Inactive','Running','Hold','Close','Cancel') NOT NULL DEFAULT 'Inactive',
+  `status_change_date` date DEFAULT NULL,
   `created_by` int(11) NOT NULL,
   `updated_by` int(11) DEFAULT NULL,
   `deleted_by` int(11) DEFAULT NULL,
@@ -166,8 +172,10 @@ CREATE TABLE `master_styles` (
 -- Dumping data for table `master_styles`
 --
 
-INSERT INTO `master_styles` (`id`, `unique_id`, `buyer_id`, `style_id`, `season_id`, `color_id`, `wash_id`, `garment_type_id`, `status`, `closing_date`, `created_by`, `updated_by`, `deleted_by`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 1, 1, 1, 2, 1, 2, 1, 'Cancel', NULL, 1, 1, NULL, '2023-07-25 04:50:31', '2023-07-25 05:32:23', NULL);
+INSERT INTO `master_styles` (`id`, `unique_id`, `buyer_id`, `style_id`, `season_id`, `color_id`, `wash_id`, `garment_type_id`, `status`, `status_change_date`, `created_by`, `updated_by`, `deleted_by`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 1, 1, 2, 1, 1, 2, 1, 'Inactive', NULL, 1, 1, NULL, '2023-07-27 22:34:08', '2023-07-28 05:44:59', NULL),
+(2, 2, 1, 1, 2, 1, 3, 2, 'Inactive', NULL, 1, 1, NULL, '2023-07-27 22:34:20', '2023-07-28 05:44:48', NULL),
+(4, 3, 1, 1, 2, 3, 3, 2, 'Inactive', NULL, 1, NULL, NULL, '2023-07-28 05:45:33', '2023-07-28 05:51:41', NULL);
 
 -- --------------------------------------------------------
 
@@ -195,10 +203,10 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (7, '2023_07_16_092351_create_buyers_table', 1),
 (8, '2023_07_16_092448_create_seasons_table', 1),
 (18, '2023_07_17_092359_create_styles_table', 2),
-(19, '2023_07_25_051143_create_master_styles_table', 2),
-(20, '2023_07_25_092333_create_style_bpo_orders_table', 2),
 (21, '2023_07_25_095557_create_garment_types_table', 2),
-(22, '2023_07_25_095914_create_lines_table', 2);
+(22, '2023_07_25_095914_create_lines_table', 2),
+(23, '2023_07_25_092333_create_style_bpo_orders_table', 3),
+(24, '2023_07_25_051143_create_master_styles_table', 4);
 
 -- --------------------------------------------------------
 
@@ -255,7 +263,9 @@ CREATE TABLE `seasons` (
 
 INSERT INTO `seasons` (`id`, `season_name`, `status`, `created_by`, `updated_by`, `deleted_by`, `created_at`, `updated_at`, `deleted_at`) VALUES
 (1, '1-2-3/23', 'Active', 1, NULL, NULL, '2023-07-24 03:39:38', '2023-07-24 03:39:38', NULL),
-(2, '7-8-9/23', 'Active', 1, NULL, NULL, '2023-07-25 05:31:35', '2023-07-25 05:31:35', NULL);
+(2, '7-8-9/23', 'Active', 1, NULL, NULL, '2023-07-25 05:31:35', '2023-07-25 05:31:35', NULL),
+(3, '23Q4', 'Active', 1, NULL, NULL, '2023-07-28 05:16:30', '2023-07-28 05:16:30', NULL),
+(4, 'N/A', 'Active', 1, NULL, NULL, '2023-07-28 05:17:48', '2023-07-28 05:17:48', NULL);
 
 -- --------------------------------------------------------
 
@@ -267,7 +277,6 @@ CREATE TABLE `styles` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `buyer_id` int(11) NOT NULL,
   `style_name` text NOT NULL,
-  `style_description` longtext NOT NULL,
   `status` enum('Active','Inactive') NOT NULL DEFAULT 'Active',
   `created_by` int(11) NOT NULL,
   `updated_by` int(11) DEFAULT NULL,
@@ -281,9 +290,10 @@ CREATE TABLE `styles` (
 -- Dumping data for table `styles`
 --
 
-INSERT INTO `styles` (`id`, `buyer_id`, `style_name`, `style_description`, `status`, `created_by`, `updated_by`, `deleted_by`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 1, 'JJIERIK JJORIGINAL GE 510 SN', 'JJIERIK JJORIGINAL GE 510 SN', 'Active', 1, NULL, NULL, '2023-07-25 04:50:13', '2023-07-25 04:50:13', NULL),
-(2, 1, 'JJIERIK JJORIGINAL GE 511 SN', 'JJIERIK JJORIGINAL GE 511 SN', 'Active', 1, NULL, NULL, '2023-07-25 05:29:26', '2023-07-25 05:29:26', NULL);
+INSERT INTO `styles` (`id`, `buyer_id`, `style_name`, `status`, `created_by`, `updated_by`, `deleted_by`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 1, 'JJIERIK JJORIGINAL GE 511 SN', 'Active', 1, 1, NULL, '2023-07-25 04:50:13', '2023-07-28 05:23:39', NULL),
+(2, 1, 'JJIERIK JJORIGINAL GE 510 SN', 'Active', 1, 1, NULL, '2023-07-25 05:29:26', '2023-07-28 05:19:55', NULL),
+(4, 2, 'D19079-B964-A810', 'Active', 1, NULL, NULL, '2023-07-28 05:16:03', '2023-07-28 05:16:03', NULL);
 
 -- --------------------------------------------------------
 
@@ -293,12 +303,30 @@ INSERT INTO `styles` (`id`, `buyer_id`, `style_name`, `style_description`, `stat
 
 CREATE TABLE `style_bpo_orders` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `master_style_id` bigint(20) UNSIGNED NOT NULL,
-  `bpo_name` longtext NOT NULL,
+  `master_style_id` int(11) NOT NULL,
+  `bpo_no` longtext NOT NULL,
   `order_quantity` double(8,2) NOT NULL,
+  `created_by` int(11) NOT NULL,
+  `updated_by` int(11) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `style_bpo_orders`
+--
+
+INSERT INTO `style_bpo_orders` (`id`, `master_style_id`, `bpo_no`, `order_quantity`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
+(79, 6, 'AAA', 201.00, 1, NULL, '2023-07-27 04:16:29', '2023-07-27 04:16:29'),
+(80, 6, 'AAA', 202.00, 1, NULL, '2023-07-27 04:16:29', '2023-07-27 04:16:29'),
+(81, 6, 'AAA', 203.00, 1, NULL, '2023-07-27 04:16:29', '2023-07-27 04:16:29'),
+(82, 6, 'AAA', 204.00, 1, NULL, '2023-07-27 04:16:29', '2023-07-27 04:16:29'),
+(86, 6, 'AAA', 201.00, 1, NULL, '2023-07-27 04:20:40', '2023-07-27 04:20:40'),
+(87, 6, 'AAA', 202.00, 1, NULL, '2023-07-27 04:20:40', '2023-07-27 04:20:40'),
+(88, 6, 'AAA', 203.00, 1, NULL, '2023-07-27 04:20:40', '2023-07-27 04:20:40'),
+(89, 6, 'AAA', 204.00, 1, NULL, '2023-07-27 04:20:40', '2023-07-27 04:20:40'),
+(90, 6, 'AAA', 500.00, 1, NULL, '2023-07-27 04:20:40', '2023-07-27 04:20:40'),
+(91, 6, 'AAA', 300.00, 1, NULL, '2023-07-27 04:20:40', '2023-07-27 04:20:40');
 
 -- --------------------------------------------------------
 
@@ -350,7 +378,9 @@ CREATE TABLE `washes` (
 --
 
 INSERT INTO `washes` (`id`, `wash_name`, `status`, `created_by`, `updated_by`, `deleted_by`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(2, 'GE 510', 'Active', 1, NULL, NULL, '2023-07-24 03:39:50', '2023-07-24 03:39:50', NULL);
+(2, 'GE 510', 'Active', 1, NULL, NULL, '2023-07-24 03:39:50', '2023-07-24 03:39:50', NULL),
+(3, 'GE 511', 'Active', 1, NULL, NULL, '2023-07-26 23:56:12', '2023-07-26 23:56:12', NULL),
+(4, 'N/A', 'Active', 1, NULL, NULL, '2023-07-28 05:17:32', '2023-07-28 05:17:32', NULL);
 
 --
 -- Indexes for dumped tables
@@ -430,8 +460,7 @@ ALTER TABLE `styles`
 -- Indexes for table `style_bpo_orders`
 --
 ALTER TABLE `style_bpo_orders`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `style_bpo_orders_master_style_id_foreign` (`master_style_id`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `users`
@@ -454,13 +483,13 @@ ALTER TABLE `washes`
 -- AUTO_INCREMENT for table `buyers`
 --
 ALTER TABLE `buyers`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `colors`
 --
 ALTER TABLE `colors`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `failed_jobs`
@@ -472,7 +501,7 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT for table `garment_types`
 --
 ALTER TABLE `garment_types`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `lines`
@@ -484,13 +513,13 @@ ALTER TABLE `lines`
 -- AUTO_INCREMENT for table `master_styles`
 --
 ALTER TABLE `master_styles`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`
@@ -502,19 +531,19 @@ ALTER TABLE `personal_access_tokens`
 -- AUTO_INCREMENT for table `seasons`
 --
 ALTER TABLE `seasons`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `styles`
 --
 ALTER TABLE `styles`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `style_bpo_orders`
 --
 ALTER TABLE `style_bpo_orders`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=95;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -526,17 +555,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `washes`
 --
 ALTER TABLE `washes`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- Constraints for dumped tables
---
-
---
--- Constraints for table `style_bpo_orders`
---
-ALTER TABLE `style_bpo_orders`
-  ADD CONSTRAINT `style_bpo_orders_master_style_id_foreign` FOREIGN KEY (`master_style_id`) REFERENCES `master_styles` (`id`) ON DELETE CASCADE;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

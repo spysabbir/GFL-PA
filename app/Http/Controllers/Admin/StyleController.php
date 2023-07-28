@@ -66,13 +66,23 @@ class StyleController extends Controller
                 'error'=> $validator->errors()->toArray()
             ]);
         }else{
-            Style::create($request->all()+[
-                'created_by' => Auth::user()->id,
-            ]);
+            $exists = Style::where('buyer_id', $request->buyer_id)
+                            ->where('style_name', $request->style_name)
+                            ->exists();
+            if ($exists) {
+                return response()->json([
+                    'status' => 401,
+                ]);
+            } else {
+                Style::create($request->all()+[
+                    'created_by' => Auth::user()->id,
+                ]);
 
-            return response()->json([
-                'status' => 200,
-            ]);
+                return response()->json([
+                    'status' => 200,
+                ]);
+            }
+
         }
     }
 
@@ -94,14 +104,24 @@ class StyleController extends Controller
                 'error' => $validator->errors()->toArray()
             ]);
         } else {
-            $style = Style::findOrFail($id);
-            $style->update($request->all() + [
-                'updated_by' => Auth::user()->id,
-            ]);
+            $exists = Style::where('id', $id)
+                            ->where('buyer_id', $request->buyer_id)
+                            ->where('style_name', $request->style_name)
+                            ->exists();
+            if (!$exists) {
+                return response()->json([
+                    'status' => 401,
+                ]);
+            } else {
+                $style = Style::findOrFail($id);
+                $style->update($request->all() + [
+                    'updated_by' => Auth::user()->id,
+                ]);
 
-            return response()->json([
-                'status' => 200,
-            ]);
+                return response()->json([
+                    'status' => 200,
+                ]);
+            }
         }
     }
 

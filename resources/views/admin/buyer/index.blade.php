@@ -17,7 +17,7 @@
                 <form id="createForm">
                     @csrf
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label class="form-label">Buyer Name</label>
                                 <input type="text" class="form-control" name="buyer_name" placeholder="Buyer Name">
@@ -84,10 +84,10 @@
             </div>
             <div class="card-body">
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-2">
                         <div class="form-group">
                             <label class="form-label">Select Status</label>
-                            <select class="form-control custom-select filter_data" id="status">
+                            <select class="form-control custom-select filter_data" id="filter_status">
                                 <option value="">--All--</option>
                                 <option value="Active">Active</option>
                                 <option value="Inactive">Inactive</option>
@@ -97,7 +97,7 @@
 
                 </div>
                 <div class="table-responsive">
-                    <table class="table table-striped" id="allDataTable" style="width: 100%">
+                    <table class="table table-striped" id="allDataTable">
                         <thead>
                             <tr>
                                 <th>Sl No</th>
@@ -122,16 +122,16 @@
                                                 @csrf
                                                 <input type="hidden" id="buyer_id">
                                                 <div class="row">
-                                                    <div class="col-md-8">
+                                                    <div class="col-md-10">
                                                         <div class="form-group">
                                                             <label class="form-label">Buyer Name</label>
                                                             <input type="text" class="form-control" name="buyer_name" id="buyer_name">
                                                             <span class="text-danger error-text update_buyer_name_error"></span>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-4">
+                                                    <div class="col-md-2">
                                                         <div class="form-group mt-1">
-                                                            <button type="submit" class="btn text-white bg-teal mt-4">Edit</button>
+                                                            <button type="submit" class="btn text-white bg-teal mt-4">Update</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -177,7 +177,7 @@
             ajax: {
                 url: "{{ route('admin.buyer.index') }}",
                 "data":function(e){
-                    e.status = $('#status').val();
+                    e.status = $('#filter_status').val();
                 },
             },
             columns: [

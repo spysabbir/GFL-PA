@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->integer('buyer_id');
             $table->text('style_name');
-            $table->longText('style_description');
             $table->enum('status', ['Active', 'Inactive'])->default('Active');
             $table->integer('created_by');
             $table->integer('updated_by')->nullable();
