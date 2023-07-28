@@ -65,15 +65,82 @@
             </div>
             <div class="card-body">
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-2">
                         <div class="form-group">
                             <label class="form-label">Select Status</label>
-                            <select class="form-control custom-select filter_data" id="status">
+                            <select class="form-control custom-select filter_data" id="filter_status">
                                 <option value="">--All--</option>
-                                <option value="Hold">Hold</option>
+                                <option value="Inactive">Inactive</option>
                                 <option value="Running">Running</option>
+                                <option value="Hold">Hold</option>
                                 <option value="Close">Close</option>
                                 <option value="Cancel">Cancel</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="form-label">Buyer Name</label>
+                            <select class="form-control custom-select filter_data" id="filter_buyer_name">
+                                <option value="">--Select Buyer--</option>
+                                @foreach ($buyers as $buyer)
+                                <option value="{{ $buyer->id }}">{{ $buyer->buyer_name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">Style Name</label>
+                            <select class="form-control custom-select filter_data" id="filter_style_name">
+                                <option value="">--Select Style--</option>
+                                @foreach ($styles as $style)
+                                <option value="{{ $style->id }}">{{ $style->style_name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="form-label">Season Name</label>
+                            <select class="form-control custom-select filter_data" id="filter_season_name">
+                                <option value="">--Select Season--</option>
+                                @foreach ($seasons as $season)
+                                <option value="{{ $season->id }}">{{ $season->season_name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="form-label">Color Name</label>
+                            <select class="form-control custom-select filter_data" id="filter_color_name">
+                                <option value="">--Select Color--</option>
+                                @foreach ($colors as $color)
+                                <option value="{{ $color->id }}">{{ $color->color_name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="form-label">Wash Name</label>
+                            <select class="form-control custom-select filter_data" id="filter_wash_name">
+                                <option value="">--Select Wash--</option>
+                                @foreach ($washs as $wash)
+                                <option value="{{ $wash->id }}">{{ $wash->wash_name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="form-label">Type of Garment</label>
+                            <select class="form-control custom-select filter_data" id="filter_garment_type">
+                                <option value="">--Select Type--</option>
+                                @foreach ($garmentTypes as $garmentType)
+                                <option value="{{ $garmentType->id }}">{{ $garmentType->item_name }}</option>
+                                @endforeach
                             </select>
                         </div>
                     </div>
@@ -115,8 +182,9 @@
                                                             <label class="form-label">Select Status</label>
                                                             <select class="form-control custom-select" name="status" id="get_status">
                                                                 <option value="">--All--</option>
-                                                                <option value="Hold">Hold</option>
+                                                                <option value="Inactive">Inactive</option>
                                                                 <option value="Running">Running</option>
+                                                                <option value="Hold">Hold</option>
                                                                 <option value="Close">Close</option>
                                                                 <option value="Cancel">Cancel</option>
                                                             </select>
@@ -183,7 +251,13 @@
             ajax: {
                 url: "{{ route('admin.master-style.index') }}",
                 "data":function(e){
-                    e.status = $('#status').val();
+                    e.status = $('#filter_status').val();
+                    e.buyer_id = $('#filter_buyer_name').val();
+                    e.style_id = $('#filter_style_name').val();
+                    e.season_id = $('#filter_season_name').val();
+                    e.color_id = $('#filter_color_name').val();
+                    e.wash_id = $('#filter_wash_name').val();
+                    e.garment_type_id = $('#filter_garment_type').val();
                 },
             },
             columns: [

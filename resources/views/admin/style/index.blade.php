@@ -105,17 +105,27 @@
             </div>
             <div class="card-body">
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-2">
                         <div class="form-group">
                             <label class="form-label">Select Status</label>
-                            <select class="form-control custom-select filter_data" id="status">
+                            <select class="form-control custom-select filter_data" id="filter_status">
                                 <option value="">--All--</option>
                                 <option value="Active">Active</option>
                                 <option value="Inactive">Inactive</option>
                             </select>
                         </div>
                     </div>
-
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="form-label">Select Buyer Name</label>
+                            <select class="form-control custom-select filter_data" id="filter_buyer_name">
+                                <option value="">--All--</option>
+                                @foreach ($buyers as $buyer)
+                                <option value="{{ $buyer->id }}">{{ $buyer->buyer_name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
                 </div>
                 <div class="table-responsive">
                     <table class="table table-striped" id="allDataTable" style="width: 100%">
@@ -219,7 +229,8 @@
             ajax: {
                 url: "{{ route('admin.style.index') }}",
                 "data":function(e){
-                    e.status = $('#status').val();
+                    e.status = $('#filter_status').val();
+                    e.buyer_id = $('#filter_buyer_name').val();
                 },
             },
             columns: [

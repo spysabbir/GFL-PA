@@ -20,6 +20,9 @@ class StyleController extends Controller
             if ($request->status) {
                 $query->where('styles.status', $request->status);
             }
+            if ($request->buyer_id) {
+                $query->where('styles.buyer_id', $request->buyer_id);
+            }
 
             $query->orderBy('created_at', 'desc');
 

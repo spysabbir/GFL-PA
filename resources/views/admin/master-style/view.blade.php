@@ -49,10 +49,12 @@
                                     <tr>
                                         <td>Status</td>
                                         <td>
-                                            @if ($masterStyle->status == 'Hold')
+                                            @if ($masterStyle->status == 'Inactive')
                                                 <span class="badge bg-info">{{ $masterStyle->status }}</span>
                                             @elseif ($masterStyle->status == 'Running')
                                                 <span class="badge bg-success">{{ $masterStyle->status }}</span>
+                                            @elseif ($masterStyle->status == 'Hold')
+                                                <span class="badge bg-warning">{{ $masterStyle->status }}</span>
                                             @elseif ($masterStyle->status == 'Close')
                                                 <span class="badge bg-primary">{{ $masterStyle->status }}</span>
                                             @else

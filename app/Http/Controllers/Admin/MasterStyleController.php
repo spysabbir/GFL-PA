@@ -32,6 +32,25 @@ class MasterStyleController extends Controller
             if ($request->status) {
                 $query->where('master_styles.status', $request->status);
             }
+            if ($request->buyer_id) {
+                $query->where('master_styles.buyer_id', $request->buyer_id);
+            }
+            if ($request->style_id) {
+                $query->where('master_styles.style_id', $request->style_id);
+            }
+            if ($request->season_id) {
+                $query->where('master_styles.season_id', $request->season_id);
+            }
+            if ($request->color_id) {
+                $query->where('master_styles.color_id', $request->color_id);
+            }
+            if ($request->wash_id) {
+                $query->where('master_styles.wash_id', $request->wash_id);
+            }
+            if ($request->garment_type_id) {
+                $query->where('master_styles.garment_type_id', $request->garment_type_id);
+            }
+
 
             $query->orderBy('created_at', 'desc');
 
@@ -41,20 +60,20 @@ class MasterStyleController extends Controller
             return DataTables::of($styles)
                 ->addIndexColumn()
                 ->editColumn('status', function ($row) {
-                    if ($row->status == 'Hold') {
-                        $status = '<span class="badge text-white bg-pink">' . $row->status . '</span>
-                        <button type="button" data-id="' . $row->id . '" class="btn text-white bg-teal btn-sm statusEditBtn" data-toggle="modal" data-target="#statusEditModal"><i class="fe fe-edit"></i></button>';
+                    if ($row->status == 'Inactive') {
+                        $status = '<span class="badge text-white bg-pink">' . $row->status . '</span>';
                     } elseif ($row->status == 'Running') {
-                        $status = '<span class="badge text-white bg-green">' . $row->status . '</span>
-                        <button type="button" data-id="' . $row->id . '" class="btn text-white bg-teal btn-sm statusEditBtn" data-toggle="modal" data-target="#statusEditModal"><i class="fe fe-edit"></i></button>';
-                    } elseif ($row->status == 'Close') {
-                        $status = '<span class="badge text-white bg-orange">' . $row->status . '</span>
-                        <button type="button" data-id="' . $row->id . '" class="btn text-white bg-teal btn-sm statusEditBtn" data-toggle="modal" data-target="#statusEditModal"><i class="fe fe-edit"></i></button>';
+                        $status = '<span class="badge text-white bg-green">' . $row->status . '</span>';
+                    } elseif ($row->status == 'Running') {
+                        $status = '<span class="badge text-white bg-green">' . $row->status . '</span>';
+                    } elseif ($row->status == 'Hold') {
+                        $status = '<span class="badge text-white bg-orange">' . $row->status . '</span>';
                     } else {
-                        $status = '<span class="badge text-white bg-red">' . $row->status . '</span>
-                        <button type="button" data-id="' . $row->id . '" class="btn text-white bg-teal btn-sm statusEditBtn" data-toggle="modal" data-target="#statusEditModal"><i class="fe fe-edit"></i></button>';
+                        $status = '<span class="badge text-white bg-red">' . $row->status . '</span>';
                     }
-                    return $status;
+                    $btn = '<button type="button" data-id="' . $row->id . '" class="btn text-white bg-teal btn-sm statusEditBtn ml-1" data-toggle="modal" data-target="#statusEditModal"><i class="fe fe-edit"></i></button>';
+                    $status_btn = $status . $btn;
+                    return $status_btn;
                 })
                 ->addColumn('action', function ($row) {
                     $btn = '<a href="'.route('admin.master-style.edit', $row->id).'" class="btn text-white bg-purple btn-sm"><i class="fe fe-edit"></i></a>
@@ -66,7 +85,14 @@ class MasterStyleController extends Controller
                 ->make(true);
         }
 
-        return view('admin.master-style.index');
+        $buyers = Buyer::where('status', 'Active')->get();
+        $styles = Style::where('status', 'Active')->get();
+        $seasons = Season::where('status', 'Active')->get();
+        $colors = Color::where('status', 'Active')->get();
+        $washs = Wash::where('status', 'Active')->get();
+        $garmentTypes = GarmentType::where('status', 'Active')->get();
+
+        return view('admin.master-style.index', compact('buyers', 'styles', 'seasons', 'colors', 'washs', 'garmentTypes'));
     }
 
     public function create()
@@ -379,7 +405,7 @@ class MasterStyleController extends Controller
 
         if (StyleBpoOrder::where('master_style_id', $masterStyleId)->count() == 1) {
             MasterStyle::findOrFail($masterStyleId)->update([
-                'status' => 'Hold',
+                'status' => 'Inactive',
             ]);
         }
 
@@ -393,7 +419,7 @@ class MasterStyleController extends Controller
             foreach($all_selected_id as $selected_id){
                 $masterStyleId = StyleBpoOrder::findOrFail($selected_id)->master_style_id;
                 MasterStyle::findOrFail($masterStyleId)->update([
-                    'status' => 'Hold',
+                    'status' => 'Inactive',
                 ]);
 
                 StyleBpoOrder::findOrFail($selected_id)->delete();
