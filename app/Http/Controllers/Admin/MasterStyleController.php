@@ -64,9 +64,9 @@ class MasterStyleController extends Controller
                         $status = '<span class="badge text-white bg-pink">' . $row->status . '</span>';
                     } elseif ($row->status == 'Running') {
                         $status = '<span class="badge text-white bg-green">' . $row->status . '</span>';
-                    } elseif ($row->status == 'Running') {
-                        $status = '<span class="badge text-white bg-green">' . $row->status . '</span>';
                     } elseif ($row->status == 'Hold') {
+                        $status = '<span class="badge text-white bg-yellow">' . $row->status . '</span>';
+                    } elseif ($row->status == 'Close') {
                         $status = '<span class="badge text-white bg-orange">' . $row->status . '</span>';
                     } else {
                         $status = '<span class="badge text-white bg-red">' . $row->status . '</span>';
@@ -81,7 +81,11 @@ class MasterStyleController extends Controller
                         <button type="button" data-id="' . $row->id . '" class="btn text-white bg-yellow btn-sm deleteBtn"><i class="fe fe-trash"></i></button>';
                     return $btn;
                 })
-                ->rawColumns(['status', 'action'])
+                ->addColumn('order_qty', function ($row) {
+                    $order_qty = '<span class="badge text-white bg-red">' . StyleBpoOrder::where('master_style_id', $row->id)->sum('order_quantity') . '</span>';
+                    return $order_qty;
+                })
+                ->rawColumns(['order_qty', 'status', 'action'])
                 ->make(true);
         }
 

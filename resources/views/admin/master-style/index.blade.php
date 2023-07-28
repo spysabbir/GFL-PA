@@ -80,9 +80,9 @@
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label class="form-label">Buyer Name</label>
+                            <label class="form-label">Select Buyer Name</label>
                             <select class="form-control custom-select filter_data" id="filter_buyer_name">
-                                <option value="">--Select Buyer--</option>
+                                <option value="">--All--</option>
                                 @foreach ($buyers as $buyer)
                                 <option value="{{ $buyer->id }}">{{ $buyer->buyer_name }}</option>
                                 @endforeach
@@ -91,9 +91,9 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class="form-label">Style Name</label>
+                            <label class="form-label">Select Style Name</label>
                             <select class="form-control custom-select filter_data" id="filter_style_name">
-                                <option value="">--Select Style--</option>
+                                <option value="">--All--</option>
                                 @foreach ($styles as $style)
                                 <option value="{{ $style->id }}">{{ $style->style_name }}</option>
                                 @endforeach
@@ -102,9 +102,9 @@
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label class="form-label">Season Name</label>
+                            <label class="form-label">Select Season Name</label>
                             <select class="form-control custom-select filter_data" id="filter_season_name">
-                                <option value="">--Select Season--</option>
+                                <option value="">--All--</option>
                                 @foreach ($seasons as $season)
                                 <option value="{{ $season->id }}">{{ $season->season_name }}</option>
                                 @endforeach
@@ -113,9 +113,9 @@
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label class="form-label">Color Name</label>
+                            <label class="form-label">Select Color Name</label>
                             <select class="form-control custom-select filter_data" id="filter_color_name">
-                                <option value="">--Select Color--</option>
+                                <option value="">--All--</option>
                                 @foreach ($colors as $color)
                                 <option value="{{ $color->id }}">{{ $color->color_name }}</option>
                                 @endforeach
@@ -124,9 +124,9 @@
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label class="form-label">Wash Name</label>
+                            <label class="form-label">Select Wash Name</label>
                             <select class="form-control custom-select filter_data" id="filter_wash_name">
-                                <option value="">--Select Wash--</option>
+                                <option value="">--All--</option>
                                 @foreach ($washs as $wash)
                                 <option value="{{ $wash->id }}">{{ $wash->wash_name }}</option>
                                 @endforeach
@@ -135,9 +135,9 @@
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label class="form-label">Type of Garment</label>
+                            <label class="form-label">Select Type of Garment</label>
                             <select class="form-control custom-select filter_data" id="filter_garment_type">
-                                <option value="">--Select Type--</option>
+                                <option value="">--All--</option>
                                 @foreach ($garmentTypes as $garmentType)
                                 <option value="{{ $garmentType->id }}">{{ $garmentType->item_name }}</option>
                                 @endforeach
@@ -146,7 +146,7 @@
                     </div>
                 </div>
                 <div class="table-responsive">
-                    <table class="table table-striped" id="allDataTable">
+                    <table class="table table-hover table-striped"  id="allDataTable">
                         <thead>
                             <tr>
                                 <th>Sl No</th>
@@ -156,6 +156,7 @@
                                 <th>Season Name</th>
                                 <th>Color Name</th>
                                 <th>Wash Name</th>
+                                <th>Order Qty</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
@@ -222,6 +223,7 @@
                                 <th>Season Name</th>
                                 <th>Color Name</th>
                                 <th>Wash Name</th>
+                                <th>Order Qty</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
@@ -268,6 +270,7 @@
                 { data: 'season_name', name: 'season_name' },
                 { data: 'color_name', name: 'color_name' },
                 { data: 'wash_name', name: 'wash_name' },
+                { data: 'order_qty', name: 'order_qty' },
                 { data: 'status', name: 'status' },
                 { data: 'action', name: 'action', orderable: false, searchable: false }
             ]

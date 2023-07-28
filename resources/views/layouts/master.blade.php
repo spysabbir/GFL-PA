@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta name="description" content="Crush it Able The most popular Admin Dashboard template and ui kit">
-    <meta name="author" content="PuffinTheme the theme designer">
+    <meta name="description" content="{{ env('APP_NAME') }}">
+    <meta name="author" content="{{ env('APP_NAME') }}">
     <meta name="csrf-token" content="{{ csrf_token() }}" />
 
     <link rel="icon" href="favicon.ico" type="image/x-icon"/>
@@ -20,6 +20,8 @@
 
     <link rel="stylesheet" href="{{ asset('asset') }}/plugins/sweetalert2/sweetalert2.min.css">
     <link rel="stylesheet" href="{{ asset('asset') }}/plugins/toastr/toastr.css">
+
+    {{-- <link rel="stylesheet" href="{{ asset('asset') }}/plugins/datatable/css/jquery.dataTables.css"> --}}
 
     <!-- Core css -->
     <link rel="stylesheet" href="{{ asset('asset') }}/css/main.css"/>
@@ -307,13 +309,18 @@
     <script src="{{ asset('asset') }}/bundles/apexcharts.bundle.js"></script>
     <script src="{{ asset('asset') }}/bundles/c3.bundle.js"></script>
 
+    <!-- Plugins Js -->
+    <script src="{{ asset('asset') }}/plugins/toastr/toastr.min.js"></script>
+    <script src="{{ asset('asset') }}/plugins/sweetalert2/sweetalert2.all.min.js"></script>
+
+    <script src="{{ asset('asset') }}/plugins/datatable/js/jquery.dataTables.js"></script>
+
+    <script src="{{ asset('asset') }}/bundles/dataTables.bundle.js"></script>
+
+
     <!-- Start core js and page js -->
     <script src="{{ asset('asset') }}/js/core.js"></script>
     <script src="{{ asset('asset') }}/js/page/index2.js"></script>
-
-    <script src="{{ asset('asset') }}/plugins/toastr/toastr.min.js"></script>
-    <script src="{{ asset('asset') }}/plugins/sweetalert2/sweetalert2.all.min.js"></script>
-    <script src="{{ asset('asset') }}/plugins/datatable/js/jquery.dataTables.min.js"></script>
 
     <script>
         $(document).ready(function() {
