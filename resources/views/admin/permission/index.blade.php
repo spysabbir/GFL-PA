@@ -17,7 +17,14 @@
                 <form id="createForm">
                     @csrf
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                <label class="form-label">Group Name</label>
+                                <input type="text" class="form-control" name="group_name" placeholder="Group Name">
+                                <span class="text-danger error-text group_name_error"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-5">
                             <div class="form-group">
                                 <label class="form-label">Permission Name</label>
                                 <input type="text" class="form-control" name="name" placeholder="Permission Name">
@@ -49,6 +56,7 @@
                         <thead>
                             <tr>
                                 <th>Sl No</th>
+                                <th>Group Name</th>
                                 <th>Permission Name</th>
                                 <th>Action</th>
                             </tr>
@@ -69,7 +77,14 @@
                                                 @csrf
                                                 <input type="hidden" id="permission_id">
                                                 <div class="row">
-                                                    <div class="col-md-10">
+                                                    <div class="col-md-5">
+                                                        <div class="form-group">
+                                                            <label class="form-label">Group Name</label>
+                                                            <input type="text" class="form-control" name="group_name" id="group_name">
+                                                            <span class="text-danger error-text update_group_name_error"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-5">
                                                         <div class="form-group">
                                                             <label class="form-label">Permission Name</label>
                                                             <input type="text" class="form-control" name="name" id="permission_name">
@@ -94,6 +109,7 @@
                         <tfoot>
                             <tr>
                                 <th>Sl No</th>
+                                <th>Group Name</th>
                                 <th>Permission Name</th>
                                 <th>Action</th>
                             </tr>
@@ -125,7 +141,8 @@
             },
             columns: [
                 { data: 'DT_RowIndex', name: 'DT_RowIndex' },
-                { data: 'permission_name', name: 'permission_name' },
+                { data: 'group_name', name: 'group_name' },
+                { data: 'name', name: 'name' },
                 { data: 'action', name: 'action', orderable: false, searchable: false }
             ]
         });
@@ -166,7 +183,8 @@
                 type: "GET",
                 success: function (response) {
                     $('#permission_id').val(response.id);
-                    $('#permission_name').val(response.permission_name);
+                    $('#group_name').val(response.group_name);
+                    $('#permission_name').val(response.name);
                 },
             });
         });

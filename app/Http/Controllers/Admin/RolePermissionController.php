@@ -8,43 +8,71 @@ use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
+use Yajra\DataTables\Facades\DataTables;
 
 class RolePermissionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(Request $request)
     {
-        //
-    }
+        if ($request->ajax()) {
+            $query = Role::select('roles.*');
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        $permissions = Permission::all();
-        $roles = Role::all();
-        $permission_groups = User::getPermissionsGroup();
-        return view('backend.admin.assign_role_permission.index', compact('permissions', 'roles', 'permission_groups'));
-    }
+            $query->orderBy('created_at', 'desc');
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        $data = array();
-        $permissions = $request->permission_id;
-        foreach($permissions as $key => $item) {
-            $data['role_id'] = $request->role_id;
-            $data['permission_id'] = $item;
+            $roles = $query->get();
 
-            DB::table('role_has_permissions')->insert($data);
+            return DataTables::of($roles)
+                ->addIndexColumn()
+                ->addColumn('permissions', function ($row) {
+                    $permissions = $row->permissions;
+                    $badgeTags = '';
+                    foreach ($permissions as $permission) {
+                        $badgeTags .= '<span class="badge bg-info mr-1">' . $permission->name . '</span>';
+                    }
+                    return $badgeTags;
+                })
+                ->addColumn('action', function ($row) {
+                    $btn = '<button type="button" data-id="' . $row->id . '" class="btn text-white bg-purple btn-sm editBtn" data-toggle="modal" data-target="#editModal"><i class="fe fe-edit"></i></button>
+                            <button type="button" data-id="' . $row->id . '" class="btn text-white bg-yellow btn-sm deleteBtn"><i class="fe fe-trash"></i></button>';
+                    return $btn;
+                })
+                ->rawColumns(['permissions', 'action'])
+                ->make(true);
         }
 
-        return back();
+        $roles = Role::all();
+        $permission_groups = User::getPermissionsGroup();
+        return view('admin.role_permission.index', compact('roles', 'permission_groups'));
+    }
+
+    public function store(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'role_id' => 'required',
+            'permission_id' => 'required|array',
+            'permission_id.*' => 'required|integer|exists:permissions,id',
+        ]);
+
+        if($validator->fails()){
+            return response()->json([
+                'status' => 400,
+                'error'=> $validator->errors()->toArray()
+            ]);
+        }else{
+            $data = array();
+            $permissions = $request->permission_id;
+            foreach($permissions as $item) {
+                $data['role_id'] = $request->role_id;
+                $data['permission_id'] = $item;
+
+                DB::table('role_has_permissions')->insert($data);
+            }
+
+            return response()->json([
+                'status' => 200,
+            ]);
+        }
     }
 
     /**

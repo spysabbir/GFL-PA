@@ -125,7 +125,7 @@
             },
             columns: [
                 { data: 'DT_RowIndex', name: 'DT_RowIndex' },
-                { data: 'role_name', name: 'role_name' },
+                { data: 'name', name: 'name' },
                 { data: 'action', name: 'action', orderable: false, searchable: false }
             ]
         });
@@ -166,7 +166,7 @@
                 type: "GET",
                 success: function (response) {
                     $('#role_id').val(response.id);
-                    $('#role_name').val(response.role_name);
+                    $('#role_name').val(response.name);
                 },
             });
         });
