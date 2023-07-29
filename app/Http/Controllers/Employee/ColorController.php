@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Employee;
 
 use App\Http\Controllers\Controller;
 use App\Models\Color;
@@ -45,7 +45,7 @@ class ColorController extends Controller
                 ->make(true);
         }
 
-        return view('admin.color.index');
+        return view('employee.color.index');
     }
 
     public function store(Request $request)
@@ -129,7 +129,7 @@ class ColorController extends Controller
                 ->make(true);
         }
 
-        return view('admin.color.index');
+        return view('employee.color.index');
     }
 
     public function restore(string $id)

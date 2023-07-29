@@ -1,30 +1,30 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Employee;
 
 use App\Http\Controllers\Controller;
-use App\Models\Season;
+use App\Models\Line;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 
-class SeasonController extends Controller
+class LineController extends Controller
 {
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $query = Season::select('seasons.*');
+            $query = Line::select('lines.*');
 
             if ($request->status) {
-                $query->where('seasons.status', $request->status);
+                $query->where('lines.status', $request->status);
             }
 
             $query->orderBy('created_at', 'desc');
 
-            $seasons = $query->get();
+            $lines = $query->get();
 
-            return DataTables::of($seasons)
+            return DataTables::of($lines)
                 ->addIndexColumn()
                 ->editColumn('status', function ($row) {
                     if ($row->status == 'Active') {
@@ -45,13 +45,13 @@ class SeasonController extends Controller
                 ->make(true);
         }
 
-        return view('admin.season.index');
+        return view('employee.line.index');
     }
 
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'season_name' => 'required|string|max:255|unique:seasons,season_name',
+            'line_no' => 'required|string|max:255|unique:lines,line_no',
         ]);
 
         if($validator->fails()){
@@ -60,7 +60,7 @@ class SeasonController extends Controller
                 'error'=> $validator->errors()->toArray()
             ]);
         }else{
-            Season::create($request->all()+[
+            Line::create($request->all()+[
                 'created_by' => Auth::user()->id,
             ]);
 
@@ -72,15 +72,15 @@ class SeasonController extends Controller
 
     public function edit(string $id)
     {
-        $season = Season::where('id', $id)->first();
-        return response()->json($season);
+        $line = Line::where('id', $id)->first();
+        return response()->json($line);
     }
 
     public function update(Request $request, string $id)
     {
 
         $validator = Validator::make($request->all(), [
-            'season_name' => 'required|string|max:255|unique:seasons,season_name,' . $id,
+            'line_no' => 'required|string|max:255|unique:lines,line_no,' . $id,
 
         ]);
 
@@ -90,8 +90,8 @@ class SeasonController extends Controller
                 'error' => $validator->errors()->toArray()
             ]);
         } else {
-            $season = Season::findOrFail($id);
-            $season->update($request->all() + [
+            $line = Line::findOrFail($id);
+            $line->update($request->all() + [
                 'updated_by' => Auth::user()->id,
             ]);
 
@@ -103,21 +103,21 @@ class SeasonController extends Controller
 
     public function destroy(string $id)
     {
-        $season = Season::findOrFail($id);
-        $season->updated_by = Auth::user()->id;
-        $season->deleted_by = Auth::user()->id;
-        $season->save();
-        $season->delete();
+        $line = Line::findOrFail($id);
+        $line->updated_by = Auth::user()->id;
+        $line->deleted_by = Auth::user()->id;
+        $line->save();
+        $line->delete();
     }
 
     public function trashed(Request $request)
     {
         if ($request->ajax()) {
-            $trashed_seasons = Season::onlyTrashed();
+            $trashed_lines = Line::onlyTrashed();
 
-            $trashed_seasons->orderBy('deleted_at', 'desc');
+            $trashed_lines->orderBy('deleted_at', 'desc');
 
-            return DataTables::of($trashed_seasons)
+            return DataTables::of($trashed_lines)
                 ->addColumn('action', function ($row) {
                     $btn = '
                         <button type="button" data-id="'.$row->id.'" class="btn text-white bg-lime restoreBtn"><i class="fe fe-refresh-ccw"></i></button>
@@ -129,35 +129,35 @@ class SeasonController extends Controller
                 ->make(true);
         }
 
-        return view('admin.season.index');
+        return view('employee.line.index');
     }
 
     public function restore(string $id)
     {
-        Season::onlyTrashed()->where('id', $id)->update([
+        Line::onlyTrashed()->where('id', $id)->update([
             'deleted_by' => NULL
         ]);
 
-        Season::onlyTrashed()->where('id', $id)->restore();
+        Line::onlyTrashed()->where('id', $id)->restore();
     }
 
     public function forceDelete(string $id)
     {
-        $season = Season::onlyTrashed()->where('id', $id)->first();
-        $season->forceDelete();
+        $line = Line::onlyTrashed()->where('id', $id)->first();
+        $line->forceDelete();
     }
 
     public function status(string $id)
     {
-        $season = Season::findOrFail($id);
+        $line = Line::findOrFail($id);
 
-        if ($season->status == "Active") {
-            $season->status = "Inactive";
+        if ($line->status == "Active") {
+            $line->status = "Inactive";
         } else {
-            $season->status = "Active";
+            $line->status = "Active";
         }
 
-        $season->updated_by = Auth::user()->id;
-        $season->save();
+        $line->updated_by = Auth::user()->id;
+        $line->save();
     }
 }

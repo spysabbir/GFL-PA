@@ -9,7 +9,7 @@
             <div class="card-header">
                 <h3 class="card-title">Create Master Style</h3>
                 <div class="card-options">
-                    <a href="{{ route('admin.master-style.index') }}" class="btn text-white bg-pink"><i class="fe fe-database"></i></a>
+                    <a href="{{ route('employee.master-style.index') }}" class="btn text-white bg-pink"><i class="fe fe-database"></i></a>
                     <a href="#" class="card-options-fullscreen btn text-white bg-indigo" data-toggle="card-fullscreen"><i class="fe fe-maximize"></i></a>
                     <a href="javascript:void(0)" class="card-options-remove btn text-white bg-orange" data-toggle="card-remove"><i class="fe fe-x"></i></a>
                 </div>
@@ -113,7 +113,7 @@
         $(document).on('change', '#selectBuyer', function() {
             var buyer_id = $(this).val();
             $.ajax({
-                url: "{{ route('admin.get.style.info') }}",
+                url: "{{ route('employee.get.style.info') }}",
                 type: "POST",
                 data: {buyer_id:buyer_id},
                 success: function (response) {
@@ -127,7 +127,7 @@
             event.preventDefault();
             var formData = $(this).serialize();
             $.ajax({
-                url: "{{ route('admin.master-style.store') }}",
+                url: "{{ route('employee.master-style.store') }}",
                 type: 'POST',
                 data: formData,
                 dataType: 'json',

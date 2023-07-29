@@ -1,30 +1,30 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Employee;
 
 use App\Http\Controllers\Controller;
-use App\Models\Line;
+use App\Models\GarmentType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 
-class LineController extends Controller
+class GarmentTypeController extends Controller
 {
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $query = Line::select('lines.*');
+            $query = GarmentType::select('garment_types.*');
 
             if ($request->status) {
-                $query->where('lines.status', $request->status);
+                $query->where('garment_types.status', $request->status);
             }
 
             $query->orderBy('created_at', 'desc');
 
-            $lines = $query->get();
+            $garment_types = $query->get();
 
-            return DataTables::of($lines)
+            return DataTables::of($garment_types)
                 ->addIndexColumn()
                 ->editColumn('status', function ($row) {
                     if ($row->status == 'Active') {
@@ -45,13 +45,13 @@ class LineController extends Controller
                 ->make(true);
         }
 
-        return view('admin.line.index');
+        return view('employee.garment_type.index');
     }
 
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'line_no' => 'required|string|max:255|unique:lines,line_no',
+            'item_name' => 'required|string|max:255|unique:garment_types,item_name',
         ]);
 
         if($validator->fails()){
@@ -60,7 +60,7 @@ class LineController extends Controller
                 'error'=> $validator->errors()->toArray()
             ]);
         }else{
-            Line::create($request->all()+[
+            GarmentType::create($request->all()+[
                 'created_by' => Auth::user()->id,
             ]);
 
@@ -72,15 +72,15 @@ class LineController extends Controller
 
     public function edit(string $id)
     {
-        $line = Line::where('id', $id)->first();
-        return response()->json($line);
+        $garment_type = GarmentType::where('id', $id)->first();
+        return response()->json($garment_type);
     }
 
     public function update(Request $request, string $id)
     {
 
         $validator = Validator::make($request->all(), [
-            'line_no' => 'required|string|max:255|unique:lines,line_no,' . $id,
+            'item_name' => 'required|string|max:255|unique:garment_types,item_name,' . $id,
 
         ]);
 
@@ -90,8 +90,8 @@ class LineController extends Controller
                 'error' => $validator->errors()->toArray()
             ]);
         } else {
-            $line = Line::findOrFail($id);
-            $line->update($request->all() + [
+            $garment_type = GarmentType::findOrFail($id);
+            $garment_type->update($request->all() + [
                 'updated_by' => Auth::user()->id,
             ]);
 
@@ -103,21 +103,21 @@ class LineController extends Controller
 
     public function destroy(string $id)
     {
-        $line = Line::findOrFail($id);
-        $line->updated_by = Auth::user()->id;
-        $line->deleted_by = Auth::user()->id;
-        $line->save();
-        $line->delete();
+        $garment_type = GarmentType::findOrFail($id);
+        $garment_type->updated_by = Auth::user()->id;
+        $garment_type->deleted_by = Auth::user()->id;
+        $garment_type->save();
+        $garment_type->delete();
     }
 
     public function trashed(Request $request)
     {
         if ($request->ajax()) {
-            $trashed_lines = Line::onlyTrashed();
+            $trashed_garment_types = GarmentType::onlyTrashed();
 
-            $trashed_lines->orderBy('deleted_at', 'desc');
+            $trashed_garment_types->orderBy('deleted_at', 'desc');
 
-            return DataTables::of($trashed_lines)
+            return DataTables::of($trashed_garment_types)
                 ->addColumn('action', function ($row) {
                     $btn = '
                         <button type="button" data-id="'.$row->id.'" class="btn text-white bg-lime restoreBtn"><i class="fe fe-refresh-ccw"></i></button>
@@ -129,35 +129,35 @@ class LineController extends Controller
                 ->make(true);
         }
 
-        return view('admin.line.index');
+        return view('employee.garment_type.index');
     }
 
     public function restore(string $id)
     {
-        Line::onlyTrashed()->where('id', $id)->update([
+        GarmentType::onlyTrashed()->where('id', $id)->update([
             'deleted_by' => NULL
         ]);
 
-        Line::onlyTrashed()->where('id', $id)->restore();
+        GarmentType::onlyTrashed()->where('id', $id)->restore();
     }
 
     public function forceDelete(string $id)
     {
-        $line = Line::onlyTrashed()->where('id', $id)->first();
-        $line->forceDelete();
+        $garment_type = GarmentType::onlyTrashed()->where('id', $id)->first();
+        $garment_type->forceDelete();
     }
 
     public function status(string $id)
     {
-        $line = Line::findOrFail($id);
+        $garment_type = GarmentType::findOrFail($id);
 
-        if ($line->status == "Active") {
-            $line->status = "Inactive";
+        if ($garment_type->status == "Active") {
+            $garment_type->status = "Inactive";
         } else {
-            $line->status = "Active";
+            $garment_type->status = "Active";
         }
 
-        $line->updated_by = Auth::user()->id;
-        $line->save();
+        $garment_type->updated_by = Auth::user()->id;
+        $garment_type->save();
     }
 }

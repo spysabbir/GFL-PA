@@ -9,7 +9,7 @@
             <div class="card-header">
                 <h3 class="card-title">Master Style List</h3>
                 <div class="card-options">
-                    <a href="{{ route('admin.master-style.create') }}" class="btn text-white bg-green"><i class="fe fe-plus-circle"></i></a>
+                    <a href="{{ route('employee.master-style.create') }}" class="btn text-white bg-green"><i class="fe fe-plus-circle"></i></a>
                     <!-- Trashed Btn -->
                     <button type="button" class="btn text-white bg-pink ml-3" data-toggle="modal" data-target="#trashedModal"><i class="fe fe-trash-2"></i></button>
                     <!-- Trashed Modal -->
@@ -251,7 +251,7 @@
             serverSide: true,
             searching: true,
             ajax: {
-                url: "{{ route('admin.master-style.index') }}",
+                url: "{{ route('employee.master-style.index') }}",
                 "data":function(e){
                     e.status = $('#filter_status').val();
                     e.buyer_id = $('#filter_buyer_name').val();
@@ -285,7 +285,7 @@
         // Delete Data
         $(document).on('click', '.deleteBtn', function(){
             var id = $(this).data('id');
-            var url = "{{ route('admin.master-style.destroy', ":id") }}";
+            var url = "{{ route('employee.master-style.destroy', ":id") }}";
             url = url.replace(':id', id)
             Swal.fire({
                 title: 'Are you sure?',
@@ -316,7 +316,7 @@
             serverSide: true,
             searching: true,
             ajax: {
-                url: "{{ route('admin.master-style.trashed') }}",
+                url: "{{ route('employee.master-style.trashed') }}",
             },
             columns: [
                 { data: 'buyer_name', name: 'buyer_name' },
@@ -331,7 +331,7 @@
         // Restore Data
         $(document).on('click', '.restoreBtn', function () {
             var id = $(this).data('id');
-            var url = "{{ route('admin.master-style.restore', ":id") }}";
+            var url = "{{ route('employee.master-style.restore', ":id") }}";
             url = url.replace(':id', id)
             $.ajax({
                 url: url,
@@ -348,7 +348,7 @@
         // Force Delete Data
         $(document).on('click', '.forceDeleteBtn', function(){
             var id = $(this).data('id');
-            var url = "{{ route('admin.master-style.force.delete', ":id") }}";
+            var url = "{{ route('employee.master-style.force.delete', ":id") }}";
             url = url.replace(':id', id)
             Swal.fire({
                 title: 'Are you sure?',
@@ -376,7 +376,7 @@
         // Status Edit Data
         $(document).on('click', '.statusEditBtn', function () {
             var id = $(this).data('id');
-            var url = "{{ route('admin.master-style.status.edit', ":id") }}";
+            var url = "{{ route('employee.master-style.status.edit', ":id") }}";
             url = url.replace(':id', id)
             $.ajax({
                 url: url,
@@ -393,7 +393,7 @@
         $('#statusEditForm').submit(function (event) {
             event.preventDefault();
             var id = $('#master_style_id').val();
-            var url = "{{ route('admin.master-style.status.update', ":id") }}";
+            var url = "{{ route('employee.master-style.status.update', ":id") }}";
             url = url.replace(':id', id)
             $.ajax({
                 url: url,

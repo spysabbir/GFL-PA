@@ -223,7 +223,7 @@
                 <div class="progress progress-sm">
                     <div class="progress-bar" role="progressbar" aria-valuenow="77" aria-valuemin="0" aria-valuemax="100" style="width: 77%;"></div>
                 </div>
-                <a href="{{ route('admin.profile') }}" class="btn btn-primary btn-block mt-3">View Profile</a>
+                <a href="{{ route('profile') }}" class="btn btn-primary btn-block mt-3">View Profile</a>
             </div>
         </div>
 

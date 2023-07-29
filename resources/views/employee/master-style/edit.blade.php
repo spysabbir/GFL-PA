@@ -9,7 +9,7 @@
             <div class="card-header">
                 <h3 class="card-title">Edit Master Style</h3>
                 <div class="card-options">
-                    <a href="{{ route('admin.master-style.index') }}" class="btn text-white bg-pink"><i class="fe fe-database"></i></a>
+                    <a href="{{ route('employee.master-style.index') }}" class="btn text-white bg-pink"><i class="fe fe-database"></i></a>
                     <a href="#" class="card-options-fullscreen btn text-white bg-indigo" data-toggle="card-fullscreen"><i class="fe fe-maximize"></i></a>
                     <a href="javascript:void(0)" class="card-options-remove btn text-white bg-orange" data-toggle="card-remove"><i class="fe fe-x"></i></a>
                 </div>
@@ -259,7 +259,7 @@
         $('#editForm').submit(function (event) {
             event.preventDefault();
             var id = $('#masterStyle_id').val();
-            var url = "{{ route('admin.master-style.update', ":id") }}";
+            var url = "{{ route('employee.master-style.update', ":id") }}";
             url = url.replace(':id', id)
             $.ajax({
                 url: url,
@@ -289,7 +289,7 @@
         function getMasterStyleDetails() {
             var id = $('#masterStyle_id').val();
             $.ajax({
-                url: "{{ route('admin.master-style.get.details', ':id') }}".replace(':id', id),
+                url: "{{ route('employee.master-style.get.details', ':id') }}".replace(':id', id),
                 type: "GET",
                 dataType: "json",
                 success: function(response) {
@@ -301,7 +301,7 @@
 
         // Read Bpo & Order Data
         var masterStyle_id = $('#masterStyle_id').val();
-        var bpoOrderListUrl = "{{ route('admin.bpo-order.list', ":masterStyle_id") }}";
+        var bpoOrderListUrl = "{{ route('employee.bpo-order.list', ":masterStyle_id") }}";
         bpoOrderListUrl = bpoOrderListUrl.replace(':masterStyle_id', masterStyle_id),
         $('#allBpoOrderTable').DataTable({
             processing: true,
@@ -324,7 +324,7 @@
             event.preventDefault();
             var formData = $(this).serialize();
             $.ajax({
-                url: "{{ route('admin.bpo-order.store') }}",
+                url: "{{ route('employee.bpo-order.store') }}",
                 type: 'POST',
                 data: formData,
                 dataType: 'json',
@@ -350,7 +350,7 @@
         $('#bpoOrderUploadForm').submit(function (event) {
             event.preventDefault();
             var id = $('#masterStyleId').val();
-            var url = "{{ route('admin.bpo-order.upload', ":id") }}";
+            var url = "{{ route('employee.bpo-order.upload', ":id") }}";
             url = url.replace(':id', id);
             var formData = new FormData(this);
             $.ajax({
@@ -385,7 +385,7 @@
         // Bpo & Order Edit
         $(document).on('click', '.editBtn', function () {
             var id = $(this).data('id');
-            var url = "{{ route('admin.bpo-order.edit', ":id") }}";
+            var url = "{{ route('employee.bpo-order.edit', ":id") }}";
             url = url.replace(':id', id)
             $.ajax({
                 url: url,
@@ -402,7 +402,7 @@
         $('#bpoOrderEditForm').submit(function (event) {
             event.preventDefault();
             var id = $('#bpoOrderEditId').val();
-            var url = "{{ route('admin.bpo-order.update', ":id") }}";
+            var url = "{{ route('employee.bpo-order.update', ":id") }}";
             url = url.replace(':id', id)
             $.ajax({
                 url: url,
@@ -429,7 +429,7 @@
         // Bpo & Order Delete
         $(document).on('click', '.deleteBtn', function(){
             var id = $(this).data('id');
-            var url = "{{ route('admin.bpo-order.delete', ":id") }}";
+            var url = "{{ route('employee.bpo-order.delete', ":id") }}";
             url = url.replace(':id', id)
             Swal.fire({
                 title: 'Are you sure?',
@@ -470,7 +470,7 @@
             });
             var all_selected_id = all_selected_id.toString();
             $.ajax({
-                url: "{{ route('admin.bpo-order.delete.all') }}",
+                url: "{{ route('employee.bpo-order.delete.all') }}",
                 type: "POST",
                 data: {all_selected_id:all_selected_id},
                 success: function (response) {

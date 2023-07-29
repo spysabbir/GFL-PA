@@ -213,7 +213,7 @@
             serverSide: true,
             searching: true,
             ajax: {
-                url: "{{ route('admin.style.index') }}",
+                url: "{{ route('employee.style.index') }}",
                 "data":function(e){
                     e.status = $('#filter_status').val();
                     e.buyer_id = $('#filter_buyer_name').val();
@@ -239,7 +239,7 @@
             event.preventDefault();
             var formData = $(this).serialize();
             $.ajax({
-                url: "{{ route('admin.style.store') }}",
+                url: "{{ route('employee.style.store') }}",
                 type: 'POST',
                 data: formData,
                 dataType: 'json',
@@ -267,7 +267,7 @@
         // Edit Data
         $(document).on('click', '.editBtn', function () {
             var id = $(this).data('id');
-            var url = "{{ route('admin.style.edit', ":id") }}";
+            var url = "{{ route('employee.style.edit', ":id") }}";
             url = url.replace(':id', id)
             $.ajax({
                 url: url,
@@ -284,7 +284,7 @@
         $('#editForm').submit(function (event) {
             event.preventDefault();
             var id = $('#style_id').val();
-            var url = "{{ route('admin.style.update', ":id") }}";
+            var url = "{{ route('employee.style.update', ":id") }}";
             url = url.replace(':id', id)
             $.ajax({
                 url: url,
@@ -314,7 +314,7 @@
         // Delete Data
         $(document).on('click', '.deleteBtn', function(){
             var id = $(this).data('id');
-            var url = "{{ route('admin.style.destroy', ":id") }}";
+            var url = "{{ route('employee.style.destroy', ":id") }}";
             url = url.replace(':id', id)
             Swal.fire({
                 title: 'Are you sure?',
@@ -345,7 +345,7 @@
             serverSide: true,
             searching: true,
             ajax: {
-                url: "{{ route('admin.style.trashed') }}",
+                url: "{{ route('employee.style.trashed') }}",
             },
             columns: [
                 { data: 'buyer_name', name: 'buyer_name' },
@@ -357,7 +357,7 @@
         // Restore Data
         $(document).on('click', '.restoreBtn', function () {
             var id = $(this).data('id');
-            var url = "{{ route('admin.style.restore', ":id") }}";
+            var url = "{{ route('employee.style.restore', ":id") }}";
             url = url.replace(':id', id)
             $.ajax({
                 url: url,
@@ -374,7 +374,7 @@
         // Force Delete Data
         $(document).on('click', '.forceDeleteBtn', function(){
             var id = $(this).data('id');
-            var url = "{{ route('admin.style.force.delete', ":id") }}";
+            var url = "{{ route('employee.style.force.delete', ":id") }}";
             url = url.replace(':id', id)
             Swal.fire({
                 title: 'Are you sure?',
@@ -402,7 +402,7 @@
         // Status Change Data
         $(document).on('click', '.statusBtn', function () {
             var id = $(this).data('id');
-            var url = "{{ route('admin.style.status', ":id") }}";
+            var url = "{{ route('employee.style.status', ":id") }}";
             url = url.replace(':id', id)
             $.ajax({
                 url: url,

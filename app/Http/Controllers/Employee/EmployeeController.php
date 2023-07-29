@@ -10,4 +10,11 @@ class EmployeeController extends Controller
     public function dashboard () {
         return view('employee.dashboard');
     }
+
+    public function profile(Request $request)
+    {
+        return view('employee.profile.index', [
+            'user' => $request->user(),
+        ]);
+    }
 }

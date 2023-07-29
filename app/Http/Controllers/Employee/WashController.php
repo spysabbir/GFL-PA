@@ -1,35 +1,30 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Employee;
 
 use App\Http\Controllers\Controller;
-use App\Models\Buyer;
-use App\Models\Style;
+use App\Models\Wash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 
-class StyleController extends Controller
+class WashController extends Controller
 {
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $query = Style::leftJoin('buyers', 'styles.buyer_id', '=', 'buyers.id');
+            $query = Wash::select('washes.*');
 
             if ($request->status) {
-                $query->where('styles.status', $request->status);
-            }
-            if ($request->buyer_id) {
-                $query->where('styles.buyer_id', $request->buyer_id);
+                $query->where('washes.status', $request->status);
             }
 
             $query->orderBy('created_at', 'desc');
 
-            $styles = $query->select('styles.*', 'buyers.buyer_name')
-                            ->get();
+            $washes = $query->get();
 
-            return DataTables::of($styles)
+            return DataTables::of($washes)
                 ->addIndexColumn()
                 ->editColumn('status', function ($row) {
                     if ($row->status == 'Active') {
@@ -50,14 +45,13 @@ class StyleController extends Controller
                 ->make(true);
         }
 
-        $buyers = Buyer::all();
-        return view('admin.style.index', compact('buyers'));
+        return view('employee.wash.index');
     }
 
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            '*' => 'required',
+            'wash_name' => 'required|string|max:255|unique:washes,wash_name',
         ]);
 
         if($validator->fails()){
@@ -66,36 +60,28 @@ class StyleController extends Controller
                 'error'=> $validator->errors()->toArray()
             ]);
         }else{
-            $exists = Style::where('buyer_id', $request->buyer_id)
-                            ->where('style_name', $request->style_name)
-                            ->exists();
-            if ($exists) {
-                return response()->json([
-                    'status' => 401,
-                ]);
-            } else {
-                Style::create($request->all()+[
-                    'created_by' => Auth::user()->id,
-                ]);
+            Wash::create($request->all()+[
+                'created_by' => Auth::user()->id,
+            ]);
 
-                return response()->json([
-                    'status' => 200,
-                ]);
-            }
-
+            return response()->json([
+                'status' => 200,
+            ]);
         }
     }
 
     public function edit(string $id)
     {
-        $style = Style::where('id', $id)->first();
-        return response()->json($style);
+        $wash = Wash::where('id', $id)->first();
+        return response()->json($wash);
     }
 
     public function update(Request $request, string $id)
     {
+
         $validator = Validator::make($request->all(), [
-            '*' => 'required',
+            'wash_name' => 'required|string|max:255|unique:washes,wash_name,' . $id,
+
         ]);
 
         if ($validator->fails()) {
@@ -104,47 +90,34 @@ class StyleController extends Controller
                 'error' => $validator->errors()->toArray()
             ]);
         } else {
-            $exists = Style::where('id', $id)
-                            ->where('buyer_id', $request->buyer_id)
-                            ->where('style_name', $request->style_name)
-                            ->exists();
-            if (!$exists) {
-                return response()->json([
-                    'status' => 401,
-                ]);
-            } else {
-                $style = Style::findOrFail($id);
-                $style->update($request->all() + [
-                    'updated_by' => Auth::user()->id,
-                ]);
+            $wash = Wash::findOrFail($id);
+            $wash->update($request->all() + [
+                'updated_by' => Auth::user()->id,
+            ]);
 
-                return response()->json([
-                    'status' => 200,
-                ]);
-            }
+            return response()->json([
+                'status' => 200,
+            ]);
         }
     }
 
     public function destroy(string $id)
     {
-        $style = Style::findOrFail($id);
-        $style->updated_by = Auth::user()->id;
-        $style->deleted_by = Auth::user()->id;
-        $style->save();
-        $style->delete();
+        $wash = Wash::findOrFail($id);
+        $wash->updated_by = Auth::user()->id;
+        $wash->deleted_by = Auth::user()->id;
+        $wash->save();
+        $wash->delete();
     }
 
     public function trashed(Request $request)
     {
         if ($request->ajax()) {
-            $trashed_styles = Style::onlyTrashed()
-                    ->leftJoin('buyers', 'styles.buyer_id', '=', 'buyers.id');
+            $trashed_washes = Wash::onlyTrashed();
 
-            $trashed_styles->orderBy('deleted_at', 'desc')
-                        ->select('styles.*', 'buyers.buyer_name')
-                        ->get();
+            $trashed_washes->orderBy('deleted_at', 'desc');
 
-            return DataTables::of($trashed_styles)
+            return DataTables::of($trashed_washes)
                 ->addColumn('action', function ($row) {
                     $btn = '
                         <button type="button" data-id="'.$row->id.'" class="btn text-white bg-lime restoreBtn"><i class="fe fe-refresh-ccw"></i></button>
@@ -156,35 +129,35 @@ class StyleController extends Controller
                 ->make(true);
         }
 
-        return view('admin.style.index');
+        return view('employee.wash.index');
     }
 
     public function restore(string $id)
     {
-        Style::onlyTrashed()->where('id', $id)->update([
+        Wash::onlyTrashed()->where('id', $id)->update([
             'deleted_by' => NULL
         ]);
 
-        Style::onlyTrashed()->where('id', $id)->restore();
+        Wash::onlyTrashed()->where('id', $id)->restore();
     }
 
     public function forceDelete(string $id)
     {
-        $style = Style::onlyTrashed()->where('id', $id)->first();
-        $style->forceDelete();
+        $wash = Wash::onlyTrashed()->where('id', $id)->first();
+        $wash->forceDelete();
     }
 
     public function status(string $id)
     {
-        $style = Style::findOrFail($id);
+        $wash = Wash::findOrFail($id);
 
-        if ($style->status == "Active") {
-            $style->status = "Inactive";
+        if ($wash->status == "Active") {
+            $wash->status = "Inactive";
         } else {
-            $style->status = "Active";
+            $wash->status = "Active";
         }
 
-        $style->updated_by = Auth::user()->id;
-        $style->save();
+        $wash->updated_by = Auth::user()->id;
+        $wash->save();
     }
 }

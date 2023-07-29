@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Employee;
 
 use App\Http\Controllers\Controller;
 use App\Imports\BpoOrderImport;
@@ -76,8 +76,8 @@ class MasterStyleController extends Controller
                     return $status_btn;
                 })
                 ->addColumn('action', function ($row) {
-                    $btn = '<a href="'.route('admin.master-style.edit', $row->id).'" class="btn text-white bg-purple btn-sm"><i class="fe fe-edit"></i></a>
-                        <a href="'.route('admin.master-style.show', $row->id).'" class="btn text-white bg-azure btn-sm"><i class="fe fe-eye"></i></a>
+                    $btn = '<a href="'.route('employee.master-style.edit', $row->id).'" class="btn text-white bg-purple btn-sm"><i class="fe fe-edit"></i></a>
+                        <a href="'.route('employee.master-style.show', $row->id).'" class="btn text-white bg-azure btn-sm"><i class="fe fe-eye"></i></a>
                         <button type="button" data-id="' . $row->id . '" class="btn text-white bg-yellow btn-sm deleteBtn"><i class="fe fe-trash"></i></button>';
                     return $btn;
                 })
@@ -96,7 +96,7 @@ class MasterStyleController extends Controller
         $washs = Wash::where('status', 'Active')->get();
         $garmentTypes = GarmentType::where('status', 'Active')->get();
 
-        return view('admin.master-style.index', compact('buyers', 'styles', 'seasons', 'colors', 'washs', 'garmentTypes'));
+        return view('employee.master-style.index', compact('buyers', 'styles', 'seasons', 'colors', 'washs', 'garmentTypes'));
     }
 
     public function getStyleInfo(Request $request)
@@ -118,7 +118,7 @@ class MasterStyleController extends Controller
         $washs = Wash::where('status', 'Active')->get();
         $garmentTypes = GarmentType::where('status', 'Active')->get();
 
-        return view('admin.master-style.create', compact('buyers', 'styles', 'seasons', 'colors', 'washs', 'garmentTypes'));
+        return view('employee.master-style.create', compact('buyers', 'styles', 'seasons', 'colors', 'washs', 'garmentTypes'));
     }
 
     public function store(Request $request)
@@ -162,7 +162,7 @@ class MasterStyleController extends Controller
         $masterStyle = MasterStyle::findOrFail($id);
         $styleWiseBpoOrder = StyleBpoOrder::where('master_style_id', $id)->get();
 
-        return view('admin.master-style.view', compact('masterStyle', 'styleWiseBpoOrder'));
+        return view('employee.master-style.view', compact('masterStyle', 'styleWiseBpoOrder'));
     }
 
     public function edit(string $id)
@@ -176,7 +176,7 @@ class MasterStyleController extends Controller
         $washs = Wash::where('status', 'Active')->get();
         $garmentTypes = GarmentType::where('status', 'Active')->get();
 
-        return view('admin.master-style.edit', compact('masterStyle', 'buyers', 'styles', 'seasons', 'colors', 'washs', 'garmentTypes'));
+        return view('employee.master-style.edit', compact('masterStyle', 'buyers', 'styles', 'seasons', 'colors', 'washs', 'garmentTypes'));
     }
 
     public function update(Request $request, string $id)
@@ -250,7 +250,7 @@ class MasterStyleController extends Controller
                 ->make(true);
         }
 
-        return view('admin.master-style.index');
+        return view('employee.master-style.index');
     }
 
     public function restore(string $id)
@@ -343,7 +343,7 @@ class MasterStyleController extends Controller
                 ->make(true);
         }
 
-        return view('admin.master-style.edit');
+        return view('employee.master-style.edit');
     }
 
     public function bpoOrderStore(Request $request)
