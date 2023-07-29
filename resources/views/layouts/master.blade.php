@@ -43,12 +43,21 @@
                 <div class="hleft">
                     <div class="dropdown">
                         <a href="javascript:void(0)" class="nav-link user_btn"><img class="avatar" src="{{ asset('asset') }}/images/user.png" alt=""/></a>
-                        <a href="{{ route('admin.dashboard') }}" class="nav-link icon"><i class="fa fa-home"></i></a>
-                        <a href="#"  class="nav-link icon app_inbox"><i class="fa fa-envelope"></i></a>
-                        <a href="#"  class="nav-link icon xs-hide"><i class="fa fa-comments"></i></a>
-                        <a href="#"  class="nav-link icon xs-hide"><i class="icon-calendar"></i></a>
-                        <a href="#"  class="nav-link icon xs-hide"><i class="icon-notebook"></i></a>
-                        <a href="#"  class="nav-link icon app_file xs-hide"><i class="fa fa-folder"></i></a>
+                        @php
+                            if (Auth::user()->role == 'Admin') {
+                                $url = url('admin/dashboard');
+                            } elseif (Auth::user()->role == 'Employee') {
+                                $url = url('employee/dashboard');
+                            }else {
+                                $url = url('user/dashboard');
+                            }
+                        @endphp
+                        <a href="{{ $url }}" class="nav-link icon"><i class="fa fa-home"></i></a>
+                        <a href="javascript:void(0)"  class="nav-link icon app_inbox"><i class="fa fa-envelope"></i></a>
+                        <a href="javascript:void(0)"  class="nav-link icon xs-hide"><i class="fa fa-comments"></i></a>
+                        <a href="javascript:void(0)"  class="nav-link icon xs-hide"><i class="icon-calendar"></i></a>
+                        <a href="javascript:void(0)"  class="nav-link icon xs-hide"><i class="icon-notebook"></i></a>
+                        <a href="javascript:void(0)"  class="nav-link icon app_file xs-hide"><i class="fa fa-folder"></i></a>
                     </div>
                 </div>
                 <div class="hright">
@@ -177,24 +186,10 @@
             <h5 class="brand-name mb-4">User Profile<a href="javascript:void(0)" class="user_btn"><i class="icon-close"></i></a></h5>
             <div class="card">
                 <img class="card-img-top" src="{{ asset('asset') }}/images/gallery/6.jpg" alt="Card image cap">
-                {{-- <div class="card-body">
+                <div class="card-body">
                     <h5 class="card-title">{{ Auth::user()->name }}</h5>
                     <p class="card-text">{{ Auth::user()->role }}</p>
-                    <div class="row">
-                        <div class="col-4">
-                            <h6><strong>3265</strong></h6>
-                            <small>Post</small>
-                        </div>
-                        <div class="col-4">
-                            <h6><strong>1358</strong></h6>
-                            <small>Followers</small>
-                        </div>
-                        <div class="col-4">
-                            <h6><strong>10K</strong></h6>
-                            <small>Likes</small>
-                        </div>
-                    </div>
-                </div> --}}
+                </div>
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item">{{ Auth::user()->email }}</li>
                     <li class="list-group-item">+ 202-555-2828</li>
@@ -228,7 +223,7 @@
                 <div class="progress progress-sm">
                     <div class="progress-bar" role="progressbar" aria-valuenow="77" aria-valuemin="0" aria-valuemax="100" style="width: 77%;"></div>
                 </div>
-                <a href="{{ route('profile') }}" class="btn btn-primary btn-block mt-3">View Profile</a>
+                <a href="{{ route('admin.profile') }}" class="btn btn-primary btn-block mt-3">View Profile</a>
             </div>
         </div>
 
@@ -266,7 +261,13 @@
                             <div class="notification d-flex">
                                 <button type="button" class="btn btn-facebook"><i class="fa fa-info-circle mr-2"></i>Need Help</button>
                                 <button type="button" class="btn btn-facebook"><i class="fa fa-file-text mr-2"></i>Data export</button>
-                                <button type="button" class="btn btn-facebook"><i class="fa fa-power-off mr-2"></i>Sign Out</button>
+                                <!-- Authentication -->
+                                <form method="POST" action="{{ route('logout') }}">
+                                    @csrf
+                                    <a href="route('logout')" class="btn btn-facebook" onclick="event.preventDefault(); this.closest('form').submit();">
+                                        <i class="fa fa-power-off mr-2"></i>Sign Out
+                                    </a>
+                                </form>
                             </div>
                         </div>
                     </div>

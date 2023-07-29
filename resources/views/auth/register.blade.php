@@ -6,7 +6,7 @@
 <div class="auth">
     <div class="card">
         <div class="text-center mb-5">
-            <a class="header-brand" href="index.html"><i class="fe fe-command brand-logo"></i></a>
+            <a class="header-brand text-light" href="{{ route('register') }}"><i class="fe fe-command brand-logo"></i></a>
         </div>
         <div class="card-body">
             <div class="card-title">Create new account</div>
@@ -38,14 +38,7 @@
             </form>
         </div>
         <div class="text-center text-muted">
-            Already have account? <a href="{{ route('login') }}">Sign in</a>
-        </div>
-        <div class="card-footer text-center mt-3">
-            <button type="button" class="btn btn-icon btn-facebook"><i class="fa fa-facebook"></i></button>
-            <button type="button" class="btn btn-icon btn-twitter"><i class="fa fa-twitter"></i></button>
-            <button type="button" class="btn btn-icon btn-google"><i class="fa fa-google"></i></button>
-            <button type="button" class="btn btn-icon btn-youtube"><i class="fa fa-youtube"></i></button>
-            <button type="button" class="btn btn-icon btn-vimeo"><i class="fa fa-vimeo"></i></button>
+            Already have account? <a class="text-light" href="{{ route('login') }}">Sign in</a>
         </div>
     </div>
 </div>

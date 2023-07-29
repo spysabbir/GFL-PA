@@ -6,7 +6,7 @@
 <div class="auth">
     <div class="card">
         <div class="text-center mb-5">
-            <a class="header-brand" href="index.html"><i class="fe fe-command brand-logo"></i></a>
+            <a class="header-brand text-light" href="{{ route('password.email') }}"><i class="fe fe-command brand-logo"></i></a>
         </div>
         <div class="card-body">
             <div class="card-title">Forgot password</div>
@@ -29,7 +29,7 @@
             </form>
         </div>
         <div class="text-center text-muted">
-            Forget it, <a href="{{ route('login') }}">Send me Back</a> to the Sign in screen.
+            Forget it, <a class="text-light" href="{{ route('login') }}">Send me Back</a> to the Sign in screen.
         </div>
     </div>
 </div>

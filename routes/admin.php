@@ -23,6 +23,7 @@ use Illuminate\Support\Facades\Route;
 */
 Route::prefix('admin')->middleware(['auth'])->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+    Route::get('/profile', [AdminController::class, 'profile'])->name('profile');
 
     Route::resource('buyer', BuyerController::class);
     Route::get('/buyer-trashed', [BuyerController::class, 'trashed'])->name('buyer.trashed');
@@ -73,6 +74,7 @@ Route::prefix('admin')->middleware(['auth'])->name('admin.')->group(function () 
     Route::get('/master-style/force/delete/{id}', [MasterStyleController::class, 'forceDelete'])->name('master-style.force.delete');
     Route::get('/master-style/status/{id}', [MasterStyleController::class, 'statusEdit'])->name('master-style.status.edit');
     Route::post('/master-style/status/{id}', [MasterStyleController::class, 'statusUpdate'])->name('master-style.status.update');
+    Route::get('/master-style/get-details/{id}', [MasterStyleController::class, 'getMasterStyleDetails'])->name('master-style.get.details');
 
     Route::post('/bpo-order/store', [MasterStyleController::class, 'bpoOrderStore'])->name('bpo-order.store');
     Route::post('/bpo-order/upload/{id}', [MasterStyleController::class, 'bpoOrderUpload'])->name('bpo-order.upload');
@@ -81,7 +83,6 @@ Route::prefix('admin')->middleware(['auth'])->name('admin.')->group(function () 
     Route::post('/bpo-order/update/{id}', [MasterStyleController::class, 'bpoOrderUpdate'])->name('bpo-order.update');
     Route::get('/bpo-order/delete/{id}', [MasterStyleController::class, 'bpoOrderDelete'])->name('bpo-order.delete');
     Route::post('/bpo-order/delete/all', [MasterStyleController::class, 'bpoOrderDeleteAll'])->name('bpo-order.delete.all');
-    Route::get('/master-style/get-details/{id}', [MasterStyleController::class, 'getMasterStyleDetails'])->name('master-style.get.details');
 
 });
 

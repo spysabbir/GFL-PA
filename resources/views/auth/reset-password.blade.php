@@ -6,7 +6,7 @@
 <div class="auth">
     <div class="card">
         <div class="text-center mb-5">
-            <a class="header-brand" href="index.html"><i class="fe fe-command brand-logo"></i></a>
+            <a class="header-brand text-white" href="{{ route('password.store') }}"><i class="fe fe-command brand-logo"></i></a>
         </div>
         <div class="card-body">
             <div class="card-title">Genrate New Password</div>

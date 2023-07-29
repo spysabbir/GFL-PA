@@ -26,30 +26,31 @@
                         <li class="{{ request()->routeIs('admin.line.index') ? 'active' : '' }}"><a href="{{ route('admin.line.index') }}"><span data-hover="Line">Line</span></a></li>
                     </ul>
                 </li>
-                <li class="g_heading">Utilities</li>
+                <li class="g_heading">Employee Panel</li>
                 <li>
                     <a href="javascript:void(0)" class="has-arrow arrow-b"><i class="icon-tag"></i><span data-hover="Cutting">Cutting</span></a>
                     <ul>
-                        <li><a href="#"><span data-hover="Cutting Production">Cutting Production</span></a></li>
-                        <li><a href="#"><span data-hover="Issue To Sewing">Issue To Sewing</span></a></li>
+                        <li><a href="#"><span data-hover="New Cutting">New Cutting</span></a></li>
+                        <li><a href="#"><span data-hover="Delivery to Sewing">Delivery to Sewing</span></a></li>
                     </ul>
                 </li>
-                <li><a href="#"><i class="icon-puzzle"></i><span data-hover="Sewing Production">Sewing Production</span></a></li>
+                <li><a href="#"><i class="icon-puzzle"></i><span data-hover="Sewing Completed">Sewing Completed</span></a></li>
                 <li>
                     <a href="javascript:void(0)" class="has-arrow arrow-b"><i class="icon-tag"></i><span data-hover="Wash">Wash</span></a>
                     <ul>
-                        <li><a href="#"><span data-hover="Issue To Wash">Issue To Wash</span></a></li>
-                        <li><a href="#"><span data-hover="Receive From Wash ">Receive From Wash</span></a></li>
+                        <li><a href="#"><span data-hover="Delivery to Washing">Delivery to Washing</span></a></li>
+                        <li><a href="#"><span data-hover="Receive from Washing ">Receive from Washing</span></a></li>
                     </ul>
                 </li>
                 <li>
                     <a href="javascript:void(0)" class="has-arrow arrow-b"><i class="icon-tag"></i><span data-hover="Finishing">Finishing</span></a>
                     <ul>
-                        <li><a href="#"><span data-hover="Issue To Finishing">Issue To Finishing</span></a></li>
-                        <li><a href="#"><span data-hover="Finishing Production ">Finishing Production</span></a></li>
+                        <li><a href="#"><span data-hover="Delivery to Finishing">Delivery to Finishing</span></a></li>
+                        <li><a href="#"><span data-hover="Delivery to Packed GMTS">Delivery to Packed GMTS</span></a></li>
                     </ul>
                 </li>
-                <li class="g_heading">Extra Pages</li>
+                <li><a href="#"><i class="icon-puzzle"></i><span data-hover="Shipped GMTS">Shipped GMTS</span></a></li>
+                <li class="g_heading">User Panel</li>
                 <li>
                     <a href="javascript:void(0)" class="has-arrow arrow-b"><i class="icon-lock"></i><span data-hover="Authentication">Authentication</span></a>
                     <ul>
@@ -64,7 +65,7 @@
     <div class="tab-pane fade" id="report-tab">
         <nav class="sidebar-nav">
             <ul class="metismenu">
-                <li class="g_heading">Components</li>
+                <li class="g_heading">Admin Panel</li>
                 <li><a href="#"><i class="fe fe-type"></i><span>Typography</span></a></li>
                 <li><a href="#"><i class="fe fe-feather"></i><span>Colors</span></a></li>
             </ul>
