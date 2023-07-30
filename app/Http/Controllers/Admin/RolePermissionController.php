@@ -33,7 +33,7 @@ class RolePermissionController extends Controller
                     return $badgeTags;
                 })
                 ->addColumn('action', function ($row) {
-                    $btn = '<button type="button" data-id="' . $row->id . '" class="btn text-white bg-purple btn-sm editBtn" data-toggle="modal" data-target="#editModal"><i class="fe fe-edit"></i></button>
+                    $btn = '<a href="'.route('admin.role-permission.edit', $row->id).'" class="btn text-white bg-purple btn-sm"><i class="fe fe-edit"></i></a>
                             <button type="button" data-id="' . $row->id . '" class="btn text-white bg-yellow btn-sm deleteBtn"><i class="fe fe-trash"></i></button>';
                     return $btn;
                 })
@@ -41,9 +41,14 @@ class RolePermissionController extends Controller
                 ->make(true);
         }
 
+        return view('admin.role_permission.index');
+    }
+
+    public function create()
+    {
         $roles = Role::all();
         $permission_groups = User::getPermissionsGroup();
-        return view('admin.role_permission.index', compact('roles', 'permission_groups'));
+        return view('admin.role_permission.create', compact('roles', 'permission_groups'));
     }
 
     public function store(Request $request)
@@ -60,13 +65,56 @@ class RolePermissionController extends Controller
                 'error'=> $validator->errors()->toArray()
             ]);
         }else{
-            $data = array();
-            $permissions = $request->permission_id;
-            foreach($permissions as $item) {
-                $data['role_id'] = $request->role_id;
-                $data['permission_id'] = $item;
+            $exists = DB::table('role_has_permissions')
+                        ->where('role_id', $request->role_id)
+                        ->exists();
+            if ($exists) {
+                return response()->json([
+                    'status' => 401,
+                ]);
+            } else {
+                $data = array();
+                $permissions = $request->permission_id;
+                foreach($permissions as $item) {
+                    $data['role_id'] = $request->role_id;
+                    $data['permission_id'] = $item;
 
-                DB::table('role_has_permissions')->insert($data);
+                    DB::table('role_has_permissions')->insert($data);
+                }
+
+                return response()->json([
+                    'status' => 200,
+                ]);
+            }
+        }
+    }
+
+    public function edit(string $id)
+    {
+        $role = Role::findOrFail($id);
+        $permissions = Permission::all();
+        $permission_groups = User::getPermissionsGroup();
+        return view('admin.role_permission.edit', compact('role', 'permission_groups'));
+    }
+
+    public function update(Request $request, string $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'permission_id' => 'required|array',
+            'permission_id.*' => 'required|integer|exists:permissions,id',
+        ]);
+
+        if($validator->fails()){
+            return response()->json([
+                'status' => 400,
+                'error'=> $validator->errors()->toArray()
+            ]);
+        }else{
+            $role = Role::findOrFail($id);
+            $permissions = $request->permission_id;
+
+            if (!empty($permissions)) {
+                $role->syncPermissions($permissions);
             }
 
             return response()->json([
@@ -75,45 +123,9 @@ class RolePermissionController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        $permissions = Permission::all();
-        $role = Role::findOrFail($id);
-        $permission_groups = User::getPermissionsGroup();
-        return view('backend.admin.assign_role_permission.edit', compact('permissions', 'role', 'permission_groups'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        $role = Role::findOrFail($id);
-        $permissions = $request->permission_id;
-
-        if (!empty($permissions)) {
-            $role->syncPermissions($permissions);
-        }
-
-        return back();
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
-        //
+        $role = Role::findOrFail($id);
+        $role->delete();
     }
 }

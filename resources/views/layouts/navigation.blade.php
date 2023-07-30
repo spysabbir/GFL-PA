@@ -8,12 +8,11 @@
         <nav class="sidebar-nav">
             <ul class="metismenu ci-effect-1">
                 <li class="g_heading">Admin Panel</li>
-                <li class="{{ request()->routeIs('admin.role.index') || request()->routeIs('admin.permission.index') || request()->routeIs('admin.role-permission.index')  ? 'active' : '' }}">
+                <li class="{{ request()->routeIs('admin.role.index') || request()->routeIs('admin.role-permission.index')  ? 'active' : '' }}">
                     <a href="javascript:void(0)" class="has-arrow arrow-b"><i class="icon-home"></i><span data-hover="Assign Role Permission">Assign Role Permission</span></a>
                     <ul>
                         <li class="{{ request()->routeIs('admin.role.index') ? 'active' : '' }}"><a href="{{ route('admin.role.index') }}"><span data-hover="Role">Role</span></a></li>
-                        <li class="{{ request()->routeIs('admin.permission.index') ? 'active' : '' }}"><a href="{{ route('admin.permission.index') }}"><span data-hover="Permission">Permission</span></a></li>
-                        <li class="{{ request()->routeIs('admin.role-permission.index') ? 'active' : '' }}"><a href="{{ route('admin.role-permission.index') }}"><span data-hover="Assign">Assign Role in Permission</span></a></li>
+                        <li class="{{ request()->routeIs('admin.role-permission.index') ? 'active' : '' }}"><a href="{{ route('admin.role-permission.index') }}"><span data-hover="Role in Permission">Role in Permission</span></a></li>
                     </ul>
                 </li>
                 <li class="g_heading">Employee Panel</li>
