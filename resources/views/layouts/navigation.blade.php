@@ -15,6 +15,13 @@
                         <li class="{{ request()->routeIs('admin.role-permission.index') ? 'active' : '' }}"><a href="{{ route('admin.role-permission.index') }}"><span data-hover="Role in Permission">Role in Permission</span></a></li>
                     </ul>
                 </li>
+                <li class="{{ request()->routeIs('admin.user.index') || request()->routeIs('admin.user.create')  ? 'active' : '' }}">
+                    <a href="javascript:void(0)" class="has-arrow arrow-b"><i class="icon-home"></i><span data-hover="User">User</span></a>
+                    <ul>
+                        <li class="{{ request()->routeIs('admin.user.create') ? 'active' : '' }}"><a href="{{ route('admin.user.create') }}"><span data-hover="Create">Create</span></a></li>
+                        <li class="{{ request()->routeIs('admin.user.index') ? 'active' : '' }}"><a href="{{ route('admin.user.index') }}"><span data-hover="User">User</span></a></li>
+                    </ul>
+                </li>
                 <li class="g_heading">Employee Panel</li>
                 <li class="{{ request()->routeIs('employee.buyer.index') || request()->routeIs('employee.style.index') || request()->routeIs('employee.season.index') || request()->routeIs('employee.color.index') || request()->routeIs('employee.wash.index') || request()->routeIs('employee.garment-type.index') ? 'active' : '' }}">
                     <a href="javascript:void(0)" class="has-arrow arrow-b"><i class="icon-home"></i><span data-hover="Style Resources">Style Resources</span></a>
