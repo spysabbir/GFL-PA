@@ -13,14 +13,11 @@
 
     <!-- Bootstrap Core and vandor -->
     <link rel="stylesheet" href="{{ asset('asset') }}/plugins/bootstrap/css/bootstrap.min.css" />
-
     <!-- Plugins css -->
     <link rel="stylesheet" href="{{ asset('asset') }}/plugins/charts-c3/c3.min.css"/>
     <link rel="stylesheet" href="{{ asset('asset') }}/plugins/jvectormap/jvectormap-2.0.3.css" />
-
     <link rel="stylesheet" href="{{ asset('asset') }}/plugins/sweetalert2/sweetalert2.min.css">
     <link rel="stylesheet" href="{{ asset('asset') }}/plugins/toastr/toastr.css">
-
     <!-- Core css -->
     <link rel="stylesheet" href="{{ asset('asset') }}/css/main.css"/>
     <link rel="stylesheet" href="{{ asset('asset') }}/css/theme1.css" id="stylesheet"/>
@@ -48,8 +45,6 @@
                                 $url = url('admin/dashboard');
                             } elseif (Auth::user()->role == 'Employee') {
                                 $url = url('employee/dashboard');
-                            }else {
-                                $url = url('user/dashboard');
                             }
                         @endphp
                         <a href="{{ $url }}" class="nav-link icon"><i class="fa fa-home"></i></a>
@@ -302,18 +297,14 @@
 
     <!-- jQuery and bootstrtap js -->
     <script src="{{ asset('asset') }}/bundles/lib.vendor.bundle.js"></script>
-
     <!-- start plugin js file  -->
     <script src="{{ asset('asset') }}/bundles/counterup.bundle.js"></script>
     <script src="{{ asset('asset') }}/bundles/apexcharts.bundle.js"></script>
     <script src="{{ asset('asset') }}/bundles/c3.bundle.js"></script>
-
     <!-- Plugins Js -->
     <script src="{{ asset('asset') }}/plugins/toastr/toastr.min.js"></script>
     <script src="{{ asset('asset') }}/plugins/sweetalert2/sweetalert2.all.min.js"></script>
-
     <script src="{{ asset('asset') }}/bundles/dataTables.bundle.js"></script>
-
     <!-- Start core js and page js -->
     <script src="{{ asset('asset') }}/js/core.js"></script>
     <script src="{{ asset('asset') }}/js/page/index2.js"></script>

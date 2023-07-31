@@ -33,9 +33,9 @@ class ProfileController extends Controller
     public function passwordUpdate(Request $request)
     {
         $request->validate([
-            'current_password' => ['required', 'current_password'],
-            'password' => ['required', Password::defaults(), 'confirmed'],
-            'password_confirmation' => ['required', Password::defaults()],
+            'current_password' => ['required', 'current_password', 'min:6'],
+            'password' => ['required', Password::defaults(), 'confirmed', 'min:6'],
+            'password_confirmation' => ['required', Password::defaults(), 'min:6'],
         ]);
 
         $request->user()->update([

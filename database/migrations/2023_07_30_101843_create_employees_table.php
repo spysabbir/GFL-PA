@@ -13,16 +13,23 @@ return new class extends Migration
     {
         Schema::create('employees', function (Blueprint $table) {
             $table->id();
-            $table->string('phone_number')->nullable();
-            $table->string('gender')->nullable();
-            $table->text('address')->nullable();
-            $table->date('date_of_birth')->nullable();
+            $table->string('name');
+            $table->string('email')->nullable();
+            $table->string('phone_number');
+            $table->string('gender');
+            $table->text('address');
+            $table->date('date_of_birth');
             $table->string('profile_photo')->default('default_profile_photo.png');
-            $table->string('department')->nullable();
-            $table->string('designation')->nullable();
+            $table->string('department');
+            $table->string('designation');
             $table->string('nid_no')->nullable();
-            $table->date('date_of_join')->nullable();
+            $table->date('date_of_join');
+            $table->enum('status', ['Active', 'Inactive'])->default('Active');
+            $table->integer('created_by');
+            $table->integer('updated_by')->nullable();
+            $table->integer('deleted_by')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

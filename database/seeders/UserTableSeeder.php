@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -16,23 +16,14 @@ class UserTableSeeder extends Seeder
     {
         User::insert([
             [
+                'employee_id' => 0,
                 'name' => 'Admin',
+                'user_name' => 'admin',
                 'email' => 'admin@email.com',
                 'password' => Hash::make('12345678'),
                 'role' => 'Admin',
-            ],
-            [
-                'name' => 'Employee',
-                'email' => 'employee@email.com',
-                'password' => Hash::make('12345678'),
-                'role' => 'Employee',
-            ],
-            [
-                'name' => 'User',
-                'email' => 'user@email.com',
-                'password' => Hash::make('12345678'),
-                'role' => 'User',
-            ],
+                'created_at' => Carbon::now(),
+            ]
         ]);
     }
 }

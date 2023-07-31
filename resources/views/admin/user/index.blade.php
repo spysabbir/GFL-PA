@@ -9,6 +9,7 @@
             <div class="card-header">
                 <h3 class="card-title">User List</h3>
                 <div class="card-options">
+                    <a href="{{ route('admin.user.create') }}" class="btn text-white bg-green"><i class="fe fe-plus-circle"></i></a>
                     <!-- Fullscreen Btn -->
                     <a href="#" class="card-options-fullscreen btn text-white bg-indigo btn-sm" data-toggle="card-fullscreen"><i class="fe fe-maximize"></i></a>
                     <!-- Close Btn -->
@@ -25,6 +26,7 @@
                                 <th>Name</th>
                                 <th>User Name</th>
                                 <th>User Email</th>
+                                <th>Roles</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -65,6 +67,18 @@
                                                             <span class="text-danger error-text update_email_error"></span>
                                                         </div>
                                                     </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="form-label">Role</label>
+                                                            <select name="roles" class="form-control custom-select">
+                                                                <option value="">--Select Role--</option>
+                                                                @foreach ($allRole as $role)
+                                                                <option value="{{ $role->id }}">{{ $role->name }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                            <span class="text-danger error-text update_roles_error"></span>
+                                                        </div>
+                                                    </div>
                                                     <div class="col-md-2">
                                                         <div class="form-group mt-1">
                                                             <button type="submit" class="btn text-white bg-teal mt-4">Update</button>
@@ -87,6 +101,7 @@
                                 <th>Name</th>
                                 <th>User Name</th>
                                 <th>User Email</th>
+                                <th>Roles</th>
                                 <th>Action</th>
                             </tr>
                         </tfoot>
@@ -121,6 +136,7 @@
                 { data: 'name', name: 'name' },
                 { data: 'user_name', name: 'user_name' },
                 { data: 'email', name: 'email' },
+                { data: 'roles', name: 'roles' },
                 { data: 'action', name: 'action', orderable: false, searchable: false }
             ]
         });
@@ -150,7 +166,7 @@
             url = url.replace(':id', id)
             $.ajax({
                 url: url,
-                type: "POST",
+                type: "PUT",
                 data: $(this).serialize(),
                 beforeSend:function(){
                     $(document).find('span.error-text').text('');
@@ -172,7 +188,7 @@
         // Delete Data
         $(document).on('click', '.deleteBtn', function(){
             var id = $(this).data('id');
-            var url = "{{ route('admin.user.delete', ":id") }}";
+            var url = "{{ route('admin.user.destroy', ":id") }}";
             url = url.replace(':id', id)
             Swal.fire({
                 title: 'Are you sure?',
@@ -186,7 +202,7 @@
                 if (result.isConfirmed) {
                     $.ajax({
                         url: url,
-                        method: 'GET',
+                        method: 'DELETE',
                         success: function(response) {
                             $('#allDataTable').DataTable().ajax.reload();
                             toastr.warning('User delete successfully.');

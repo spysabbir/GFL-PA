@@ -18,9 +18,9 @@
             <form action="{{ route('login') }}" method="POST">
                 @csrf
                 <div class="form-group style2">
-                    <label class="form-label">Email address</label>
-                    <input type="email" class="form-control" name="email" value="{{ old('email') }}" placeholder="Enter your email">
-                    @error('email')<span class="text-danger">{{ $message }}</span>@enderror
+                    <label class="form-label">Email / Username</label>
+                    <input type="text" class="form-control" name="login" value="{{ old('login') }}" placeholder="Enter your email or username">
+                    @error('login')<span class="text-danger">{{ $message }}</span>@enderror
                 </div>
                 <div class="form-group style2">
                     <label class="form-label">Password<a href="{{ route('password.request') }}" class="float-right small">I forgot password</a></label>
@@ -37,9 +37,6 @@
                     <button type="submit" class="btn btn-primary btn-block">Sign in</button>
                 </div>
             </form>
-        </div>
-        <div class="text-center text-muted">
-            Don't have account yet? <a class="text-white" href="{{ route('register') }}">Sign up</a>
         </div>
     </div>
 </div>

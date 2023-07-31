@@ -9,6 +9,7 @@
             <div class="card-header">
                 <h3 class="card-title">User Create</h3>
                 <div class="card-options">
+                    <a href="{{ route('admin.user.index') }}" class="btn text-white bg-pink btn-sm"><i class="fe fe-database"></i></a>
                     <!-- Fullscreen Btn -->
                     <a href="#" class="card-options-fullscreen btn text-white bg-indigo btn-sm" data-toggle="card-fullscreen"><i class="fe fe-maximize"></i></a>
                     <!-- Close Btn -->
@@ -37,6 +38,16 @@
                         <label class="form-label">Email Address</label>
                         <input type="email" class="form-control" name="email" placeholder="Enter your email">
                         <span class="text-danger error-text email_error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Role</label>
+                        <select name="roles" class="form-control custom-select">
+                            <option value="">--Select Role--</option>
+                            @foreach ($allRole as $role)
+                            <option value="{{ $role->id }}">{{ $role->name }}</option>
+                            @endforeach
+                        </select>
+                        <span class="text-danger error-text roles_error"></span>
                     </div>
                     <button type="submit" class="btn btn-primary btn-block">Create new account</button>
                 </form>

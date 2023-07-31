@@ -34,7 +34,11 @@
                         <li class="{{ request()->routeIs('employee.garment-type.index') ? 'active' : '' }}"><a href="{{ route('employee.garment-type.index') }}"><span data-hover="Garment Type">Garment Type</span></a></li>
                     </ul>
                 </li>
+
+                @if (Auth::user()->can('employee.master-style.index'))
                 <li class="{{ request()->routeIs('employee.master-style.index') ? 'active' : '' }}"><a href="{{ route('employee.master-style.index') }}"><i class="icon-notebook"></i><span data-hover="Master Style">Master Style</span></a></li>
+                @endif
+
                 <li class="{{ request()->routeIs('employee.line.index') ? 'active' : '' }}">
                     <a href="javascript:void(0)" class="has-arrow arrow-b"><i class="icon-home"></i><span data-hover="Others Resources">Others Resources</span></a>
                     <ul>
