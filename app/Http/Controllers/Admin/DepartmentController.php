@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Department;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -45,7 +46,9 @@ class DepartmentController extends Controller
                 'error'=> $validator->errors()->toArray()
             ]);
         }else{
-            Department::create($request->all());
+            Department::create($request->all() + [
+                'created_by' => Auth::user()->id,
+            ]);
 
             return response()->json([
                 'status' => 200,
@@ -72,7 +75,9 @@ class DepartmentController extends Controller
             ]);
         } else {
             $department = Department::findOrFail($id);
-            $department->update($request->all());
+            $department->update($request->all() + [
+                'updated_by' => Auth::user()->id,
+            ]);
 
             return response()->json([
                 'status' => 200,

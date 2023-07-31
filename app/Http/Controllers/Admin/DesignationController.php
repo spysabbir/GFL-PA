@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Designation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -45,7 +46,9 @@ class DesignationController extends Controller
                 'error'=> $validator->errors()->toArray()
             ]);
         }else{
-            Designation::create($request->all());
+            Designation::create($request->all() + [
+                'created_by' => Auth::user()->id,
+            ]);
 
             return response()->json([
                 'status' => 200,
@@ -72,7 +75,9 @@ class DesignationController extends Controller
             ]);
         } else {
             $designation = Designation::findOrFail($id);
-            $designation->update($request->all());
+            $designation->update($request->all() + [
+                'updated_by' => Auth::user()->id,
+            ]);
 
             return response()->json([
                 'status' => 200,

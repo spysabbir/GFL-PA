@@ -25,7 +25,7 @@
                 <li class="{{ request()->routeIs('admin.department.index') || request()->routeIs('admin.designation.index')  ? 'active' : '' }}">
                     <a href="javascript:void(0)" class="has-arrow arrow-b"><i class="icon-home"></i><span data-hover="Employee Resources">Employee Resources</span></a>
                     <ul>
-                        <li class="{{ request()->routeIs('admin.department.create') ? 'active' : '' }}"><a href="{{ route('admin.department.create') }}"><span data-hover="Department">Department</span></a></li>
+                        <li class="{{ request()->routeIs('admin.department.index') ? 'active' : '' }}"><a href="{{ route('admin.department.index') }}"><span data-hover="Department">Department</span></a></li>
                         <li class="{{ request()->routeIs('admin.designation.index') ? 'active' : '' }}"><a href="{{ route('admin.designation.index') }}"><span data-hover="Designation">Designation</span></a></li>
                     </ul>
                 </li>
