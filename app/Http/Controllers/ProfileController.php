@@ -27,6 +27,19 @@ class ProfileController extends Controller
             'name' => $request->name,
         ]);
 
+        // Profile Photo Upload
+        // if($request->hasFile('profile_photo')){
+        //     if(Auth::guard('admin')->user()->profile_photo != "default_profile_photo.png"){
+        //         unlink(base_path("public/uploads/profile_photo/").Auth::guard('admin')->user()->profile_photo);
+        //     }
+        //     $profile_photo_name =  "Admin-Profile-Photo-".Auth::guard('admin')->user()->id.".". $request->file('profile_photo')->getClientOriginalExtension();
+        //     $upload_link = base_path("public/uploads/profile_photo/").$profile_photo_name;
+        //     Image::make($request->file('profile_photo'))->resize(300,300)->save($upload_link);
+        //     Admin::find(auth()->id())->update([
+        //         'profile_photo' => $profile_photo_name
+        //     ]);
+        // }
+
         return back()->with('status', 'profile-updated');
     }
 

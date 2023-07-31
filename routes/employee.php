@@ -83,6 +83,13 @@ Route::prefix('employee')->middleware(['auth'])->name('employee.')->group(functi
     Route::get('/bpo-order/delete/{id}', [MasterStyleController::class, 'bpoOrderDelete'])->name('bpo-order.delete');
     Route::post('/bpo-order/delete/all', [MasterStyleController::class, 'bpoOrderDeleteAll'])->name('bpo-order.delete.all');
 
+    Route::resource('employee', EmployeeController::class);
+    Route::get('/employee-trashed', [EmployeeController::class, 'trashed'])->name('employee.trashed');
+    Route::get('/employee/restore/{id}', [EmployeeController::class, 'restore'])->name('employee.restore');
+    Route::get('/employee/force/delete/{id}', [EmployeeController::class, 'forceDelete'])->name('employee.force.delete');
+    Route::get('/employee/status/{id}', [EmployeeController::class, 'status'])->name('employee.status');
+
+
 });
 
 

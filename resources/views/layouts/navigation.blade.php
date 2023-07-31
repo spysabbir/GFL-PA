@@ -7,7 +7,9 @@
     <div class="tab-pane fade active show" id="all-tab">
         <nav class="sidebar-nav">
             <ul class="metismenu ci-effect-1">
+
                 <li class="g_heading">Admin Panel</li>
+
                 <li class="{{ request()->routeIs('admin.role.index') || request()->routeIs('admin.role-permission.index')  ? 'active' : '' }}">
                     <a href="javascript:void(0)" class="has-arrow arrow-b"><i class="icon-home"></i><span data-hover="Assign Role Permission">Assign Role Permission</span></a>
                     <ul>
@@ -15,6 +17,7 @@
                         <li class="{{ request()->routeIs('admin.role-permission.index') ? 'active' : '' }}"><a href="{{ route('admin.role-permission.index') }}"><span data-hover="Role in Permission">Role in Permission</span></a></li>
                     </ul>
                 </li>
+
                 <li class="{{ request()->routeIs('admin.user.index') || request()->routeIs('admin.user.create')  ? 'active' : '' }}">
                     <a href="javascript:void(0)" class="has-arrow arrow-b"><i class="icon-home"></i><span data-hover="User">User</span></a>
                     <ul>
@@ -22,6 +25,7 @@
                         <li class="{{ request()->routeIs('admin.user.index') ? 'active' : '' }}"><a href="{{ route('admin.user.index') }}"><span data-hover="User">User</span></a></li>
                     </ul>
                 </li>
+
                 <li class="{{ request()->routeIs('admin.department.index') || request()->routeIs('admin.designation.index')  ? 'active' : '' }}">
                     <a href="javascript:void(0)" class="has-arrow arrow-b"><i class="icon-home"></i><span data-hover="Employee Resources">Employee Resources</span></a>
                     <ul>
@@ -29,7 +33,18 @@
                         <li class="{{ request()->routeIs('admin.designation.index') ? 'active' : '' }}"><a href="{{ route('admin.designation.index') }}"><span data-hover="Designation">Designation</span></a></li>
                     </ul>
                 </li>
+
+                {{-- Employee Panel --}}
                 <li class="g_heading">Employee Panel</li>
+                
+                <li class="{{ request()->routeIs('employee.employee.create') || request()->routeIs('employee.employee.index') ? 'active' : '' }}">
+                    <a href="javascript:void(0)" class="has-arrow arrow-b"><i class="icon-home"></i><span data-hover="Employee">Employee</span></a>
+                    <ul>
+                        <li class="{{ request()->routeIs('employee.employee.create') ? 'active' : '' }}"><a href="{{ route('employee.employee.create') }}"><span data-hover="Create">Create</span></a></li>
+                        <li class="{{ request()->routeIs('employee.employee.index') ? 'active' : '' }}"><a href="{{ route('employee.employee.index') }}"><span data-hover="List">List</span></a></li>
+                    </ul>
+                </li>
+
                 <li class="{{ request()->routeIs('employee.buyer.index') || request()->routeIs('employee.style.index') || request()->routeIs('employee.season.index') || request()->routeIs('employee.color.index') || request()->routeIs('employee.wash.index') || request()->routeIs('employee.garment-type.index') ? 'active' : '' }}">
                     <a href="javascript:void(0)" class="has-arrow arrow-b"><i class="icon-home"></i><span data-hover="Style Resources">Style Resources</span></a>
                     <ul>
@@ -52,6 +67,7 @@
                         <li class="{{ request()->routeIs('employee.line.index') ? 'active' : '' }}"><a href="{{ route('employee.line.index') }}"><span data-hover="Line">Line</span></a></li>
                     </ul>
                 </li>
+
                 <li>
                     <a href="javascript:void(0)" class="has-arrow arrow-b"><i class="icon-tag"></i><span data-hover="Cutting">Cutting</span></a>
                     <ul>
@@ -59,7 +75,9 @@
                         <li><a href="#"><span data-hover="Delivery to Sewing">Delivery to Sewing</span></a></li>
                     </ul>
                 </li>
+
                 <li><a href="#"><i class="icon-puzzle"></i><span data-hover="Sewing Completed">Sewing Completed</span></a></li>
+
                 <li>
                     <a href="javascript:void(0)" class="has-arrow arrow-b"><i class="icon-tag"></i><span data-hover="Wash">Wash</span></a>
                     <ul>
@@ -67,6 +85,7 @@
                         <li><a href="#"><span data-hover="Receive from Washing ">Receive from Washing</span></a></li>
                     </ul>
                 </li>
+
                 <li>
                     <a href="javascript:void(0)" class="has-arrow arrow-b"><i class="icon-tag"></i><span data-hover="Finishing">Finishing</span></a>
                     <ul>
@@ -74,16 +93,8 @@
                         <li><a href="#"><span data-hover="Delivery to Packed GMTS">Delivery to Packed GMTS</span></a></li>
                     </ul>
                 </li>
+
                 <li><a href="#"><i class="icon-puzzle"></i><span data-hover="Shipped GMTS">Shipped GMTS</span></a></li>
-                <li class="g_heading">User Panel</li>
-                <li>
-                    <a href="javascript:void(0)" class="has-arrow arrow-b"><i class="icon-lock"></i><span data-hover="Authentication">Authentication</span></a>
-                    <ul>
-                        <li><a href="#"><span data-hover="Login">Login</span></a></li>
-                        <li><a href="#"><span data-hover="Register">Register</span></a></li>
-                    </ul>
-                </li>
-                <li><a href="#"><i class="icon-map"></i><span data-hover="Maps">Maps</span></a></li>
             </ul>
         </nav>
     </div>

@@ -20,9 +20,9 @@ return new class extends Migration
             $table->text('address');
             $table->date('date_of_birth');
             $table->string('profile_photo')->default('default_profile_photo.png');
-            $table->string('department');
-            $table->string('designation');
-            $table->string('nid_no')->nullable();
+            $table->integer('department_id');
+            $table->integer('designation_id');
+            $table->string('nid_no');
             $table->date('date_of_join');
             $table->enum('status', ['Active', 'Inactive'])->default('Active');
             $table->integer('created_by');
