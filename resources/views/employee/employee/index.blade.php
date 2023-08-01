@@ -119,7 +119,7 @@
                             </tr>
                         </thead>
                         <tbody>
-
+                            
                         </tbody>
                         <tfoot>
                             <tr>
@@ -273,6 +273,21 @@
                 }
             })
         })
+
+        // Status Change Data
+        $(document).on('click', '.statusBtn', function () {
+            var id = $(this).data('id');
+            var url = "{{ route('employee.employee.status', ":id") }}";
+            url = url.replace(':id', id)
+            $.ajax({
+                url: url,
+                type: "GET",
+                success: function (response) {
+                    $('#allDataTable').DataTable().ajax.reload();
+                    toastr.success('Employee status change successfully.');
+                },
+            });
+        });
 
     });
 </script>

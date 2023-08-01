@@ -134,7 +134,7 @@
             }
         });
 
-        // Store Image Preview
+        // Update Image Preview
         $('#image').change(function(){
             var reader = new FileReader();
             reader.onload = function (e) {
@@ -144,39 +144,6 @@
         });
 
         // Employee Update Data
-        // $('#editForm').submit(function (event) {
-        //     event.preventDefault();
-        //     var id = $('#employee_id').val();
-        //     var url = "{{ route('employee.employee.update', ":id") }}";
-        //     url = url.replace(':id', id)
-        //     var formData = new FormData(this);
-        //     $.ajax({
-        //         url: url,
-        //         type: "PUT",
-        //         data: formData,
-        //         dataType: 'json',
-        //         contentType: false,
-        //         processData: false,
-        //         beforeSend:function(){
-        //             $(document).find('span.error-text').text('');
-        //         },
-        //         success: function (response) {
-        //             console.log(response);
-        //             // if (response.status == 400) {
-        //             //     $.each(response.error, function(prefix, val){
-        //             //         $('span.update_'+prefix+'_error').text(val[0]);
-        //             //     })
-        //             // }else{
-        //             //     if (response.status == 401) {
-        //             //         toastr.error('This nid no is already added.');
-        //             //     } else {
-        //             //         toastr.success('Employee update successfully.');
-        //             //     }
-        //             // }
-        //         },
-        //     });
-        // });
-
         $('#editForm').submit(function (event) {
             event.preventDefault();
             var id = $('#employee_id').val();
@@ -208,7 +175,6 @@
                 },
             });
         });
-
     });
 </script>
 @endsection

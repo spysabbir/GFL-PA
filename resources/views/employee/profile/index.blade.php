@@ -6,11 +6,11 @@
 <div class="row clearfix">
     <div class="col-lg-4 col-md-12">
         <div class="card">
-            <img class="card-img-top" src="{{ asset('asset') }}/images/gallery/6.jpg" alt="Card image cap">
+            <img class="avatar avatar-xxl m-2"  src="{{ asset('uploads/profile_photo') }}/{{ $employee->profile_photo }}" alt="Profile Photo" id="imagePreview">
             <div class="card-body">
                 <h4 class="card-title">Name: {{ Auth::user()->name }}</h4>
                 <h4 class="card-title">Role: {{ Auth::user()->role }}</h4>
-                <p class="card-text">795 Folsom Ave, Suite 600 San Francisco, 94107</p>
+                <p class="card-text"><strong>Address: </strong>{{ $employee->address }}</p>
                 {{-- <div class="row">
                     <div class="col-4">
                         <h6><strong>3265</strong></h6>
@@ -27,9 +27,14 @@
                 </div> --}}
             </div>
             <ul class="list-group list-group-flush">
-                <li class="list-group-item">{{ Auth::user()->email }}</li>
-                <li class="list-group-item">+ 202-555-2828</li>
-                <li class="list-group-item">October 22th, 1990</li>
+                <li class="list-group-item"><strong>Email: </strong>{{ Auth::user()->email }}</li>
+                <li class="list-group-item"><strong>Department: </strong>{{ $employee->department_id }}</li>
+                <li class="list-group-item"><strong>Designation: </strong>{{ $employee->designation_id }}</li>
+                <li class="list-group-item"><strong>Primary Phone Number: </strong>{{ $employee->primary_phone_number }}</li>
+                <li class="list-group-item"><strong>Gender: </strong>{{ $employee->gender }}</li>
+                <li class="list-group-item"><strong>Date of Birth: </strong>{{ $employee->date_of_birth }}</li>
+                <li class="list-group-item"><strong>Date of Join: </strong>{{ $employee->date_of_join }}</li>
+                <li class="list-group-item"><strong>Nid No: </strong>{{ $employee->nid_no }}</li>
             </ul>
         </div>
     </div>
@@ -43,14 +48,14 @@
                 </div>
             </div>
             <div class="card-body">
-                <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6">
+                <form method="post" action="{{ route('profile.update') }}" enctype="multipart/form-data" class="mt-6 space-y-6">
                     @csrf
                     @method('patch')
                     <div class="row clearfix">
                         <div class="col-sm-6 col-md-6">
                             <div class="form-group">
                                 <label class="form-label">Profile Photo</label>
-                                <input type="file" class="form-control" name="profile_photo">
+                                <input type="file" class="form-control" name="profile_photo" id="image">
                                 @error('profile_photo')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
@@ -65,10 +70,37 @@
                                 @enderror
                             </div>
                         </div>
+                        <div class="col-sm-6 col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Father's Name</label>
+                                <input type="text" class="form-control" name="father_name" value="{{ old('father_name', $user->father_name) }}">
+                                @error('father_name')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Mother's Name</label>
+                                <input type="text" class="form-control" name="mother_name" value="{{ old('mother_name', $user->mother_name) }}">
+                                @error('mother_name')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Emergency Phone Number</label>
+                                <input type="text" class="form-control" name="emergency_phone_number" value="{{ old('emergency_phone_number', $employee->emergency_phone_number) }}">
+                                @error('emergency_phone_number')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </div>
                         <div class="col-md-12">
                             <div class="form-group mb-0">
                                 <label class="form-label">Address</label>
-                                <textarea class="form-control" placeholder="Address" name="address"></textarea>
+                                <textarea class="form-control" placeholder="Address" name="address">{{ old('address', $employee->address) }}</textarea>
                             </div>
                         </div>
                         <button type="submit" class="btn btn-primary mt-3">Update Profile</button>
@@ -124,3 +156,19 @@
     </div>
 </div>
 @endsection
+
+@section('script')
+<script>
+    $(document).ready(function() {
+        // Store Image Preview
+        $('#image').change(function(){
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('#imagePreview').attr('src', e.target.result).show();
+            }
+            reader.readAsDataURL(this.files[0]);
+        });
+    });
+</script>
+@endsection
+

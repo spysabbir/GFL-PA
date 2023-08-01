@@ -34,9 +34,16 @@
                     </ul>
                 </li>
 
+                <li class="{{ request()->routeIs('admin.default.setting')  ? 'active' : '' }}">
+                    <a href="javascript:void(0)" class="has-arrow arrow-b"><i class="icon-home"></i><span data-hover="Setting">Setting</span></a>
+                    <ul>
+                        <li class="{{ request()->routeIs('admin.default.setting') ? 'active' : '' }}"><a href="{{ route('admin.default.setting') }}"><span data-hover="Default Setting">Default Setting</span></a></li>
+                    </ul>
+                </li>
+
                 {{-- Employee Panel --}}
                 <li class="g_heading">Employee Panel</li>
-                
+
                 <li class="{{ request()->routeIs('employee.employee.create') || request()->routeIs('employee.employee.index') ? 'active' : '' }}">
                     <a href="javascript:void(0)" class="has-arrow arrow-b"><i class="icon-home"></i><span data-hover="Employee">Employee</span></a>
                     <ul>

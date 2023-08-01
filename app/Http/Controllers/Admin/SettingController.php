@@ -7,6 +7,7 @@ use App\Models\DefaultSetting;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Intervention\Image\Facades\Image;
 
 class SettingController extends Controller
 {
@@ -46,6 +47,7 @@ class SettingController extends Controller
             'main_email' => 'nullable|email|max:255',
             'support_email' => 'nullable|email|max:255',
         ]);
+        
         $this->changeEnv("APP_NAME", "'$request->app_name'");
         $this->changeEnv("APP_URL", "'$request->app_url'");
         $this->changeEnv("TIME_ZONE", "'$request->time_zone'");
@@ -101,6 +103,5 @@ class SettingController extends Controller
         );
 
         return back()->with($notification);
-
     }
 }

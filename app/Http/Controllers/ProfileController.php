@@ -2,45 +2,64 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
+use Intervention\Image\Facades\Image;
 
 class ProfileController extends Controller
 {
     public function profile(Request $request)
     {
-        return view('profile.index', [
+        return view('employee.profile.index', [
             'user' => $request->user(),
+            'employee' => Employee::find($request->user()->employee_id),
         ]);
     }
 
     public function profileUpdate(Request $request)
     {
         $request->validate([
-            'name' => ['string', 'max:255'],
+            'name' => ['required', 'string', 'max:255'],
+            'profile_photo' => 'nullable|image|mimes:png,jpg,jpeg',
         ]);
 
+        // User Data
         $request->user()->update([
             'name' => $request->name,
         ]);
 
-        // Profile Photo Upload
-        // if($request->hasFile('profile_photo')){
-        //     if(Auth::guard('admin')->user()->profile_photo != "default_profile_photo.png"){
-        //         unlink(base_path("public/uploads/profile_photo/").Auth::guard('admin')->user()->profile_photo);
-        //     }
-        //     $profile_photo_name =  "Admin-Profile-Photo-".Auth::guard('admin')->user()->id.".". $request->file('profile_photo')->getClientOriginalExtension();
-        //     $upload_link = base_path("public/uploads/profile_photo/").$profile_photo_name;
-        //     Image::make($request->file('profile_photo'))->resize(300,300)->save($upload_link);
-        //     Admin::find(auth()->id())->update([
-        //         'profile_photo' => $profile_photo_name
-        //     ]);
-        // }
+        // Employee Data
+        $employee = Employee::find($request->user()->employee_id);
+        $employee->update([
+            'name' => $request->name,
+            'emergency_phone_number' => $request->emergency_phone_number,
+            'address' => $request->address,
+        ]);
 
-        return back()->with('status', 'profile-updated');
+        // Profile Photo Upload
+        if($request->hasFile('profile_photo')){
+            if($employee->profile_photo != "default_profile_photo.png"){
+                unlink(base_path("public/uploads/profile_photo/").$employee->profile_photo);
+            }
+            $profile_photo_name =  "Employee-Profile-Photo-".$employee->id.".". $request->file('profile_photo')->getClientOriginalExtension();
+            $upload_link = base_path("public/uploads/profile_photo/").$profile_photo_name;
+            Image::make($request->file('profile_photo'))->resize(120,120)->save($upload_link);
+            $employee->update([
+                'profile_photo' => $profile_photo_name,
+                'updated_by' => Auth::user()->id,
+            ]);
+        }
+
+        $notification = array(
+            'message' => 'Profile updated successfully.',
+            'alert-type' => 'success'
+        );
+
+        return back()->with($notification);
     }
 
     public function passwordUpdate(Request $request)
@@ -55,6 +74,11 @@ class ProfileController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        return back()->with('status', 'password-updated');
+        $notification = array(
+            'message' => 'Password updated successfully.',
+            'alert-type' => 'success'
+        );
+
+        return back()->with($notification);
     }
 }

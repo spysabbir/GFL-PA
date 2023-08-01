@@ -14,8 +14,11 @@ return new class extends Migration
         Schema::create('employees', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('father_name')->nullable();
+            $table->string('mother_name')->nullable();
             $table->string('email')->nullable();
-            $table->string('phone_number');
+            $table->string('primary_phone_number');
+            $table->string('emergency_phone_number')->nullable();
             $table->string('gender');
             $table->text('address');
             $table->date('date_of_birth');

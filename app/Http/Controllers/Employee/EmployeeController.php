@@ -52,6 +52,9 @@ class EmployeeController extends Controller
 
             return DataTables::of($employees)
                 ->addIndexColumn()
+                ->editColumn('profile_photo', function ($row) {
+                    return '<img class="avatar avatar-xl" src="'.asset('uploads/profile_photo').'/' .$row->profile_photo.'" alt="">';
+                })
                 ->editColumn('status', function ($row) {
                     if ($row->status == 'Active') {
                         $status = '<span class="badge text-white bg-green">' . $row->status . '</span>
@@ -67,7 +70,7 @@ class EmployeeController extends Controller
                             <button type="button" data-id="' . $row->id . '" class="btn text-white bg-yellow btn-sm deleteBtn"><i class="fe fe-trash"></i></button>';
                     return $btn;
                 })
-                ->rawColumns(['status', 'action'])
+                ->rawColumns(['profile_photo', 'status', 'action'])
                 ->make(true);
         }
 
@@ -167,12 +170,12 @@ class EmployeeController extends Controller
                     Image::make($request->file('profile_photo'))->resize(120, 120)->save($upload_link);
                     $employee->update([
                         'profile_photo' => $profile_photo_name,
-                        'created_by' => Auth::user()->id,
+                        'updated_by' => Auth::user()->id,
                     ]);
                 };
 
                 $employee->update($request->except('profile_photo')+[
-                    'created_by' => Auth::user()->id,
+                    'updated_by' => Auth::user()->id,
                 ]);
 
                 return response()->json([
@@ -229,5 +232,19 @@ class EmployeeController extends Controller
             unlink(base_path("public/uploads/profile_photo/").$employee->profile_photo);
         }
         $employee->forceDelete();
+    }
+
+    public function status(string $id)
+    {
+        $employee = Employee::findOrFail($id);
+
+        if ($employee->status == "Active") {
+            $employee->status = "Inactive";
+        } else {
+            $employee->status = "Active";
+        }
+
+        $employee->updated_by = Auth::user()->id;
+        $employee->save();
     }
 }
