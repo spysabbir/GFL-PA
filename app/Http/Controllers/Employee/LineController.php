@@ -81,7 +81,6 @@ class LineController extends Controller
 
         $validator = Validator::make($request->all(), [
             'line_no' => 'required|string|max:255|unique:lines,line_no,' . $id,
-
         ]);
 
         if ($validator->fails()) {

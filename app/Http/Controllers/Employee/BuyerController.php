@@ -81,7 +81,6 @@ class BuyerController extends Controller
 
         $validator = Validator::make($request->all(), [
             'buyer_name' => 'required|string|max:255|unique:buyers,buyer_name,' . $id,
-
         ]);
 
         if ($validator->fails()) {

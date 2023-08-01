@@ -104,11 +104,15 @@ class StyleController extends Controller
                 'error' => $validator->errors()->toArray()
             ]);
         } else {
-            $exists = Style::where('id', $id)
+            $existsId = Style::where('id', $id)
                             ->where('buyer_id', $request->buyer_id)
                             ->where('style_name', $request->style_name)
                             ->exists();
-            if (!$exists) {
+            $exists = Style::where('buyer_id', $request->buyer_id)
+                            ->where('style_name', $request->style_name)
+                            ->exists();
+                            
+            if (!$existsId && $exists) {
                 return response()->json([
                     'status' => 401,
                 ]);

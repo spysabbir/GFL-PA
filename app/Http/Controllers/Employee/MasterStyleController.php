@@ -59,6 +59,10 @@ class MasterStyleController extends Controller
 
             return DataTables::of($styles)
                 ->addIndexColumn()
+                ->addColumn('order_qty', function ($row) {
+                    $order_qty = '<span class="badge text-white bg-red">' . StyleBpoOrder::where('master_style_id', $row->id)->sum('order_quantity') . '</span>';
+                    return $order_qty;
+                })
                 ->editColumn('status', function ($row) {
                     if ($row->status == 'Inactive') {
                         $status = '<span class="badge text-white bg-pink">' . $row->status . '</span>';
@@ -80,10 +84,6 @@ class MasterStyleController extends Controller
                         <a href="'.route('employee.master-style.show', $row->id).'" class="btn text-white bg-azure btn-sm"><i class="fe fe-eye"></i></a>
                         <button type="button" data-id="' . $row->id . '" class="btn text-white bg-yellow btn-sm deleteBtn"><i class="fe fe-trash"></i></button>';
                     return $btn;
-                })
-                ->addColumn('order_qty', function ($row) {
-                    $order_qty = '<span class="badge text-white bg-red">' . StyleBpoOrder::where('master_style_id', $row->id)->sum('order_quantity') . '</span>';
-                    return $order_qty;
                 })
                 ->rawColumns(['order_qty', 'status', 'action'])
                 ->make(true);
@@ -191,14 +191,20 @@ class MasterStyleController extends Controller
                 'error' => $validator->errors()->toArray()
             ]);
         } else {
-            $exists = MasterStyle::where('id', $id)
+            $existsId = MasterStyle::where('id', $id)
                                 ->where('buyer_id', $request->buyer_id)
                                 ->where('style_id', $request->style_id)
                                 ->where('season_id', $request->season_id)
                                 ->where('color_id', $request->color_id)
                                 ->where('wash_id', $request->wash_id)
                                 ->exists();
-            if (!$exists) {
+            $exists = MasterStyle::where('buyer_id', $request->buyer_id)
+                                ->where('style_id', $request->style_id)
+                                ->where('season_id', $request->season_id)
+                                ->where('color_id', $request->color_id)
+                                ->where('wash_id', $request->wash_id)
+                                ->exists();
+            if (!$existsId && $exists) {
                 return response()->json([
                     'status' => 401,
                 ]);

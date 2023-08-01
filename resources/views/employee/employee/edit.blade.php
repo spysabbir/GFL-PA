@@ -7,7 +7,7 @@
     <div class="col-lg-12">
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Create Employee</h3>
+                <h3 class="card-title">Edit Employee</h3>
                 <div class="card-options">
                     <a href="{{ route('employee.employee.index') }}" class="btn text-white bg-pink"><i class="fe fe-database"></i></a>
                     <a href="#" class="card-options-fullscreen btn text-white bg-indigo" data-toggle="card-fullscreen"><i class="fe fe-maximize"></i></a>
@@ -15,36 +15,38 @@
                 </div>
             </div>
             <div class="card-body">
-                <form id="createForm" enctype="multipart/form-data">
+                <form id="editForm" enctype="multipart/form-data">
                     @csrf
+                    @method('PUT')
                     <div class="row">
+                        <input type="hidden" id="employee_id" value="{{ $employee->id }}">
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label class="form-label">Profile Photo</label>
                                 <input type="file" class="form-control" name="profile_photo" id="image">
-                                <img src="" alt="Profile Photo" id="imagePreview" width="100" height="100">
-                                <span class="text-danger error-text profile_photo_error"></span>
+                                <img src="{{ asset('uploads/profile_photo') }}/{{ $employee->profile_photo }}" alt="Profile Photo" id="imagePreview" width="100" height="100">
+                                <span class="text-danger error-text update_profile_photo_error"></span>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label class="form-label">Name</label>
-                                <input type="text" class="form-control" name="name" placeholder="Enter your name">
-                                <span class="text-danger error-text name_error"></span>
+                                <input type="text" class="form-control" name="name" value="{{ $employee->name }}">
+                                <span class="text-danger error-text update_name_error"></span>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label class="form-label">Email</label>
-                                <input type="email" class="form-control" name="email" placeholder="Enter your email">
-                                <span class="text-danger error-text email_error"></span>
+                                <input type="email" class="form-control" name="email" value="{{ $employee->email }}">
+                                <span class="text-danger error-text update_email_error"></span>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label class="form-label">Phone Number</label>
-                                <input type="text" class="form-control" name="phone_number" placeholder="Enter your phone number">
-                                <span class="text-danger error-text phone_number_error"></span>
+                                <input type="text" class="form-control" name="phone_number" value="{{ $employee->phone_number }}">
+                                <span class="text-danger error-text update_phone_number_error"></span>
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -52,24 +54,24 @@
                                 <label class="form-label">Gender Name</label>
                                 <select name="gender" id="" class="form-control custom-select">
                                     <option value="">--Select Gender--</option>
-                                    <option value="Male">Male</option>
-                                    <option value="Female">Female</option>
+                                    <option value="Male" @selected($employee->gender == 'Male')>Male</option>
+                                    <option value="Female" @selected($employee->gender == 'Female')>Female</option>
                                 </select>
-                                <span class="text-danger error-text gender_error"></span>
+                                <span class="text-danger error-text update_gender_error"></span>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label class="form-label">Date of Birth</label>
-                                <input type="date" class="form-control" name="date_of_birth">
-                                <span class="text-danger error-text date_of_birth_error"></span>
+                                <input type="date" class="form-control" name="date_of_birth" value="{{ $employee->date_of_birth }}">
+                                <span class="text-danger error-text update_date_of_birth_error"></span>
                             </div>
                         </div>
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label class="form-label">Address</label>
-                                <textarea class="form-control" name="address" placeholder="Enter your address"></textarea>
-                                <span class="text-danger error-text address_error"></span>
+                                <textarea class="form-control" name="address">{{ $employee->address }}</textarea>
+                                <span class="text-danger error-text update_address_error"></span>
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -78,10 +80,10 @@
                                 <select name="department_id" id="" class="form-control custom-select">
                                     <option value="">--Select Department--</option>
                                     @foreach ($departments as $department)
-                                    <option value="{{ $department->id }}">{{ $department->department_name }}</option>
+                                    <option value="{{ $department->id }}" @selected($employee->department_id == $department->id)>{{ $department->department_name }}</option>
                                     @endforeach
                                 </select>
-                                <span class="text-danger error-text department_id_error"></span>
+                                <span class="text-danger error-text update_department_id_error"></span>
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -90,29 +92,29 @@
                                 <select name="designation_id" id="" class="form-control custom-select">
                                     <option value="">--Select Designation--</option>
                                     @foreach ($designations as $designation)
-                                    <option value="{{ $designation->id }}">{{ $designation->designation_name }}</option>
+                                    <option value="{{ $designation->id }}" @selected($employee->designation_id == $designation->id)>{{ $designation->designation_name }}</option>
                                     @endforeach
                                 </select>
-                                <span class="text-danger error-text designation_id_error"></span>
+                                <span class="text-danger error-text update_designation_id_error"></span>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label class="form-label">Nid No</label>
-                                <input type="number" class="form-control" name="nid_no" placeholder="Enter your nid no">
-                                <span class="text-danger error-text nid_no_error"></span>
+                                <input type="number" class="form-control" name="nid_no" value="{{ $employee->nid_no }}">
+                                <span class="text-danger error-text update_nid_no_error"></span>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label class="form-label">Date of Join</label>
-                                <input type="date" class="form-control" name="date_of_join">
-                                <span class="text-danger error-text date_of_join_error"></span>
+                                <input type="date" class="form-control" name="date_of_join" value="{{ $employee->date_of_join }}">
+                                <span class="text-danger error-text update_date_of_join_error"></span>
                             </div>
                         </div>
                         <div class="col-md-2">
                             <div class="form-group mt-1">
-                                <button type="submit" class="btn text-white bg-cyan mt-4">Create</button>
+                                <button type="submit" class="btn text-white bg-cyan mt-4">Update</button>
                             </div>
                         </div>
                     </div>
@@ -141,13 +143,49 @@
             reader.readAsDataURL(this.files[0]);
         });
 
-        // Store Data
-        $('#createForm').submit(function(event) {
+        // Employee Update Data
+        // $('#editForm').submit(function (event) {
+        //     event.preventDefault();
+        //     var id = $('#employee_id').val();
+        //     var url = "{{ route('employee.employee.update', ":id") }}";
+        //     url = url.replace(':id', id)
+        //     var formData = new FormData(this);
+        //     $.ajax({
+        //         url: url,
+        //         type: "PUT",
+        //         data: formData,
+        //         dataType: 'json',
+        //         contentType: false,
+        //         processData: false,
+        //         beforeSend:function(){
+        //             $(document).find('span.error-text').text('');
+        //         },
+        //         success: function (response) {
+        //             console.log(response);
+        //             // if (response.status == 400) {
+        //             //     $.each(response.error, function(prefix, val){
+        //             //         $('span.update_'+prefix+'_error').text(val[0]);
+        //             //     })
+        //             // }else{
+        //             //     if (response.status == 401) {
+        //             //         toastr.error('This nid no is already added.');
+        //             //     } else {
+        //             //         toastr.success('Employee update successfully.');
+        //             //     }
+        //             // }
+        //         },
+        //     });
+        // });
+
+        $('#editForm').submit(function (event) {
             event.preventDefault();
+            var id = $('#employee_id').val();
+            var url = "{{ route('employee.employee.update', ':id') }}";
+            url = url.replace(':id', id);
             var formData = new FormData(this);
             $.ajax({
-                url: "{{ route('employee.employee.store') }}",
-                type: 'POST',
+                url: url,
+                type: "POST",
                 data: formData,
                 dataType: 'json',
                 contentType: false,
@@ -155,22 +193,22 @@
                 beforeSend: function(){
                     $(document).find('span.error-text').text('');
                 },
-                success: function(response) {
+                success: function (response) {
                     if (response.status == 400) {
                         $.each(response.error, function(prefix, val){
-                            $('span.'+prefix+'_error').text(val[0]);
+                            $('span.update_'+prefix+'_error').text(val[0]);
                         })
                     } else {
                         if (response.status == 401) {
                             toastr.error('This nid no is already added.');
                         } else {
-                            $('#createForm')[0].reset();
-                            toastr.success('Employee store successfully.');
+                            toastr.success('Employee update successfully.');
                         }
                     }
-                }
+                },
             });
         });
+
     });
 </script>
 @endsection

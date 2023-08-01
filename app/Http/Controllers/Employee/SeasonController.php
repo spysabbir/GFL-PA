@@ -115,7 +115,7 @@ class SeasonController extends Controller
         if ($request->ajax()) {
             $trashed_seasons = Season::onlyTrashed();
 
-            $trashed_seasons->orderBy('deleted_at', 'desc');
+            $trashed_seasons->orderBy('deleted_at', 'desc')->get();
 
             return DataTables::of($trashed_seasons)
                 ->addColumn('action', function ($row) {

@@ -81,7 +81,6 @@ class WashController extends Controller
 
         $validator = Validator::make($request->all(), [
             'wash_name' => 'required|string|max:255|unique:washes,wash_name,' . $id,
-
         ]);
 
         if ($validator->fails()) {

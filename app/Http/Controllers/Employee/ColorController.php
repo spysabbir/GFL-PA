@@ -81,7 +81,6 @@ class ColorController extends Controller
 
         $validator = Validator::make($request->all(), [
             'color_name' => 'required|string|max:255|unique:colors,color_name,' . $id,
-
         ]);
 
         if ($validator->fails()) {

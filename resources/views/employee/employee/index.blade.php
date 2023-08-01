@@ -27,6 +27,7 @@
                                         <table class="table table-striped" id="trashedDataTable" style="width: 100%">
                                             <thead>
                                                 <tr>
+                                                    <th>Employee Id</th>
                                                     <th>Employee Name</th>
                                                     <th>Action</th>
                                                 </tr>
@@ -36,6 +37,7 @@
                                             </tbody>
                                             <tfoot>
                                                 <tr>
+                                                    <th>Employee Id</th>
                                                     <th>Employee Name</th>
                                                     <th>Action</th>
                                                 </tr>
@@ -159,9 +161,9 @@
                 url: "{{ route('employee.employee.index') }}",
                 "data":function(e){
                     e.status = $('#filter_status').val();
-                    e.department_id = $('#department_name').val();
-                    e.designation_id = $('#designation_name').val();
-                    e.gender = $('#gender').val();
+                    e.department_id = $('#filter_department_name').val();
+                    e.designation_id = $('#filter_designation_name').val();
+                    e.gender = $('#filter_gender').val();
                 },
             },
             columns: [
@@ -171,8 +173,8 @@
                 { data: 'name', name: 'name' },
                 { data: 'gender', name: 'gender' },
                 { data: 'address', name: 'address' },
-                { data: 'department', name: 'department' },
-                { data: 'designation', name: 'designation' },
+                { data: 'department_name', name: 'department_name' },
+                { data: 'designation_name', name: 'designation_name' },
                 { data: 'status', name: 'status' },
                 { data: 'action', name: 'action', orderable: false, searchable: false }
             ]
@@ -221,6 +223,7 @@
                 url: "{{ route('employee.employee.trashed') }}",
             },
             columns: [
+                { data: 'id', name: 'id' },
                 { data: 'name', name: 'name' },
                 { data: 'action', name: 'action', orderable: false, searchable: false }
             ]

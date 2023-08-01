@@ -81,7 +81,6 @@ class GarmentTypeController extends Controller
 
         $validator = Validator::make($request->all(), [
             'item_name' => 'required|string|max:255|unique:garment_types,item_name,' . $id,
-
         ]);
 
         if ($validator->fails()) {
