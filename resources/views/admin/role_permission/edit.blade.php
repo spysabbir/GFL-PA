@@ -34,6 +34,16 @@
                         </div>
                     </div>
 
+                    <div class="row">
+                        <div class="col-lg-2 col-md-4">
+                            <h4 class="text-center">Group Name</h4>
+                            <hr>
+                        </div>
+                        <div class="col-lg-10 col-md-8">
+                            <h4  class="text-center">Permission Name</h4>
+                            <hr>
+                        </div>
+                    </div>
                     @foreach ($permission_groups as $group)
                     <div class="row mt-5">
                         @php
