@@ -22,7 +22,11 @@ return new class extends Migration
             $table->string('password');
             $table->timestamp('last_active')->useCurrent();
             $table->rememberToken();
+            $table->integer('created_by');
+            $table->integer('updated_by')->nullable();
+            $table->integer('deleted_by')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

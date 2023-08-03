@@ -42,6 +42,7 @@ class PermissionsSeeder extends Seeder
             ['name' => 'garment-type.index', 'group_name' => 'StyleResources', 'guard_name' => 'web'],
 
             ['name' => 'MasterStyleMenu', 'group_name' => 'MasterStyle', 'guard_name' => 'web'],
+            ['name' => 'master-style.create', 'group_name' => 'MasterStyle', 'guard_name' => 'web'],
             ['name' => 'master-style.index', 'group_name' => 'MasterStyle', 'guard_name' => 'web'],
 
             ['name' => 'OthersResourcesMenu', 'group_name' => 'OthersResources', 'guard_name' => 'web'],

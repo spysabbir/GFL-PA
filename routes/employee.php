@@ -4,7 +4,6 @@ use App\Http\Controllers\Employee\EmployeeController;
 use App\Http\Controllers\Employee\BuyerController;
 use App\Http\Controllers\Employee\ColorController;
 use App\Http\Controllers\Employee\GarmentTypeController;
-use App\Http\Controllers\Employee\LineController;
 use App\Http\Controllers\Employee\MasterStyleController;
 use App\Http\Controllers\Employee\SeasonController;
 use App\Http\Controllers\Employee\StyleController;
@@ -59,12 +58,6 @@ Route::prefix('employee')->middleware(['auth'])->name('employee.')->group(functi
     Route::get('/garment-type/restore/{id}', [GarmentTypeController::class, 'restore'])->name('garment-type.restore');
     Route::get('/garment-type/force/delete/{id}', [GarmentTypeController::class, 'forceDelete'])->name('garment-type.force.delete');
     Route::get('/garment-type/status/{id}', [GarmentTypeController::class, 'status'])->name('garment-type.status');
-
-    Route::resource('line', LineController::class);
-    Route::get('/line-trashed', [LineController::class, 'trashed'])->name('line.trashed');
-    Route::get('/line/restore/{id}', [LineController::class, 'restore'])->name('line.restore');
-    Route::get('/line/force/delete/{id}', [LineController::class, 'forceDelete'])->name('line.force.delete');
-    Route::get('/line/status/{id}', [LineController::class, 'status'])->name('line.status');
 
     Route::resource('master-style', MasterStyleController::class);
     Route::post('/get/style/info', [MasterStyleController::class, 'getStyleInfo'])->name('get.style.info');

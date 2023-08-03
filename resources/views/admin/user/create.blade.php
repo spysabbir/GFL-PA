@@ -21,7 +21,7 @@
                     @csrf
                     <div class="form-group">
                         <label class="form-label">Employee Id</label>
-                        <input type="text" class="form-control" name="employee_id" placeholder="Enter your employee id">
+                        <input type="number" class="form-control" name="employee_id" placeholder="Enter your employee id">
                         <span class="text-danger error-text employee_id_error"></span>
                     </div>
                     <div class="form-group">

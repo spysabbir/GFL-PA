@@ -55,6 +55,17 @@
                 </li>
                 @endif
 
+                @if (Auth::user()->can('OthersResourcesMenu'))
+                <li class="{{ request()->routeIs('admin.line.index') ? 'active' : '' }}">
+                    <a href="javascript:void(0)" class="has-arrow arrow-b"><i class="icon-home"></i><span data-hover="Others Resources">Others Resources</span></a>
+                    <ul>
+                        @if (Auth::user()->can('line.index'))
+                        <li class="{{ request()->routeIs('admin.line.index') ? 'active' : '' }}"><a href="{{ route('admin.line.index') }}"><span data-hover="Line">Line</span></a></li>
+                        @endif
+                    </ul>
+                </li>
+                @endif
+
                 @if (Auth::user()->can('SettingMenu'))
                 <li class="{{ request()->routeIs('admin.default.setting')  ? 'active' : '' }}">
                     <a href="javascript:void(0)" class="has-arrow arrow-b"><i class="icon-home"></i><span data-hover="Setting">Setting</span></a>
@@ -66,11 +77,11 @@
                 </li>
                 @endif
 
-                {{-- Employee Panel --}}
-                <li class="g_heading">Employee Panel</li>
+                <!-- Employee Area Start -->
 
                 {{-- HR Panel --}}
                 @if (Auth::user()->can('EmployeeMenu'))
+                <li class="g_heading">Hr Panel</li>
                 <li class="{{ request()->routeIs('employee.employee.create') || request()->routeIs('employee.employee.index') ? 'active' : '' }}">
                     <a href="javascript:void(0)" class="has-arrow arrow-b"><i class="icon-home"></i><span data-hover="Employee">Employee</span></a>
                     <ul>
@@ -85,7 +96,8 @@
                 </li>
                 @endif
 
-                {{-- Merchandiser & Planning Panel --}}
+                {{-- Merchandiser Panel --}}
+                <li class="g_heading">Merchandiser Panel</li>
                 @if (Auth::user()->can('StyleResourcesMenu'))
                 <li class="{{ request()->routeIs('employee.buyer.index') || request()->routeIs('employee.style.index') || request()->routeIs('employee.season.index') || request()->routeIs('employee.color.index') || request()->routeIs('employee.wash.index') || request()->routeIs('employee.garment-type.index') ? 'active' : '' }}">
                     <a href="javascript:void(0)" class="has-arrow arrow-b"><i class="icon-home"></i><span data-hover="Style Resources">Style Resources</span></a>
@@ -118,17 +130,14 @@
                 @endif
 
                 @if (Auth::user()->can('MasterStyleMenu'))
-                    @if (Auth::user()->can('master-style.index'))
-                        <li class="{{ request()->routeIs('employee.master-style.index') ? 'active' : '' }}"><a href="{{ route('employee.master-style.index') }}"><i class="icon-notebook"></i><span data-hover="Master Style">Master Style</span></a></li>
-                    @endif
-                @endif
-
-                @if (Auth::user()->can('OthersResourcesMenu'))
-                <li class="{{ request()->routeIs('employee.line.index') ? 'active' : '' }}">
-                    <a href="javascript:void(0)" class="has-arrow arrow-b"><i class="icon-home"></i><span data-hover="Others Resources">Others Resources</span></a>
+                <li class="{{ request()->routeIs('employee.master-style.create') || request()->routeIs('employee.master-style.index') ? 'active' : '' }}">
+                    <a href="javascript:void(0)" class="has-arrow arrow-b"><i class="icon-home"></i><span data-hover="Master Style">Master Style</span></a>
                     <ul>
-                        @if (Auth::user()->can('line.index'))
-                        <li class="{{ request()->routeIs('employee.line.index') ? 'active' : '' }}"><a href="{{ route('employee.line.index') }}"><span data-hover="Line">Line</span></a></li>
+                        @if (Auth::user()->can('master-style.create'))
+                        <li class="{{ request()->routeIs('employee.master-style.create') ? 'active' : '' }}"><a href="{{ route('employee.master-style.create') }}"><span data-hover="Create">Create</span></a></li>
+                        @endif
+                        @if (Auth::user()->can('master-style.index'))
+                        <li class="{{ request()->routeIs('employee.master-style.index') ? 'active' : '' }}"><a href="{{ route('employee.master-style.index') }}"><span data-hover="List">List</span></a></li>
                         @endif
                     </ul>
                 </li>
@@ -136,6 +145,7 @@
 
                 {{-- Cutting Panel --}}
                 @if (Auth::user()->can('CuttingMenu'))
+                <li class="g_heading">Cutting Panel</li>
                 <li>
                     <a href="javascript:void(0)" class="has-arrow arrow-b"><i class="icon-tag"></i><span data-hover="Cutting">Cutting</span></a>
                     <ul>
@@ -152,6 +162,7 @@
 
                 {{-- Sewing Panel --}}
                 @if (Auth::user()->can('SewingMenu'))
+                <li class="g_heading">Sewing Panel</li>
                     @if (Auth::user()->can('sewing-production.index'))
                         <li><a href="#"><i class="icon-puzzle"></i><span data-hover="Sewing">Sewing</span></a></li>
                     @endif
@@ -159,6 +170,7 @@
 
                 {{-- Washing Panel --}}
                 @if (Auth::user()->can('WashingMenu'))
+                <li class="g_heading">Washing Panel</li>
                 <li>
                     <a href="javascript:void(0)" class="has-arrow arrow-b"><i class="icon-tag"></i><span data-hover="Wash">Wash</span></a>
                     <ul>
@@ -174,6 +186,7 @@
                 @endif
 
                 {{-- Finishing Panel --}}
+                <li class="g_heading">Finishing Panel</li>
                 @if (Auth::user()->can('FinishingMenu'))
                 <li>
                     <a href="javascript:void(0)" class="has-arrow arrow-b"><i class="icon-tag"></i><span data-hover="Finishing">Finishing</span></a>
@@ -191,6 +204,7 @@
 
                 {{-- Shipping Panel --}}
                 @if (Auth::user()->can('ShippingMenu'))
+                <li class="g_heading">Shipping Panel</li>
                     @if (Auth::user()->can('shipping.index'))
                         <li><a href="#"><i class="icon-puzzle"></i><span data-hover="Shipping">Shipping</span></a></li>
                     @endif

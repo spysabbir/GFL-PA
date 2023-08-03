@@ -26,7 +26,7 @@
                         </div>
                         <div class="col-md-3">
                             <div class="form-check mt-2">
-                                <input class="form-check-input" type="checkbox" id="PermissionAll">
+                                <input class="form-check-input" type="checkbox" id="PermissionAll" {{ ($role->permissions->count() == DB::table('permissions')->count()) ? 'checked' : '' }}>
                                 <label class="form-check-label" for="PermissionAll">
                                     <strong>Permission All</strong>
                                 </label>
