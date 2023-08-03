@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('lines', function (Blueprint $table) {
             $table->id();
             $table->string('line_no');
+            $table->string('department');
             $table->enum('status', ['Active', 'Inactive'])->default('Active');
             $table->integer('created_by');
             $table->integer('updated_by')->nullable();

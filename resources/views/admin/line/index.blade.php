@@ -19,6 +19,17 @@
                     <div class="row">
                         <div class="col-md-4">
                             <div class="form-group">
+                                <label class="form-label">Department</label>
+                                <select name="department" class="form-control custom-select">
+                                    <option value="">--Select Department--</option>
+                                    <option value="Sewing">Sewing</option>
+                                    <option value="Finishing ">Finishing</option>
+                                </select>
+                                <span class="text-danger error-text department_error"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
                                 <label class="form-label">Line No</label>
                                 <input type="text" class="form-control" name="line_no" placeholder="Line No">
                                 <span class="text-danger error-text line_no_error"></span>
@@ -54,7 +65,8 @@
                                         <table class="table table-striped" id="trashedDataTable" style="width: 100%">
                                             <thead>
                                                 <tr>
-                                                    <th>Line No</th>
+                                                    <th>Department</th>
+                                                    <th></th>
                                                     <th>Action</th>
                                                 </tr>
                                             </thead>
@@ -63,6 +75,7 @@
                                             </tbody>
                                             <tfoot>
                                                 <tr>
+                                                    <th>Department</th>
                                                     <th>Line No</th>
                                                     <th>Action</th>
                                                 </tr>
@@ -100,6 +113,7 @@
                         <thead>
                             <tr>
                                 <th>Sl No</th>
+                                <th>Department</th>
                                 <th>Line No</th>
                                 <th>Status</th>
                                 <th>Action</th>
@@ -121,6 +135,17 @@
                                                 @csrf
                                                 <input type="hidden" id="line_id">
                                                 <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label class="form-label">Department</label>
+                                                            <select name="department" class="form-control custom-select" id="department">
+                                                                <option value="">--Select Department--</option>
+                                                                <option value="Sewing">Sewing</option>
+                                                                <option value="Finishing ">Finishing</option>
+                                                            </select>
+                                                            <span class="text-danger error-text update_department_error"></span>
+                                                        </div>
+                                                    </div>
                                                     <div class="col-md-8">
                                                         <div class="form-group">
                                                             <label class="form-label">Line No</label>
@@ -146,6 +171,7 @@
                         <tfoot>
                             <tr>
                                 <th>Sl No</th>
+                                <th>Department</th>
                                 <th>Line No</th>
                                 <th>Status</th>
                                 <th>Action</th>
@@ -174,13 +200,14 @@
             serverSide: true,
             searching: true,
             ajax: {
-                url: "{{ route('employee.line.index') }}",
+                url: "{{ route('admin.line.index') }}",
                 "data":function(e){
                     e.status = $('#filter_status').val();
                 },
             },
             columns: [
                 { data: 'DT_RowIndex', name: 'DT_RowIndex' },
+                { data: 'department', name: 'department' },
                 { data: 'line_no', name: 'line_no' },
                 { data: 'status', name: 'status' },
                 { data: 'action', name: 'action', orderable: false, searchable: false }
@@ -198,7 +225,7 @@
             event.preventDefault();
             var formData = $(this).serialize();
             $.ajax({
-                url: "{{ route('employee.line.store') }}",
+                url: "{{ route('admin.line.store') }}",
                 type: 'POST',
                 data: formData,
                 dataType: 'json',
@@ -222,13 +249,14 @@
         // Edit Data
         $(document).on('click', '.editBtn', function () {
             var id = $(this).data('id');
-            var url = "{{ route('employee.line.edit', ":id") }}";
+            var url = "{{ route('admin.line.edit', ":id") }}";
             url = url.replace(':id', id)
             $.ajax({
                 url: url,
                 type: "GET",
                 success: function (response) {
                     $('#line_id').val(response.id);
+                    $('#department').val(response.department);
                     $('#line_no').val(response.line_no);
                 },
             });
@@ -238,7 +266,7 @@
         $('#editForm').submit(function (event) {
             event.preventDefault();
             var id = $('#line_id').val();
-            var url = "{{ route('employee.line.update', ":id") }}";
+            var url = "{{ route('admin.line.update', ":id") }}";
             url = url.replace(':id', id)
             $.ajax({
                 url: url,
@@ -264,7 +292,7 @@
         // Delete Data
         $(document).on('click', '.deleteBtn', function(){
             var id = $(this).data('id');
-            var url = "{{ route('employee.line.destroy', ":id") }}";
+            var url = "{{ route('admin.line.destroy', ":id") }}";
             url = url.replace(':id', id)
             Swal.fire({
                 title: 'Are you sure?',
@@ -295,9 +323,10 @@
             serverSide: true,
             searching: true,
             ajax: {
-                url: "{{ route('employee.line.trashed') }}",
+                url: "{{ route('admin.line.trashed') }}",
             },
             columns: [
+                { data: 'department', name: 'department' },
                 { data: 'line_no', name: 'line_no' },
                 { data: 'action', name: 'action', orderable: false, searchable: false }
             ]
@@ -306,7 +335,7 @@
         // Restore Data
         $(document).on('click', '.restoreBtn', function () {
             var id = $(this).data('id');
-            var url = "{{ route('employee.line.restore', ":id") }}";
+            var url = "{{ route('admin.line.restore', ":id") }}";
             url = url.replace(':id', id)
             $.ajax({
                 url: url,
@@ -323,7 +352,7 @@
         // Force Delete Data
         $(document).on('click', '.forceDeleteBtn', function(){
             var id = $(this).data('id');
-            var url = "{{ route('employee.line.force.delete', ":id") }}";
+            var url = "{{ route('admin.line.force.delete', ":id") }}";
             url = url.replace(':id', id)
             Swal.fire({
                 title: 'Are you sure?',
@@ -351,7 +380,7 @@
         // Status Change Data
         $(document).on('click', '.statusBtn', function () {
             var id = $(this).data('id');
-            var url = "{{ route('employee.line.status', ":id") }}";
+            var url = "{{ route('admin.line.status', ":id") }}";
             url = url.replace(':id', id)
             $.ajax({
                 url: url,

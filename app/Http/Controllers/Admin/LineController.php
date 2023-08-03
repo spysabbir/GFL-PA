@@ -45,13 +45,14 @@ class LineController extends Controller
                 ->make(true);
         }
 
-        return view('employee.line.index');
+        return view('admin.line.index');
     }
 
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'line_no' => 'required|string|max:255|unique:lines,line_no',
+            'department' => 'required',
         ]);
 
         if($validator->fails()){
@@ -81,6 +82,7 @@ class LineController extends Controller
 
         $validator = Validator::make($request->all(), [
             'line_no' => 'required|string|max:255|unique:lines,line_no,' . $id,
+            'department' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -128,7 +130,7 @@ class LineController extends Controller
                 ->make(true);
         }
 
-        return view('employee.line.index');
+        return view('admin.line.index');
     }
 
     public function restore(string $id)
