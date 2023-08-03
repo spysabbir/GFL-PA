@@ -1,3 +1,7 @@
+@php
+    App\Models\User::where('id', Auth::user()->id)->update(['last_active' =>  Carbon\Carbon::now() ]);
+    $defaultSetting = App\Models\DefaultSetting::first();
+@endphp
 <!doctype html>
 <html lang="en">
 <head>
@@ -7,7 +11,7 @@
     <meta name="author" content="{{ env('APP_NAME') }}">
     <meta name="csrf-token" content="{{ csrf_token() }}" />
 
-    <link rel="icon" href="favicon.ico" type="image/x-icon"/>
+    <link rel="icon" href="{{ asset('uploads/default_photo') }}/{{ $defaultSetting->favicon }}" type="image/x-icon"/>
 
     <title>:: {{ env('APP_NAME') }} :: @yield('title')</title>
 
@@ -254,8 +258,7 @@
                         </div>
                         <div class="right">
                             <div class="notification d-flex">
-                                <button type="button" class="btn btn-facebook"><i class="fa fa-info-circle mr-2"></i>Need Help</button>
-                                <button type="button" class="btn btn-facebook"><i class="fa fa-file-text mr-2"></i>Data export</button>
+                                <button type="button" class="btn btn-facebook"><i class="fa fa-info-circle mr-2"></i>Need Help: {{ $defaultSetting->support_phone }}</button>
                                 <!-- Authentication -->
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf
@@ -284,7 +287,7 @@
                             </div>
                             <div class="col-md-6 col-sm-12 text-md-right">
                                 <ul class="list-inline mb-0">
-                                    <li class="list-inline-item"><a href="javascript:void(0)">FAQ</a></li>
+                                    <li class="list-inline-item"><a href="javascript:void(0)"><i class="fa fa-info-circle mr-2"></i> {{ $defaultSetting->support_email }}</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -293,7 +296,6 @@
             </div>
         </div>
     </div>
-
 
     <!-- jQuery and bootstrtap js -->
     <script src="{{ asset('asset') }}/bundles/lib.vendor.bundle.js"></script>

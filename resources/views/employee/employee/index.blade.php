@@ -111,7 +111,6 @@
                                 <th>Photo</th>
                                 <th>Name</th>
                                 <th>Gender</th>
-                                <th>Address</th>
                                 <th>Department</th>
                                 <th>Designation</th>
                                 <th>Status</th>
@@ -119,7 +118,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            
+
                         </tbody>
                         <tfoot>
                             <tr>
@@ -128,7 +127,6 @@
                                 <th>Photo</th>
                                 <th>Name</th>
                                 <th>Gender</th>
-                                <th>Address</th>
                                 <th>Department</th>
                                 <th>Designation</th>
                                 <th>Status</th>
@@ -172,7 +170,6 @@
                 { data: 'profile_photo', name: 'profile_photo' },
                 { data: 'name', name: 'name' },
                 { data: 'gender', name: 'gender' },
-                { data: 'address', name: 'address' },
                 { data: 'department_name', name: 'department_name' },
                 { data: 'designation_name', name: 'designation_name' },
                 { data: 'status', name: 'status' },

@@ -22,14 +22,6 @@
                         <input type="hidden" id="employee_id" value="{{ $employee->id }}">
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label class="form-label">Profile Photo</label>
-                                <input type="file" class="form-control" name="profile_photo" id="image">
-                                <img src="{{ asset('uploads/profile_photo') }}/{{ $employee->profile_photo }}" alt="Profile Photo" id="imagePreview" width="100" height="100">
-                                <span class="text-danger error-text update_profile_photo_error"></span>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
                                 <label class="form-label">Name</label>
                                 <input type="text" class="form-control" name="name" value="{{ $employee->name }}">
                                 <span class="text-danger error-text update_name_error"></span>
@@ -37,16 +29,44 @@
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label class="form-label">Email</label>
-                                <input type="email" class="form-control" name="email" value="{{ $employee->email }}">
-                                <span class="text-danger error-text update_email_error"></span>
+                                <label class="form-label">Father Name</label>
+                                <input type="text" class="form-control" name="father_name" value="{{ $employee->father_name }}">
+                                <span class="text-danger error-text update_father_name_error"></span>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label class="form-label">Phone Number</label>
-                                <input type="text" class="form-control" name="phone_number" value="{{ $employee->phone_number }}">
-                                <span class="text-danger error-text update_phone_number_error"></span>
+                                <label class="form-label">Mother Name</label>
+                                <input type="text" class="form-control" name="mother_name" value="{{ $employee->mother_name }}">
+                                <span class="text-danger error-text update_mother_name_error"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="form-label">Personal Email</label>
+                                <input type="email" class="form-control" name="personal_email" value="{{ $employee->personal_email }}">
+                                <span class="text-danger error-text update_personal_email_error"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="form-label">Official Email</label>
+                                <input type="email" class="form-control" name="official_email" value="{{ $employee->official_email }}">
+                                <span class="text-danger error-text update_official_email_error"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="form-label">Primary Phone Number</label>
+                                <input type="text" class="form-control" name="primary_phone_number" value="{{ $employee->primary_phone_number }}">
+                                <span class="text-danger error-text update_primary_phone_number_error"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="form-label">Emergency Phone Number</label>
+                                <input type="text" class="form-control" name="emergency_phone_number" value="{{ $employee->emergency_phone_number }}">
+                                <span class="text-danger error-text update_emergency_phone_number_error"></span>
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -110,6 +130,14 @@
                                 <label class="form-label">Date of Join</label>
                                 <input type="date" class="form-control" name="date_of_join" value="{{ $employee->date_of_join }}">
                                 <span class="text-danger error-text update_date_of_join_error"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="form-label">Profile Photo</label>
+                                <input type="file" class="form-control" name="profile_photo" id="image">
+                                <img src="{{ asset('uploads/profile_photo') }}/{{ $employee->profile_photo }}" alt="Profile Photo" id="imagePreview" width="100" height="100">
+                                <span class="text-danger error-text update_profile_photo_error"></span>
                             </div>
                         </div>
                         <div class="col-md-2">

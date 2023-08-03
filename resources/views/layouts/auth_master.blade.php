@@ -1,3 +1,6 @@
+@php
+    $defaultSetting = App\Models\DefaultSetting::first();
+@endphp
 <!doctype html>
 <html lang="en">
 <head>
@@ -6,7 +9,7 @@
     <meta name="description" content="{{ env('APP_NAME') }}">
     <meta name="author" content="{{ env('APP_NAME') }}">
 
-    <link rel="icon" href="favicon.ico" type="image/x-icon"/>
+    <link rel="icon" href="{{ asset('uploads/default_photo') }}/{{ $defaultSetting->favicon }}" type="image/x-icon"/>
 
     <title>:: {{ env('APP_NAME') }} :: @yield('title')</title>
 

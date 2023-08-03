@@ -67,6 +67,7 @@ class EmployeeController extends Controller
                 })
                 ->addColumn('action', function ($row) {
                     $btn = '<a href="'.route('employee.employee.edit', $row->id).'" class="btn text-white bg-purple btn-sm"><i class="fe fe-edit"></i></a>
+                            <a href="'.route('employee.employee.show', $row->id).'" class="btn text-white bg-azure btn-sm"><i class="fe fe-eye"></i></a>
                             <button type="button" data-id="' . $row->id . '" class="btn text-white bg-yellow btn-sm deleteBtn"><i class="fe fe-trash"></i></button>';
                     return $btn;
                 })
@@ -90,7 +91,9 @@ class EmployeeController extends Controller
     {
         $validator = Validator::make($request->all(), [
             '*' => 'required',
-            'email' => ['nullable', 'string', 'email', 'max:255', 'regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/', 'unique:'.Employee::class],
+            'emergency_phone_number' => 'nullable',
+            'personal_email' => ['nullable', 'string', 'email', 'max:255', 'regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/', 'unique:'.Employee::class],
+            'official_email' => ['nullable', 'string', 'email', 'max:255', 'regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/', 'unique:'.Employee::class],
             'profile_photo' => 'nullable|image|mimes:png,jpg,jpeg',
         ]);
 
@@ -126,6 +129,11 @@ class EmployeeController extends Controller
             }
         }
     }
+    public function show (string $id)
+    {
+        $employee = Employee::find($id);
+        return view('employee.employee.view', compact('employee'));
+    }
 
     public function edit(string $id)
     {
@@ -141,7 +149,9 @@ class EmployeeController extends Controller
     {
         $validator = Validator::make($request->all(), [
             '*' => 'required',
-            'email' => 'nullable|string|max:255|email|regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/|unique:users,email,' . $id,
+            'emergency_phone_number' => 'nullable',
+            'personal_email' => 'nullable|string|max:255|email|regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/|unique:employees,personal_email,' . $id,
+            'official_email' => 'nullable|string|max:255|email|regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/|unique:employees,official_email,' . $id,
             'profile_photo' => 'nullable|image|mimes:png,jpg,jpeg',
         ]);
 

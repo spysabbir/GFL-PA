@@ -11,7 +11,7 @@
                 <li class="g_heading">Admin Panel</li>
 
                 @if (Auth::user()->can('RoleManagementMenu'))
-                <li class="{{ request()->routeIs('admin.role.index') || request()->routeIs('admin.role-permission.index')  ? 'active' : '' }}">
+                <li class="{{ request()->routeIs('admin.role.index') || request()->routeIs('admin.role-permission.create') || request()->routeIs('admin.role-permission.index') || request()->routeIs('admin.role-permission.edit')  ? 'active' : '' }}">
                     <a href="javascript:void(0)" class="has-arrow arrow-b"><i class="icon-home"></i><span data-hover="Role Management">Role Management</span></a>
                     <ul>
                         @if (Auth::user()->can('role.index'))
@@ -19,7 +19,7 @@
                         @endif
 
                         @if (Auth::user()->can('role-permission.index'))
-                            <li class="{{ request()->routeIs('admin.role-permission.index') ? 'active' : '' }}"><a href="{{ route('admin.role-permission.index') }}"><span data-hover="Assign Permission">Assign Permission</span></a></li>
+                            <li class="{{ request()->routeIs('admin.role-permission.create') || request()->routeIs('admin.role-permission.index') || request()->routeIs('admin.role-permission.edit')? 'active' : '' }}"><a href="{{ route('admin.role-permission.index') }}"><span data-hover="Assign Permission">Assign Permission</span></a></li>
                         @endif
                     </ul>
                 </li>
@@ -82,7 +82,7 @@
                 {{-- HR Panel --}}
                 @if (Auth::user()->can('EmployeeMenu'))
                 <li class="g_heading">Hr Panel</li>
-                <li class="{{ request()->routeIs('employee.employee.create') || request()->routeIs('employee.employee.index') ? 'active' : '' }}">
+                <li class="{{ request()->routeIs('employee.employee.create') || request()->routeIs('employee.employee.index') || request()->routeIs('employee.employee.edit') || request()->routeIs('employee.employee.show') ? 'active' : '' }}">
                     <a href="javascript:void(0)" class="has-arrow arrow-b"><i class="icon-home"></i><span data-hover="Employee">Employee</span></a>
                     <ul>
                         @if (Auth::user()->can('employee.create'))
@@ -90,7 +90,7 @@
                         @endif
 
                         @if (Auth::user()->can('employee.index'))
-                            <li class="{{ request()->routeIs('employee.employee.index') ? 'active' : '' }}"><a href="{{ route('employee.employee.index') }}"><span data-hover="List">List</span></a></li>
+                            <li class="{{ request()->routeIs('employee.employee.index') || request()->routeIs('employee.employee.edit') || request()->routeIs('employee.employee.show') ? 'active' : '' }}"><a href="{{ route('employee.employee.index') }}"><span data-hover="List">List</span></a></li>
                         @endif
                     </ul>
                 </li>
