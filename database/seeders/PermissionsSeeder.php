@@ -60,8 +60,8 @@ class PermissionsSeeder extends Seeder
             ['name' => 'receive-washing.index', 'group_name' => 'Washing', 'guard_name' => 'web'],
 
             ['name' => 'FinishingMenu', 'group_name' => 'Finishing', 'guard_name' => 'web'],
-            ['name' => 'delivery-finishing.index', 'group_name' => 'Finishing', 'guard_name' => 'web'],
-            ['name' => 'delivery-packed.index', 'group_name' => 'Finishing', 'guard_name' => 'web'],
+            ['name' => 'finishing-input.index', 'group_name' => 'Finishing', 'guard_name' => 'web'],
+            ['name' => 'finishing-production.index', 'group_name' => 'Finishing', 'guard_name' => 'web'],
 
             ['name' => 'ShippingMenu', 'group_name' => 'Shipping', 'guard_name' => 'web'],
             ['name' => 'shipping.index', 'group_name' => 'Shipping', 'guard_name' => 'web'],

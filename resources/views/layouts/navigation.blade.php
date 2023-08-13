@@ -150,11 +150,11 @@
                     <a href="javascript:void(0)" class="has-arrow arrow-b"><i class="icon-tag"></i><span data-hover="Cutting">Cutting</span></a>
                     <ul>
                         @if (Auth::user()->can('new-cutting.index'))
-                            <li><a href="#"><span data-hover="New Cutting">New Cutting</span></a></li>
+                            <li><a href="{{ route('employee.new-cutting.index') }}"><span data-hover="New Cutting">New Cutting</span></a></li>
                         @endif
 
                         @if (Auth::user()->can('sewing-input.index'))
-                            <li><a href="#"><span data-hover="Sewing Input">Sewing Input</span></a></li>
+                            <li><a href="{{ route('employee.sewing-input.index') }}"><span data-hover="Sewing Input">Sewing Input</span></a></li>
                         @endif
                     </ul>
                 </li>
@@ -164,7 +164,7 @@
                 @if (Auth::user()->can('SewingMenu'))
                 <li class="g_heading">Sewing Panel</li>
                     @if (Auth::user()->can('sewing-production.index'))
-                        <li><a href="#"><i class="icon-puzzle"></i><span data-hover="Sewing">Sewing</span></a></li>
+                        <li><a href="{{ route('employee.sewing-production.index') }}"><i class="icon-puzzle"></i><span data-hover="Sewing">Sewing</span></a></li>
                     @endif
                 @endif
 
@@ -175,11 +175,11 @@
                     <a href="javascript:void(0)" class="has-arrow arrow-b"><i class="icon-tag"></i><span data-hover="Wash">Wash</span></a>
                     <ul>
                         @if (Auth::user()->can('delivery-washing.index'))
-                            <li><a href="#"><span data-hover="Delivery to Washing">Delivery to Washing</span></a></li>
+                            <li><a href="{{ route('employee.delivery-washing.index') }}"><span data-hover="Delivery to Washing">Delivery to Washing</span></a></li>
                         @endif
 
                         @if (Auth::user()->can('receive-washing.index'))
-                            <li><a href="#"><span data-hover="Receive from Washing ">Receive from Washing</span></a></li>
+                            <li><a href="{{ route('employee.receive-washing.index') }}><span data-hover="Receive from Washing ">Receive from Washing</span></a></li>
                         @endif
                     </ul>
                 </li>
@@ -191,12 +191,12 @@
                 <li>
                     <a href="javascript:void(0)" class="has-arrow arrow-b"><i class="icon-tag"></i><span data-hover="Finishing">Finishing</span></a>
                     <ul>
-                        @if (Auth::user()->can('delivery-finishing.index'))
-                            <li><a href="#"><span data-hover="Delivery to Finishing">Delivery to Finishing</span></a></li>
+                        @if (Auth::user()->can('finishing-input.index'))
+                            <li><a href="{{ route('employee.finishing-input.index') }}"><span data-hover="Finishing Input">Finishing Input</span></a></li>
                         @endif
 
-                        @if (Auth::user()->can('delivery-packed.index'))
-                            <li><a href="#"><span data-hover="Delivery to Packed GMTS">Delivery to Packed GMTS</span></a></li>
+                        @if (Auth::user()->can('finishing-production.index'))
+                            <li><a href="{{ route('employee.finishing-production.index') }}"><span data-hover="Finishing Production">Finishing Production</span></a></li>
                         @endif
                     </ul>
                 </li>
@@ -206,7 +206,7 @@
                 @if (Auth::user()->can('ShippingMenu'))
                 <li class="g_heading">Shipping Panel</li>
                     @if (Auth::user()->can('shipping.index'))
-                        <li><a href="#"><i class="icon-puzzle"></i><span data-hover="Shipping">Shipping</span></a></li>
+                        <li><a href="{{ route('employee.finishing-input.index') }}"><i class="icon-puzzle"></i><span data-hover="Shipping">Shipping</span></a></li>
                     @endif
                 @endif
 

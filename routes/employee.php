@@ -82,7 +82,21 @@ Route::prefix('employee')->middleware(['auth'])->name('employee.')->group(functi
     Route::get('/employee/force/delete/{id}', [EmployeeController::class, 'forceDelete'])->name('employee.force.delete');
     Route::get('/employee/status/{id}', [EmployeeController::class, 'status'])->name('employee.status');
 
+    Route::resource('new-cutting', EmployeeController::class);
 
+    Route::resource('sewing-input', EmployeeController::class);
+
+    Route::resource('sewing-production', EmployeeController::class);
+
+    Route::resource('delivery-washing', EmployeeController::class);
+
+    Route::resource('receive-washing', EmployeeController::class);
+
+    Route::resource('finishing-input', EmployeeController::class);
+
+    Route::resource('finishing-production', EmployeeController::class);
+    
+    Route::resource('shipping', EmployeeController::class);
 });
 
 
