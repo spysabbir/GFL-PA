@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 
@@ -56,15 +55,15 @@ class PermissionsSeeder extends Seeder
             ['name' => 'sewing-production.index', 'group_name' => 'Sewing', 'guard_name' => 'web'],
 
             ['name' => 'WashingMenu', 'group_name' => 'Washing', 'guard_name' => 'web'],
-            ['name' => 'delivery-washing.index', 'group_name' => 'Washing', 'guard_name' => 'web'],
-            ['name' => 'receive-washing.index', 'group_name' => 'Washing', 'guard_name' => 'web'],
+            ['name' => 'wash-delivery.index', 'group_name' => 'Washing', 'guard_name' => 'web'],
+            ['name' => 'wash-receive.index', 'group_name' => 'Washing', 'guard_name' => 'web'],
 
             ['name' => 'FinishingMenu', 'group_name' => 'Finishing', 'guard_name' => 'web'],
             ['name' => 'finishing-input.index', 'group_name' => 'Finishing', 'guard_name' => 'web'],
             ['name' => 'finishing-production.index', 'group_name' => 'Finishing', 'guard_name' => 'web'],
 
-            ['name' => 'ShippingMenu', 'group_name' => 'Shipping', 'guard_name' => 'web'],
-            ['name' => 'shipping.index', 'group_name' => 'Shipping', 'guard_name' => 'web'],
+            ['name' => 'ShipmentMenu', 'group_name' => 'Shipment', 'guard_name' => 'web'],
+            ['name' => 'shipment.index', 'group_name' => 'Shipment', 'guard_name' => 'web'],
         ]);
     }
 }

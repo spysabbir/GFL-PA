@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\DefaultSetting;
 use Carbon\Carbon;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DefaultSettingSeeder extends Seeder

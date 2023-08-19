@@ -3,11 +3,19 @@
 use App\Http\Controllers\Employee\EmployeeController;
 use App\Http\Controllers\Employee\BuyerController;
 use App\Http\Controllers\Employee\ColorController;
+use App\Http\Controllers\Employee\FinishingInputController;
+use App\Http\Controllers\Employee\FinishingProductionController;
 use App\Http\Controllers\Employee\GarmentTypeController;
 use App\Http\Controllers\Employee\MasterStyleController;
+use App\Http\Controllers\Employee\NewCuttingController;
 use App\Http\Controllers\Employee\SeasonController;
+use App\Http\Controllers\Employee\SewingInputController;
+use App\Http\Controllers\Employee\SewingProductionController;
+use App\Http\Controllers\Employee\ShipmentController;
 use App\Http\Controllers\Employee\StyleController;
 use App\Http\Controllers\Employee\WashController;
+use App\Http\Controllers\Employee\WashDeliveryController;
+use App\Http\Controllers\Employee\WashReceiveController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -82,21 +90,21 @@ Route::prefix('employee')->middleware(['auth'])->name('employee.')->group(functi
     Route::get('/employee/force/delete/{id}', [EmployeeController::class, 'forceDelete'])->name('employee.force.delete');
     Route::get('/employee/status/{id}', [EmployeeController::class, 'status'])->name('employee.status');
 
-    Route::resource('new-cutting', EmployeeController::class);
+    Route::resource('new-cutting', NewCuttingController::class);
 
-    Route::resource('sewing-input', EmployeeController::class);
+    Route::resource('sewing-input', SewingInputController::class);
 
-    Route::resource('sewing-production', EmployeeController::class);
+    Route::resource('sewing-production', SewingProductionController::class);
 
-    Route::resource('delivery-washing', EmployeeController::class);
+    Route::resource('wash-delivery', WashDeliveryController::class);
 
-    Route::resource('receive-washing', EmployeeController::class);
+    Route::resource('wash-receive', WashReceiveController::class);
 
-    Route::resource('finishing-input', EmployeeController::class);
+    Route::resource('finishing-input', FinishingInputController::class);
 
-    Route::resource('finishing-production', EmployeeController::class);
-    
-    Route::resource('shipping', EmployeeController::class);
+    Route::resource('finishing-production', FinishingProductionController::class);
+
+    Route::resource('shipment', ShipmentController::class);
 });
 
 

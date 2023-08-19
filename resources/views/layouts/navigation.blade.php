@@ -174,12 +174,12 @@
                 <li>
                     <a href="javascript:void(0)" class="has-arrow arrow-b"><i class="icon-tag"></i><span data-hover="Wash">Wash</span></a>
                     <ul>
-                        @if (Auth::user()->can('delivery-washing.index'))
-                            <li><a href="{{ route('employee.delivery-washing.index') }}"><span data-hover="Delivery to Washing">Delivery to Washing</span></a></li>
+                        @if (Auth::user()->can('wash-delivery.index'))
+                            <li><a href="{{ route('employee.wash-delivery.index') }}"><span data-hover="Delivery to Washing">Delivery to Washing</span></a></li>
                         @endif
 
-                        @if (Auth::user()->can('receive-washing.index'))
-                            <li><a href="{{ route('employee.receive-washing.index') }}><span data-hover="Receive from Washing ">Receive from Washing</span></a></li>
+                        @if (Auth::user()->can('wash-receive.index'))
+                            <li><a href="{{ route('employee.wash-receive.index') }}"><span data-hover="Receive from Washing ">Receive from Washing</span></a></li>
                         @endif
                     </ul>
                 </li>
@@ -202,11 +202,11 @@
                 </li>
                 @endif
 
-                {{-- Shipping Panel --}}
-                @if (Auth::user()->can('ShippingMenu'))
-                <li class="g_heading">Shipping Panel</li>
-                    @if (Auth::user()->can('shipping.index'))
-                        <li><a href="{{ route('employee.finishing-input.index') }}"><i class="icon-puzzle"></i><span data-hover="Shipping">Shipping</span></a></li>
+                {{-- Shipment Panel --}}
+                @if (Auth::user()->can('ShipmentMenu'))
+                <li class="g_heading">Shipment Panel</li>
+                    @if (Auth::user()->can('shipment.index'))
+                        <li><a href="{{ route('employee.shipment.index') }}"><i class="icon-puzzle"></i><span data-hover="Shipment">Shipment</span></a></li>
                     @endif
                 @endif
 
