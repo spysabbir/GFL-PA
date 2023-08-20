@@ -11,6 +11,16 @@ use Yajra\DataTables\Facades\DataTables;
 
 class BuyerController extends Controller
 {
+    function __construct()
+    {
+        $this->middleware('permission:buyer.list|buyer.create|buyer.edit|buyer.delete|buyer.trashed|buyer.forceDelete', ['only' => ['index','show']]);
+        $this->middleware('permission:buyer.create', ['only' => ['create','store']]);
+        $this->middleware('permission:buyer.edit', ['only' => ['edit','update', 'status']]);
+        $this->middleware('permission:buyer.delete', ['only' => ['destroy']]);
+        $this->middleware('permission:buyer.trashed', ['only' => ['trashed', 'restore']]);
+        $this->middleware('permission:buyer.forceDelete', ['only' => ['forceDelete']]);
+    }
+
     public function index(Request $request)
     {
         if ($request->ajax()) {

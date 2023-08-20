@@ -12,6 +12,16 @@ use Yajra\DataTables\Facades\DataTables;
 
 class StyleController extends Controller
 {
+    function __construct()
+    {
+        $this->middleware('permission:style.list|style.create|style.edit|style.delete|style.trashed|style.forceDelete', ['only' => ['index','show']]);
+        $this->middleware('permission:style.create', ['only' => ['create','store']]);
+        $this->middleware('permission:style.edit', ['only' => ['edit','update', 'status']]);
+        $this->middleware('permission:style.delete', ['only' => ['destroy']]);
+        $this->middleware('permission:style.trashed', ['only' => ['trashed', 'restore']]);
+        $this->middleware('permission:style.forceDelete', ['only' => ['forceDelete']]);
+    }
+
     public function index(Request $request)
     {
         if ($request->ajax()) {
@@ -111,7 +121,7 @@ class StyleController extends Controller
             $exists = Style::where('buyer_id', $request->buyer_id)
                             ->where('style_name', $request->style_name)
                             ->exists();
-                            
+
             if (!$existsId && $exists) {
                 return response()->json([
                     'status' => 401,

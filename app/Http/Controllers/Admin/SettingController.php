@@ -11,6 +11,11 @@ use Intervention\Image\Facades\Image;
 
 class SettingController extends Controller
 {
+    function __construct()
+    {
+        $this->middleware('permission:default.setting', ['only' => ['defaultSetting','defaultSettingUpdate']]);
+    }
+
     // Change Env Function
     public function changeEnv($envKey, $envValue)
     {
@@ -47,7 +52,7 @@ class SettingController extends Controller
             'main_email' => 'nullable|email|max:255',
             'support_email' => 'nullable|email|max:255',
         ]);
-        
+
         $this->changeEnv("APP_NAME", "'$request->app_name'");
         $this->changeEnv("APP_URL", "'$request->app_url'");
         $this->changeEnv("TIME_ZONE", "'$request->time_zone'");

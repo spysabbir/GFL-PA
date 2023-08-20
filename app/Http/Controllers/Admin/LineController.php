@@ -11,6 +11,16 @@ use Yajra\DataTables\Facades\DataTables;
 
 class LineController extends Controller
 {
+    function __construct()
+    {
+        $this->middleware('permission:line.list|line.create|line.edit|line.delete|line.trashed|line.forceDelete', ['only' => ['index','show']]);
+        $this->middleware('permission:line.create', ['only' => ['create','store']]);
+        $this->middleware('permission:line.edit', ['only' => ['edit','update', 'status']]);
+        $this->middleware('permission:line.delete', ['only' => ['destroy']]);
+        $this->middleware('permission:line.trashed', ['only' => ['trashed', 'restore']]);
+        $this->middleware('permission:line.forceDelete', ['only' => ['forceDelete']]);
+    }
+
     public function index(Request $request)
     {
         if ($request->ajax()) {

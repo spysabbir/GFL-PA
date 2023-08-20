@@ -11,6 +11,16 @@ use Yajra\DataTables\Facades\DataTables;
 
 class GarmentTypeController extends Controller
 {
+    function __construct()
+    {
+        $this->middleware('permission:garment-type.list|garment-type.create|garment-type.edit|garment-type.delete|garment-type.trashed|garment-type.forceDelete', ['only' => ['index','show']]);
+        $this->middleware('permission:garment-type.create', ['only' => ['create','store']]);
+        $this->middleware('permission:garment-type.edit', ['only' => ['edit','update', 'status']]);
+        $this->middleware('permission:garment-type.delete', ['only' => ['destroy']]);
+        $this->middleware('permission:garment-type.trashed', ['only' => ['trashed', 'restore']]);
+        $this->middleware('permission:garment-type.forceDelete', ['only' => ['forceDelete']]);
+    }
+
     public function index(Request $request)
     {
         if ($request->ajax()) {

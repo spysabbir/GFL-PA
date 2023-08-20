@@ -11,6 +11,16 @@ use Yajra\DataTables\Facades\DataTables;
 
 class WashController extends Controller
 {
+    function __construct()
+    {
+        $this->middleware('permission:wash.list|wash.create|wash.edit|wash.delete|wash.trashed|wash.forceDelete', ['only' => ['index','show']]);
+        $this->middleware('permission:wash.create', ['only' => ['create','store']]);
+        $this->middleware('permission:wash.edit', ['only' => ['edit','update', 'status']]);
+        $this->middleware('permission:wash.delete', ['only' => ['destroy']]);
+        $this->middleware('permission:wash.trashed', ['only' => ['trashed', 'restore']]);
+        $this->middleware('permission:wash.forceDelete', ['only' => ['forceDelete']]);
+    }
+
     public function index(Request $request)
     {
         if ($request->ajax()) {

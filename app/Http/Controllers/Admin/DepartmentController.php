@@ -11,6 +11,14 @@ use Yajra\DataTables\Facades\DataTables;
 
 class DepartmentController extends Controller
 {
+    function __construct()
+    {
+        $this->middleware('permission:department.list|department.create|department.edit|department.delete', ['only' => ['index','show']]);
+        $this->middleware('permission:department.create', ['only' => ['create','store']]);
+        $this->middleware('permission:department.edit', ['only' => ['edit','update', 'status']]);
+        $this->middleware('permission:department.delete', ['only' => ['destroy']]);
+    }
+
     public function index(Request $request)
     {
         if ($request->ajax()) {

@@ -11,6 +11,14 @@ use Yajra\DataTables\Facades\DataTables;
 
 class DesignationController extends Controller
 {
+    function __construct()
+    {
+        $this->middleware('permission:designation.list|designation.create|designation.edit|designation.delete', ['only' => ['index','show']]);
+        $this->middleware('permission:designation.create', ['only' => ['create','store']]);
+        $this->middleware('permission:designation.edit', ['only' => ['edit','update', 'status']]);
+        $this->middleware('permission:designation.delete', ['only' => ['destroy']]);
+    }
+
     public function index(Request $request)
     {
         if ($request->ajax()) {

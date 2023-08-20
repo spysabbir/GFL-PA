@@ -11,6 +11,16 @@ use Yajra\DataTables\Facades\DataTables;
 
 class SeasonController extends Controller
 {
+    function __construct()
+    {
+        $this->middleware('permission:season.list|season.create|season.edit|season.delete|season.trashed|season.forceDelete', ['only' => ['index','show']]);
+        $this->middleware('permission:season.create', ['only' => ['create','store']]);
+        $this->middleware('permission:season.edit', ['only' => ['edit','update', 'status']]);
+        $this->middleware('permission:season.delete', ['only' => ['destroy']]);
+        $this->middleware('permission:season.trashed', ['only' => ['trashed', 'restore']]);
+        $this->middleware('permission:season.forceDelete', ['only' => ['forceDelete']]);
+    }
+
     public function index(Request $request)
     {
         if ($request->ajax()) {

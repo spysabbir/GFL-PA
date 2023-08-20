@@ -20,6 +20,18 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class MasterStyleController extends Controller
 {
+    function __construct()
+    {
+        $this->middleware('permission:master-style.list|master-style.create|master-style.edit|master-style.delete|master-style.trashed|master-style.forceDelete|bpoOrderList|manageBpoOrder', ['only' => ['index','show']]);
+        $this->middleware('permission:master-style.create', ['only' => ['create','store']]);
+        $this->middleware('permission:master-style.edit', ['only' => ['edit','update', 'statusEdit', 'statusUpdate']]);
+        $this->middleware('permission:master-style.delete', ['only' => ['destroy']]);
+        $this->middleware('permission:master-style.trashed', ['only' => ['trashed', 'restore']]);
+        $this->middleware('permission:master-style.forceDelete', ['only' => ['forceDelete']]);
+        $this->middleware('permission:bpoOrderList|manageBpoOrder', ['only' => ['bpoOrderList']]);
+        $this->middleware('permission:manageBpoOrder', ['only' => ['bpoOrderStore', 'bpoOrderUpload', 'bpoOrderEdit', 'bpoOrderUpdate', 'bpoOrderDelete', 'bpoOrderDeleteAll']]);
+    }
+
     public function index(Request $request)
     {
         if ($request->ajax()) {

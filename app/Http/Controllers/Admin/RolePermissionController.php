@@ -13,6 +13,14 @@ use Yajra\DataTables\Facades\DataTables;
 
 class RolePermissionController extends Controller
 {
+    function __construct()
+    {
+        $this->middleware('permission:role-permission.list|role-permission.create|role-permission.edit|role-permission.delete', ['only' => ['index','show']]);
+        $this->middleware('permission:role-permission.create', ['only' => ['create','store']]);
+        $this->middleware('permission:role-permission.edit', ['only' => ['edit','update', 'status']]);
+        $this->middleware('permission:role-permission.delete', ['only' => ['destroy']]);
+    }
+
     public function index(Request $request)
     {
         if ($request->ajax()) {

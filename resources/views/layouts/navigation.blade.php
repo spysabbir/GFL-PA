@@ -8,17 +8,16 @@
         <nav class="sidebar-nav">
             <ul class="metismenu ci-effect-1">
 
-                <li class="g_heading">Admin Panel</li>
-
                 @if (Auth::user()->can('RoleManagementMenu'))
+                <li class="g_heading">Admin Panel</li>
                 <li class="{{ request()->routeIs('admin.role.index') || request()->routeIs('admin.role-permission.create') || request()->routeIs('admin.role-permission.index') || request()->routeIs('admin.role-permission.edit')  ? 'active' : '' }}">
                     <a href="javascript:void(0)" class="has-arrow arrow-b"><i class="icon-home"></i><span data-hover="Role Management">Role Management</span></a>
                     <ul>
-                        @if (Auth::user()->can('role.index'))
+                        @if (Auth::user()->can('role.list'))
                             <li class="{{ request()->routeIs('admin.role.index') ? 'active' : '' }}"><a href="{{ route('admin.role.index') }}"><span data-hover="Role">Role</span></a></li>
                         @endif
 
-                        @if (Auth::user()->can('role-permission.index'))
+                        @if (Auth::user()->can('role-permission.list'))
                             <li class="{{ request()->routeIs('admin.role-permission.create') || request()->routeIs('admin.role-permission.index') || request()->routeIs('admin.role-permission.edit')? 'active' : '' }}"><a href="{{ route('admin.role-permission.index') }}"><span data-hover="Assign Permission">Assign Permission</span></a></li>
                         @endif
                     </ul>
@@ -33,7 +32,7 @@
                             <li class="{{ request()->routeIs('admin.user.create') ? 'active' : '' }}"><a href="{{ route('admin.user.create') }}"><span data-hover="Create">Create</span></a></li>
                         @endif
 
-                        @if (Auth::user()->can('user.index'))
+                        @if (Auth::user()->can('user.list'))
                             <li class="{{ request()->routeIs('admin.user.index') ? 'active' : '' }}"><a href="{{ route('admin.user.index') }}"><span data-hover="List">List</span></a></li>
                         @endif
                     </ul>
@@ -44,11 +43,11 @@
                 <li class="{{ request()->routeIs('admin.department.index') || request()->routeIs('admin.designation.index')  ? 'active' : '' }}">
                     <a href="javascript:void(0)" class="has-arrow arrow-b"><i class="icon-home"></i><span data-hover="Employee Resources">Employee Resources</span></a>
                     <ul>
-                        @if (Auth::user()->can('department.index'))
+                        @if (Auth::user()->can('department.list'))
                             <li class="{{ request()->routeIs('admin.department.index') ? 'active' : '' }}"><a href="{{ route('admin.department.index') }}"><span data-hover="Department">Department</span></a></li>
                         @endif
 
-                        @if (Auth::user()->can('designation.index'))
+                        @if (Auth::user()->can('designation.list'))
                             <li class="{{ request()->routeIs('admin.designation.index') ? 'active' : '' }}"><a href="{{ route('admin.designation.index') }}"><span data-hover="Designation">Designation</span></a></li>
                         @endif
                     </ul>
@@ -59,7 +58,7 @@
                 <li class="{{ request()->routeIs('admin.line.index') ? 'active' : '' }}">
                     <a href="javascript:void(0)" class="has-arrow arrow-b"><i class="icon-home"></i><span data-hover="Others Resources">Others Resources</span></a>
                     <ul>
-                        @if (Auth::user()->can('line.index'))
+                        @if (Auth::user()->can('line.list'))
                         <li class="{{ request()->routeIs('admin.line.index') ? 'active' : '' }}"><a href="{{ route('admin.line.index') }}"><span data-hover="Line">Line</span></a></li>
                         @endif
                     </ul>
@@ -89,7 +88,7 @@
                             <li class="{{ request()->routeIs('employee.employee.create') ? 'active' : '' }}"><a href="{{ route('employee.employee.create') }}"><span data-hover="Create">Create</span></a></li>
                         @endif
 
-                        @if (Auth::user()->can('employee.index'))
+                        @if (Auth::user()->can('employee.list'))
                             <li class="{{ request()->routeIs('employee.employee.index') || request()->routeIs('employee.employee.edit') || request()->routeIs('employee.employee.show') ? 'active' : '' }}"><a href="{{ route('employee.employee.index') }}"><span data-hover="List">List</span></a></li>
                         @endif
                     </ul>
@@ -97,32 +96,32 @@
                 @endif
 
                 {{-- Merchandiser Panel --}}
-                <li class="g_heading">Merchandiser Panel</li>
                 @if (Auth::user()->can('StyleResourcesMenu'))
+                <li class="g_heading">Merchandiser Panel</li>
                 <li class="{{ request()->routeIs('employee.buyer.index') || request()->routeIs('employee.style.index') || request()->routeIs('employee.season.index') || request()->routeIs('employee.color.index') || request()->routeIs('employee.wash.index') || request()->routeIs('employee.garment-type.index') ? 'active' : '' }}">
                     <a href="javascript:void(0)" class="has-arrow arrow-b"><i class="icon-home"></i><span data-hover="Style Resources">Style Resources</span></a>
                     <ul>
-                        @if (Auth::user()->can('buyer.index'))
+                        @if (Auth::user()->can('buyer.list'))
                             <li class="{{ request()->routeIs('employee.buyer.index') ? 'active' : '' }}"><a href="{{ route('employee.buyer.index') }}"><span data-hover="Buyer">Buyer</span></a></li>
                         @endif
 
-                        @if (Auth::user()->can('style.index'))
+                        @if (Auth::user()->can('style.list'))
                             <li class="{{ request()->routeIs('employee.style.index') ? 'active' : '' }}"><a href="{{ route('employee.style.index') }}"><span data-hover="Style">Style</span></a></li>
                         @endif
 
-                        @if (Auth::user()->can('season.index'))
+                        @if (Auth::user()->can('season.list'))
                             <li class="{{ request()->routeIs('employee.season.index') ? 'active' : '' }}"><a href="{{ route('employee.season.index') }}"><span data-hover="Season">Season</span></a></li>
                         @endif
 
-                        @if (Auth::user()->can('color.index'))
+                        @if (Auth::user()->can('color.list'))
                             <li class="{{ request()->routeIs('employee.color.index') ? 'active' : '' }}"><a href="{{ route('employee.color.index') }}"><span data-hover="Color">Color</span></a></li>
                         @endif
 
-                        @if (Auth::user()->can('wash.index'))
+                        @if (Auth::user()->can('wash.list'))
                             <li class="{{ request()->routeIs('employee.wash.index') ? 'active' : '' }}"><a href="{{ route('employee.wash.index') }}"><span data-hover="Wash">Wash</span></a></li>
                         @endif
 
-                        @if (Auth::user()->can('garment-type.index'))
+                        @if (Auth::user()->can('garment-type.list'))
                             <li class="{{ request()->routeIs('employee.garment-type.index') ? 'active' : '' }}"><a href="{{ route('employee.garment-type.index') }}"><span data-hover="Garment Type">Garment Type</span></a></li>
                         @endif
                     </ul>
@@ -136,7 +135,7 @@
                         @if (Auth::user()->can('master-style.create'))
                         <li class="{{ request()->routeIs('employee.master-style.create') ? 'active' : '' }}"><a href="{{ route('employee.master-style.create') }}"><span data-hover="Create">Create</span></a></li>
                         @endif
-                        @if (Auth::user()->can('master-style.index'))
+                        @if (Auth::user()->can('master-style.list'))
                         <li class="{{ request()->routeIs('employee.master-style.index') ? 'active' : '' }}"><a href="{{ route('employee.master-style.index') }}"><span data-hover="List">List</span></a></li>
                         @endif
                     </ul>
@@ -149,11 +148,11 @@
                 <li>
                     <a href="javascript:void(0)" class="has-arrow arrow-b"><i class="icon-tag"></i><span data-hover="Cutting">Cutting</span></a>
                     <ul>
-                        @if (Auth::user()->can('new-cutting.index'))
+                        @if (Auth::user()->can('new-cutting.list'))
                             <li><a href="{{ route('employee.new-cutting.index') }}"><span data-hover="New Cutting">New Cutting</span></a></li>
                         @endif
 
-                        @if (Auth::user()->can('sewing-input.index'))
+                        @if (Auth::user()->can('sewing-input.list'))
                             <li><a href="{{ route('employee.sewing-input.index') }}"><span data-hover="Sewing Input">Sewing Input</span></a></li>
                         @endif
                     </ul>
@@ -163,7 +162,7 @@
                 {{-- Sewing Panel --}}
                 @if (Auth::user()->can('SewingMenu'))
                 <li class="g_heading">Sewing Panel</li>
-                    @if (Auth::user()->can('sewing-production.index'))
+                    @if (Auth::user()->can('sewing-production.list'))
                         <li><a href="{{ route('employee.sewing-production.index') }}"><i class="icon-puzzle"></i><span data-hover="Sewing">Sewing</span></a></li>
                     @endif
                 @endif
@@ -174,11 +173,11 @@
                 <li>
                     <a href="javascript:void(0)" class="has-arrow arrow-b"><i class="icon-tag"></i><span data-hover="Wash">Wash</span></a>
                     <ul>
-                        @if (Auth::user()->can('wash-delivery.index'))
+                        @if (Auth::user()->can('wash-delivery.list'))
                             <li><a href="{{ route('employee.wash-delivery.index') }}"><span data-hover="Delivery to Washing">Delivery to Washing</span></a></li>
                         @endif
 
-                        @if (Auth::user()->can('wash-receive.index'))
+                        @if (Auth::user()->can('wash-receive.list'))
                             <li><a href="{{ route('employee.wash-receive.index') }}"><span data-hover="Receive from Washing ">Receive from Washing</span></a></li>
                         @endif
                     </ul>
@@ -186,16 +185,16 @@
                 @endif
 
                 {{-- Finishing Panel --}}
-                <li class="g_heading">Finishing Panel</li>
                 @if (Auth::user()->can('FinishingMenu'))
+                <li class="g_heading">Finishing Panel</li>
                 <li>
                     <a href="javascript:void(0)" class="has-arrow arrow-b"><i class="icon-tag"></i><span data-hover="Finishing">Finishing</span></a>
                     <ul>
-                        @if (Auth::user()->can('finishing-input.index'))
+                        @if (Auth::user()->can('finishing-input.list'))
                             <li><a href="{{ route('employee.finishing-input.index') }}"><span data-hover="Finishing Input">Finishing Input</span></a></li>
                         @endif
 
-                        @if (Auth::user()->can('finishing-production.index'))
+                        @if (Auth::user()->can('finishing-production.list'))
                             <li><a href="{{ route('employee.finishing-production.index') }}"><span data-hover="Finishing Production">Finishing Production</span></a></li>
                         @endif
                     </ul>
@@ -205,7 +204,7 @@
                 {{-- Shipment Panel --}}
                 @if (Auth::user()->can('ShipmentMenu'))
                 <li class="g_heading">Shipment Panel</li>
-                    @if (Auth::user()->can('shipment.index'))
+                    @if (Auth::user()->can('shipment.list'))
                         <li><a href="{{ route('employee.shipment.index') }}"><i class="icon-puzzle"></i><span data-hover="Shipment">Shipment</span></a></li>
                     @endif
                 @endif

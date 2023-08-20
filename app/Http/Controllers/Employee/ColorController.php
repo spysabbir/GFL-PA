@@ -11,6 +11,16 @@ use Yajra\DataTables\Facades\DataTables;
 
 class ColorController extends Controller
 {
+    function __construct()
+    {
+        $this->middleware('permission:color.list|color.create|color.edit|color.delete|color.trashed|color.forceDelete', ['only' => ['index','show']]);
+        $this->middleware('permission:color.create', ['only' => ['create','store']]);
+        $this->middleware('permission:color.edit', ['only' => ['edit','update', 'status']]);
+        $this->middleware('permission:color.delete', ['only' => ['destroy']]);
+        $this->middleware('permission:color.trashed', ['only' => ['trashed', 'restore']]);
+        $this->middleware('permission:color.forceDelete', ['only' => ['forceDelete']]);
+    }
+
     public function index(Request $request)
     {
         if ($request->ajax()) {
