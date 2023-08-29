@@ -15,8 +15,7 @@
                 </div>
             </div>
             <div class="card-body">
-                {{-- <h4 class="text-center">Status: <strong id="getStatus"></strong></h4>
-                <form id="editForm">
+                {{-- <form id="editForm">
                     @csrf
                     <div class="row">
                         <input type="hidden" id="masterStyle_id" value="{{ $masterStyle->id }}">
@@ -114,34 +113,30 @@
             }
         });
 
-        // // Master Style Update Data
-        // $('#editForm').submit(function (event) {
-        //     event.preventDefault();
-        //     var id = $('#masterStyle_id').val();
-        //     var url = "{{ route('employee.master-style.update', ":id") }}";
-        //     url = url.replace(':id', id)
-        //     $.ajax({
-        //         url: url,
-        //         type: "PUT",
-        //         data: $(this).serialize(),
-        //         beforeSend:function(){
-        //             $(document).find('span.error-text').text('');
-        //         },
-        //         success: function (response) {
-        //             if (response.status == 400) {
-        //                 $.each(response.error, function(prefix, val){
-        //                     $('span.update_'+prefix+'_error').text(val[0]);
-        //                 })
-        //             }else{
-        //                 if (response.status == 401) {
-        //                     toastr.error('This master style already added please enter unique style info.');
-        //                 } else {
-        //                     toastr.success('Master style update successfully.');
-        //                 }
-        //             }
-        //         },
-        //     });
-        // });
+        // Cutting Data Update
+        $('#editForm').submit(function (event) {
+            event.preventDefault();
+            var id = $('#masterStyle_id').val();
+            var url = "{{ route('employee.new-cutting.update', ":id") }}";
+            url = url.replace(':id', id)
+            $.ajax({
+                url: url,
+                type: "PUT",
+                data: $(this).serialize(),
+                beforeSend:function(){
+                    $(document).find('span.error-text').text('');
+                },
+                success: function (response) {
+                    if (response.status == 400) {
+                        $.each(response.error, function(prefix, val){
+                            $('span.update_'+prefix+'_error').text(val[0]);
+                        })
+                    }else{
+                        toastr.success('Cutting data update successfully.');
+                    }
+                },
+            });
+        });
 
     });
 </script>

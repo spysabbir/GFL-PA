@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Employee;
 
 use App\Http\Controllers\Controller;
+use App\Models\MasterStyle;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -45,6 +46,11 @@ class NewCuttingController extends Controller
         }
 
         return view('employee.new-cutting.index');
+    }
+
+    public function create(){
+        $allStyle = MasterStyle::where('status', 'Active')->get();
+        return view('employee.new-cutting.create', compact('allStyle'));
     }
 
     public function store(Request $request)
