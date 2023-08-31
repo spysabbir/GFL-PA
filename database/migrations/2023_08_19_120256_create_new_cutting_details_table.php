@@ -13,7 +13,9 @@ return new class extends Migration
     {
         Schema::create('new_cutting_details', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->integer('cutting_summary_id');
+            $table->integer('unique_id');
+            $table->integer('cutting_qty');
         });
     }
 

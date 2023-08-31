@@ -133,7 +133,7 @@
         // Delete Data
         $(document).on('click', '.deleteBtn', function(){
             var id = $(this).data('id');
-            var url = "{{ route('employee.new-cutting', ":id") }}";
+            var url = "{{ route('employee.new-cutting.destroy', ":id") }}";
             url = url.replace(':id', id)
             Swal.fire({
                 title: 'Are you sure?',

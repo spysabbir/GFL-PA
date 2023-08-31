@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Employee;
 
 use App\Http\Controllers\Controller;
 use App\Models\MasterStyle;
+use App\Models\NewCuttingDetail;
+use App\Models\NewCuttingSummary;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -49,14 +51,14 @@ class NewCuttingController extends Controller
     }
 
     public function create(){
-        $allStyle = MasterStyle::where('status', 'Active')->get();
+        $allStyle = MasterStyle::where('status', 'Running')->get();
         return view('employee.new-cutting.create', compact('allStyle'));
     }
 
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'buyer_name' => 'required|string|max:255|unique:buyers,buyer_name',
+            'cutting_date' => 'required',
         ]);
 
         if($validator->fails()){
@@ -65,8 +67,60 @@ class NewCuttingController extends Controller
                 'error'=> $validator->errors()->toArray()
             ]);
         }else{
-            Buyer::create($request->all()+[
+            $getId = NewCuttingSummary::create($request->all()+[
                 'created_by' => Auth::user()->id,
+            ]);
+
+            return response()->json([
+                'getId' => $getId,
+                'status' => 200,
+            ]);
+        }
+    }
+
+    public function getSearchStyleInfo(Request $request)
+    {
+        $send_data = "";
+        $all_style = MasterStyle::where('unique_id', $request->unique_id)->orWhere('style_id', $request->style_id)->get();
+        foreach ($all_style as $style) {
+            $buyer_name = $style->buyer->buyer_name;
+            $style_name = $style->style->style_name;
+            $season_name = $style->season->season_name;
+            $color_name = $style->color->color_name;
+            $wash_name = $style->wash->wash_name;
+
+            $send_data .= "
+                <tr>
+                    <form action=''>
+                    <td><input type='text' name'unique_id' value='$style->unique_id' readonly></td>
+                    <td>$buyer_name</td>
+                    <td>$style_name</td>
+                    <td>$season_name</td>
+                    <td>$color_name</td>
+                    <td>$wash_name</td>
+                    <td><input type='text' name'cutting_qty' value=''></td>
+                    <td><button type='submit' class='btn btn-secondary'>Add</button></td>
+                    </form>
+                </tr>
+            ";
+        }
+        return response()->json($send_data);
+    }
+
+    public function addNewCuttingStyle(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'cutting_qty' => 'required',
+        ]);
+
+        if($validator->fails()){
+            return response()->json([
+                'status' => 400,
+                'error'=> $validator->errors()->toArray()
+            ]);
+        }else{
+            NewCuttingDetail::create($request->all()+[
+                'cutting_summary_id' => Auth::user()->id,
             ]);
 
             return response()->json([

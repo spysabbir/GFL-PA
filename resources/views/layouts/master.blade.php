@@ -22,6 +22,9 @@
     <link rel="stylesheet" href="{{ asset('asset') }}/plugins/jvectormap/jvectormap-2.0.3.css" />
     <link rel="stylesheet" href="{{ asset('asset') }}/plugins/sweetalert2/sweetalert2.min.css">
     <link rel="stylesheet" href="{{ asset('asset') }}/plugins/toastr/toastr.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
     <!-- Core css -->
     <link rel="stylesheet" href="{{ asset('asset') }}/css/main.css"/>
     <link rel="stylesheet" href="{{ asset('asset') }}/css/theme1.css" id="stylesheet"/>
@@ -307,6 +310,9 @@
     <script src="{{ asset('asset') }}/plugins/toastr/toastr.min.js"></script>
     <script src="{{ asset('asset') }}/plugins/sweetalert2/sweetalert2.all.min.js"></script>
     <script src="{{ asset('asset') }}/bundles/dataTables.bundle.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
     <!-- Start core js and page js -->
     <script src="{{ asset('asset') }}/js/core.js"></script>
     <script src="{{ asset('asset') }}/js/page/index2.js"></script>
