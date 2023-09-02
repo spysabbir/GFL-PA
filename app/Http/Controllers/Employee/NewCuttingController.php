@@ -18,23 +18,24 @@ class NewCuttingController extends Controller
         if ($request->ajax()) {
             $query = NewCuttingSummary::select('new_cutting_summaries.*');
 
-            if ($request->status) {
-                $query->where('buyers.status', $request->status);
+            if ($request->cutting_date) {
+                $query->where('new_cutting_summaries.cutting_date', $request->cutting_date);
             }
 
             $query->orderBy('created_at', 'desc');
 
-            $buyers = $query->get();
+            $cuttingDoc = $query->get();
 
-            return DataTables::of($buyers)
+            return DataTables::of($cuttingDoc)
                 ->addIndexColumn()
+                ->editColumn('cutting_qty', function ($row) {
+                    return '<span class="badge text-white bg-orange">' . NewCuttingDetail::where('cutting_summary_id', $row->id)->sum('cutting_qty') . '</span>';
+                })
                 ->editColumn('status', function ($row) {
                     if ($row->status == 'Active') {
-                        $status = '<span class="badge text-white bg-green">' . $row->status . '</span>
-                                   <button type="button" data-id="' . $row->id . '" class="btn text-white bg-green btn-sm statusBtn"><i class="fe fe-check"></i></button>';
+                        $status = '<span class="badge text-white bg-green">' . $row->status . '</span>';
                     } else {
-                        $status = '<span class="badge text-white bg-orange">' . $row->status . '</span>
-                                   <button type="button" data-id="' . $row->id . '" class="btn text-white bg-orange btn-sm statusBtn"><i class="fe fe-slash"></i></button>';
+                        $status = '<span class="badge text-white bg-orange">' . $row->status . '</span>';
                     }
                     return $status;
                 })
@@ -43,7 +44,7 @@ class NewCuttingController extends Controller
                             <button type="button" data-id="' . $row->id . '" class="btn text-white bg-yellow btn-sm deleteBtn"><i class="fe fe-trash"></i></button>';
                     return $btn;
                 })
-                ->rawColumns(['status', 'action'])
+                ->rawColumns(['cutting_qty', 'status', 'action'])
                 ->make(true);
         }
 
@@ -52,9 +53,7 @@ class NewCuttingController extends Controller
 
     public function create(){
         $allStyle = MasterStyle::where('status', 'Running')->get();
-
-        $totalCuttingQty = '';
-        return view('employee.new-cutting.create', compact('allStyle', 'totalCuttingQty'));
+        return view('employee.new-cutting.create', compact('allStyle'));
     }
 
     public function store(Request $request)
@@ -158,48 +157,47 @@ class NewCuttingController extends Controller
 
             return DataTables::of($style)
                 ->addIndexColumn()
+                ->editColumn('styleWiseTotalCuttingQty', function ($row) {
+                    return '<span class="badge text-white bg-orange">' . NewCuttingDetail::where('unique_id', $row->unique_id)->sum('cutting_qty') . '</span>';
+                })
                 ->addColumn('action', function ($row) {
                     $btn = '<button type="button" data-id="' . $row->id . '" class="btn text-white bg-purple btn-sm editBtn" data-toggle="modal" data-target="#editModal"><i class="fe fe-edit"></i></button>
                             <button type="button" data-id="' . $row->id . '" class="btn text-white bg-yellow btn-sm deleteBtn"><i class="fe fe-trash"></i></button>';
                     return $btn;
                 })
                 ->with('totalCuttingQty', $totalCuttingQty)
-                ->rawColumns(['action'])
+                ->rawColumns(['styleWiseTotalCuttingQty', 'action'])
                 ->make(true);
         }
 
         return view('employee.new-cutting.create');
     }
 
-    // public function edit(string $id)
-    // {
-    //     $buyer = Buyer::where('id', $id)->first();
-    //     return response()->json($buyer);
-    // }
+    public function update(Request $request, string $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'cutting_date' => 'required',
+        ]);
 
-    // public function update(Request $request, string $id)
-    // {
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 400,
+                'error' => $validator->errors()->toArray()
+            ]);
+        } else {
+            $cuttindDoc = NewCuttingSummary::findOrFail($id);
+            $cuttindDoc->update([
+                'cutting_date' => $request->cutting_date,
+                'remarks' => $request->remarks,
+                'updated_by' => Auth::user()->id,
+            ]);
 
-    //     $validator = Validator::make($request->all(), [
-    //         'buyer_name' => 'required|string|max:255|unique:buyers,buyer_name,' . $id,
-    //     ]);
-
-    //     if ($validator->fails()) {
-    //         return response()->json([
-    //             'status' => 400,
-    //             'error' => $validator->errors()->toArray()
-    //         ]);
-    //     } else {
-    //         $buyer = Buyer::findOrFail($id);
-    //         $buyer->update($request->all() + [
-    //             'updated_by' => Auth::user()->id,
-    //         ]);
-
-    //         return response()->json([
-    //             'status' => 200,
-    //         ]);
-    //     }
-    // }
+            return response()->json([
+                'cuttindDoc' => $cuttindDoc,
+                'status' => 200,
+            ]);
+        }
+    }
 
     // public function destroy(string $id)
     // {

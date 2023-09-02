@@ -18,7 +18,7 @@
                 <form id="createDocForm">
                     @csrf
                     <div class="row d-flex justify-content-between">
-                        <div class="col-md-2">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label class="form-label">Cutting Doc No</label>
                                 <input type="text" class="form-control" id="get_doc_no" readonly>
@@ -31,10 +31,11 @@
                         </div>
                         <div class="col-md-2">
                             <div class="form-group mt-1">
-                                <button type="submit" class="btn text-white bg-cyan" id="saveDocBtn">Save</button>
-                                <button type="button" class="btn text-white bg-cyan">Back</button>
+                                <button type="submit" class="btn text-white bg-cyan" id="createDocBtn">Create</button>
+                                <button type="button" class="btn text-white bg-cyan" id="updateDocBtn">Update</button>
+                                <a href="{{ route('employee.new-cutting.index') }}" class="btn text-white bg-pink">Back</a>
                                 <!-- Create Btn -->
-                                <button type="button" class="btn text-white bg-pink" data-toggle="modal" data-target="#createModal" id="addStyleBtn" disabled><i class="fe fe-plus-circle"></i></button>
+                                <button type="button" class="btn text-white bg-success" data-toggle="modal" data-target="#createModal" id="addStyleBtn" disabled><i class="fe fe-plus-circle"></i></button>
                             </div>
                             <span><strong>Total Cutting:</strong> <span id="totalCuttingQty">0</span></span>
                         </div>
@@ -117,6 +118,7 @@
                                     <th>Sl No</th>
                                     <th>Unique Id</th>
                                     <th>Cutting Qty</th>
+                                    <th>Total Cutting Qty</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -128,6 +130,7 @@
                                     <th>Sl No</th>
                                     <th>Unique Id</th>
                                     <th>Cutting Qty</th>
+                                    <th>Total Cutting Qty</th>
                                     <th>Action</th>
                                 </tr>
                             </tfoot>
@@ -152,6 +155,9 @@
         $('.select_unique_id_js').select2();
         $('.select_style_js').select2();
 
+        $('#createDocBtn').show();
+        $('#updateDocBtn').hide();
+
         // Store Data
         $('#createDocForm').submit(function(event) {
             event.preventDefault();
@@ -174,9 +180,38 @@
                         $('#get_cutting_date').val(response.getId.cutting_date);
                         $('#get_remarks').val(response.getId.remarks);
                         $('#addStyleBtn').attr('disabled', false);
-                        $('#saveDocBtn').attr('disabled', true);
+                        $('#createDocBtn').hide();
+                        $('#updateDocBtn').show();
                         $('#allDataTable').DataTable().ajax.reload();
                         toastr.success('Cutting data store successfully.');
+                    }
+                }
+            });
+        });
+
+        $(document).on('click', '#updateDocBtn', function () {
+            var id = $('#get_doc_no').val();
+            var cutting_date = $('#get_cutting_date').val();
+            var remarks = $('#get_remarks').val();
+            var url = "{{ route('employee.new-cutting.update', ":id") }}";
+            url = url.replace(':id', id)
+            $.ajax({
+                url: url,
+                type: 'PUT',
+                data: {cutting_date: cutting_date, remarks: remarks},
+                beforeSend:function(){
+                    $(document).find('span.error-text').text('');
+                },
+                success: function(response) {
+                    if (response.status == 400) {
+                        $.each(response.error, function(prefix, val){
+                            $('span.'+prefix+'_error').text(val[0]);
+                        })
+                    }else{
+                        $('#get_cutting_date').val(response.cuttindDoc.cutting_date);
+                        $('#get_remarks').val(response.cuttindDoc.remarks);
+                        $('#allDataTable').DataTable().ajax.reload();
+                        toastr.success('Cutting data update successfully.');
                     }
                 }
             });
@@ -238,6 +273,7 @@
                 { data: 'DT_RowIndex', name: 'DT_RowIndex' },
                 { data: 'unique_id', name: 'unique_id' },
                 { data: 'cutting_qty', name: 'cutting_qty' },
+                { data: 'styleWiseTotalCuttingQty', name: 'styleWiseTotalCuttingQty' },
                 { data: 'action', name: 'action', orderable: false, searchable: false }
             ],
             drawCallback: function (settings) {
