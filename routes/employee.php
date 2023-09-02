@@ -96,6 +96,7 @@ Route::prefix('employee')->middleware(['auth'])->name('employee.')->group(functi
     Route::get('/new-cutting/force/delete/{id}', [NewCuttingController::class, 'forceDelete'])->name('new-cutting.force.delete');
     Route::post('/get-search-style-info', [NewCuttingController::class, 'getSearchStyleInfo'])->name('get.search.style.info');
     Route::post('/add/new-cutting/style', [NewCuttingController::class, 'addNewCuttingStyle'])->name('add.new-cutting.style');
+    Route::get('/get/new-cutting/style', [NewCuttingController::class, 'getNewCuttingStyle'])->name('get.new-cutting.style');
 
     Route::resource('sewing-input', SewingInputController::class);
 

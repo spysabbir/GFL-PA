@@ -31,12 +31,12 @@
                         </div>
                         <div class="col-md-2">
                             <div class="form-group mt-1">
-                                <button type="submit" class="btn text-white bg-cyan">Save</button>
+                                <button type="submit" class="btn text-white bg-cyan" id="saveDocBtn">Save</button>
                                 <button type="button" class="btn text-white bg-cyan">Back</button>
                                 <!-- Create Btn -->
-                                <button type="button" class="btn text-white bg-pink" data-toggle="modal" data-target="#createModal"><i class="fe fe-plus-circle"></i></button>
+                                <button type="button" class="btn text-white bg-pink" data-toggle="modal" data-target="#createModal" id="addStyleBtn" disabled><i class="fe fe-plus-circle"></i></button>
                             </div>
-                            <span><strong>Total Cutting:</strong> 0</span>
+                            <span><strong>Total Cutting:</strong> <span id="totalCuttingQty">0</span></span>
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
@@ -67,7 +67,6 @@
                                                 <option value="{{ $style->unique_id  }}">{{ $style->unique_id  }}</option>
                                                 @endforeach
                                             </select>
-                                            {{-- <input type="number" class="form-control" id="search_unique_id"> --}}
                                         </div>
                                     </div>
                                     <div class="col-md-8">
@@ -79,7 +78,6 @@
                                                 <option value="{{ $style->style_id }}">{{ $style->style->style_name }}</option>
                                                 @endforeach
                                             </select>
-                                            {{-- <input type="text" class="form-control" id="search_style"> --}}
                                         </div>
                                     </div>
                                 </div>
@@ -99,8 +97,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody id="get_search_result">
-                                                <form id='addCutingStyleForm'>
-                                                </form>
+                                                <!-- Content will be inserted here via AJAX -->
                                             </tbody>
                                         </table>
                                     </div>
@@ -118,9 +115,8 @@
                             <thead>
                                 <tr>
                                     <th>Sl No</th>
-                                    <th>Cutting Date</th>
+                                    <th>Unique Id</th>
                                     <th>Cutting Qty</th>
-                                    <th>Status</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -130,9 +126,8 @@
                             <tfoot>
                                 <tr>
                                     <th>Sl No</th>
-                                    <th>Cutting Date</th>
+                                    <th>Unique Id</th>
                                     <th>Cutting Qty</th>
-                                    <th>Status</th>
                                     <th>Action</th>
                                 </tr>
                             </tfoot>
@@ -178,6 +173,9 @@
                         $('#get_doc_no').val(response.getId.id);
                         $('#get_cutting_date').val(response.getId.cutting_date);
                         $('#get_remarks').val(response.getId.remarks);
+                        $('#addStyleBtn').attr('disabled', false);
+                        $('#saveDocBtn').attr('disabled', true);
+                        $('#allDataTable').DataTable().ajax.reload();
                         toastr.success('Cutting data store successfully.');
                     }
                 }
@@ -186,6 +184,7 @@
 
         // Get Style Info
         $(document).on('change', '#search_unique_id, #search_style', function() {
+            // $('#get_search_result').html('');
             var unique_id = $('#search_unique_id').val();
             var style_id = $('#search_style').val();
             $.ajax({
@@ -198,32 +197,56 @@
             });
         });
 
-        // Store Data
-        $('#addCutingStyleForm').submit(function(event) {
-            event.preventDefault();
-            var formData = $(this).serialize();
-            alert('fgdgd')
-            // $.ajax({
-            //     url: "{{ route('employee.add.new-cutting.style') }}",
-            //     type: 'POST',
-            //     data: formData,
-            //     dataType: 'json',
-            //     beforeSend:function(){
-            //         $(document).find('span.error-text').text('');
-            //     },
-            //     success: function(response) {
-            //         if (response.status == 400) {
-            //             $.each(response.error, function(prefix, val){
-            //                 $('span.'+prefix+'_error').text(val[0]);
-            //             })
-            //         }else{
-            //             $('#get_doc_no').val(response.getId.id);
-            //             $('#get_cutting_date').val(response.getId.cutting_date);
-            //             $('#get_remarks').val(response.getId.remarks);
-            //             toastr.success('Cutting data store successfully.');
-            //         }
-            //     }
-            // });
+        // Add Style
+        $(document).on('click', '#addCutingStyleBtn', function () {
+            var row = $(this).closest('tr');
+            var cutting_doc_no = $('#get_doc_no').val();
+            var unique_id = row.find('td:eq(0)').text();
+            var cutting_qty = row.find('input[name="cutting_qty"]').val();
+            $.ajax({
+                url: "{{ route('employee.add.new-cutting.style') }}",
+                type: 'POST',
+                data: { cutting_doc_no: cutting_doc_no, unique_id: unique_id, cutting_qty: cutting_qty },
+                beforeSend:function(){
+                    $(document).find('span.error-text').text('');
+                },
+                success: function(response) {
+                    if (response.status == 400) {
+                        $.each(response.error, function(prefix, val){
+                            row.find('span.'+prefix+'_error').text(val[0]);
+                        })
+                    }else{
+                        $('#allDataTable').DataTable().ajax.reload();
+                        toastr.success('Cutting data store successfully.');
+                    }
+                }
+            });
+        });
+
+         // Get Style Data
+         $('#allDataTable').DataTable({
+            processing: true,
+            serverSide: true,
+            searching: true,
+            ajax: {
+                url: "{{ route('employee.get.new-cutting.style') }}",
+                "data":function(e){
+                    e.cutting_summary_id = $('#get_doc_no').val();
+                },
+            },
+            columns: [
+                { data: 'DT_RowIndex', name: 'DT_RowIndex' },
+                { data: 'unique_id', name: 'unique_id' },
+                { data: 'cutting_qty', name: 'cutting_qty' },
+                { data: 'action', name: 'action', orderable: false, searchable: false }
+            ],
+            drawCallback: function (settings) {
+                var api = this.api();
+                var totalCuttingQty = api.column(2).data().reduce(function (a, b) {
+                    return parseInt(a) + parseInt(b);
+                }, 0);
+                $('#totalCuttingQty').text(totalCuttingQty);
+            },
         });
     });
 </script>
