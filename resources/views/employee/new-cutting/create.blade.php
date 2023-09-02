@@ -158,7 +158,7 @@
         $('#createDocBtn').show();
         $('#updateDocBtn').hide();
 
-        // Store Data
+        // Store Doc Data
         $('#createDocForm').submit(function(event) {
             event.preventDefault();
             var formData = $(this).serialize();
@@ -258,8 +258,8 @@
             });
         });
 
-         // Get Style Data
-         $('#allDataTable').DataTable({
+        // Get Style Data
+        $('#allDataTable').DataTable({
             processing: true,
             serverSide: true,
             searching: true,
@@ -284,6 +284,34 @@
                 $('#totalCuttingQty').text(totalCuttingQty);
             },
         });
+
+        // Delete Data
+        $(document).on('click', '.deleteBtn', function(){
+            var id = $(this).data('id');
+            var url = "{{ route('employee.new-cutting.style.destroy', ":id") }}";
+            url = url.replace(':id', id)
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You can bring it back though!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: url,
+                        method: 'DELETE',
+                        success: function(response) {
+                            $('#allDataTable').DataTable().ajax.reload();
+                            toastr.warning('Cutting data delete successfully.');
+                        }
+                    });
+                }
+            })
+        })
+
     });
 </script>
 @endsection

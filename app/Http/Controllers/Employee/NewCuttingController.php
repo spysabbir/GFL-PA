@@ -79,6 +79,32 @@ class NewCuttingController extends Controller
         }
     }
 
+    public function update(Request $request, string $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'cutting_date' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 400,
+                'error' => $validator->errors()->toArray()
+            ]);
+        } else {
+            $cuttindDoc = NewCuttingSummary::findOrFail($id);
+            $cuttindDoc->update([
+                'cutting_date' => $request->cutting_date,
+                'remarks' => $request->remarks,
+                'updated_by' => Auth::user()->id,
+            ]);
+
+            return response()->json([
+                'cuttindDoc' => $cuttindDoc,
+                'status' => 200,
+            ]);
+        }
+    }
+
     public function getSearchStyleInfo(Request $request)
     {
         $send_data = "";
@@ -161,8 +187,7 @@ class NewCuttingController extends Controller
                     return '<span class="badge text-white bg-orange">' . NewCuttingDetail::where('unique_id', $row->unique_id)->sum('cutting_qty') . '</span>';
                 })
                 ->addColumn('action', function ($row) {
-                    $btn = '<button type="button" data-id="' . $row->id . '" class="btn text-white bg-purple btn-sm editBtn" data-toggle="modal" data-target="#editModal"><i class="fe fe-edit"></i></button>
-                            <button type="button" data-id="' . $row->id . '" class="btn text-white bg-yellow btn-sm deleteBtn"><i class="fe fe-trash"></i></button>';
+                    $btn = '<button type="button" data-id="' . $row->id . '" class="btn text-white bg-yellow btn-sm deleteBtn"><i class="fe fe-trash"></i></button>';
                     return $btn;
                 })
                 ->with('totalCuttingQty', $totalCuttingQty)
@@ -173,30 +198,10 @@ class NewCuttingController extends Controller
         return view('employee.new-cutting.create');
     }
 
-    public function update(Request $request, string $id)
+    public function newCuttingStyleDestroy(string $id)
     {
-        $validator = Validator::make($request->all(), [
-            'cutting_date' => 'required',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'status' => 400,
-                'error' => $validator->errors()->toArray()
-            ]);
-        } else {
-            $cuttindDoc = NewCuttingSummary::findOrFail($id);
-            $cuttindDoc->update([
-                'cutting_date' => $request->cutting_date,
-                'remarks' => $request->remarks,
-                'updated_by' => Auth::user()->id,
-            ]);
-
-            return response()->json([
-                'cuttindDoc' => $cuttindDoc,
-                'status' => 200,
-            ]);
-        }
+        $cuttingStyle = NewCuttingDetail::findOrFail($id);
+        $cuttingStyle->delete();
     }
 
     // public function destroy(string $id)
