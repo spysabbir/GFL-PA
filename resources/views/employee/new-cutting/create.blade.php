@@ -20,12 +20,12 @@
                     <div class="row d-flex justify-content-between">
                         <div class="col-md-3">
                             <div class="form-group">
-                                <label class="form-label">Cutting Doc No</label>
+                                <label class="form-label">Document Number</label>
                                 <input type="hidden" class="form-control" id="get_summary_id">
-                                <input type="text" class="form-control" id="get_document_number" readonly>
+                                <input type="text" class="form-control" id="get_document_number" placeholder="Document Number" readonly>
                             </div>
                             <div class="form-group">
-                                <label class="form-label">Cutting Date</label>
+                                <label class="form-label">Document Date</label>
                                 <input type="date" class="form-control" name="document_date" id="get_document_date">
                                 <span class="text-danger error-text document_date_error"></span>
                             </div>
@@ -37,14 +37,14 @@
                                 <button type="button" class="btn text-white bg-cyan" id="submitDocumentBtn">Submit</button>
                                 <a href="{{ route('employee.new-cutting.index') }}" class="btn text-white bg-pink">Back</a>
                                 <!-- Create Btn -->
-                                <button type="button" class="btn text-white bg-success" data-toggle="modal" data-target="#createModal" id="addStyleBtn" ><i class="fe fe-plus-circle"></i></button>
+                                <button type="button" class="btn text-white bg-success" data-toggle="modal" data-target="#createModal" id="addStyleModelBtn" disabled><i class="fe fe-plus-circle"></i></button>
                             </div>
                             <span><strong>Total Cutting:</strong> <span id="totalCuttingQty">0</span></span>
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label class="form-label">Remarks</label>
-                                <textarea name="remarks" class="form-control" rows="4" placeholder="Remarks" id="get_remarks"></textarea>
+                                <textarea name="remarks" class="form-control" rows="4" placeholder="Remarks ..." id="get_remarks"></textarea>
                             </div>
                         </div>
                     </div>
@@ -182,9 +182,9 @@
                     }else{
                         $('#get_summary_id').val(response.getData.id);
                         $('#get_document_number').val(response.getData.document_number);
-                        $('#get_document_date').val(response.getData.cutting_date);
+                        $('#get_document_date').val(response.getData.document_date);
                         $('#get_remarks').val(response.getData.remarks);
-                        $('#addStyleBtn').attr('disabled', false);
+                        $('#addStyleModelBtn').attr('disabled', false);
                         $('#createDocumentBtn').hide();
                         $('#updateDocumentBtn').show();
                         $('#allDataTable').DataTable().ajax.reload();
@@ -197,14 +197,14 @@
         // Update Document
         $(document).on('click', '#updateDocumentBtn', function () {
             var id = $('#get_summary_id').val();
-            var cutting_date = $('#get_document_date').val();
+            var document_date = $('#get_document_date').val();
             var remarks = $('#get_remarks').val();
             var url = "{{ route('employee.new-cutting.update', ":id") }}";
             url = url.replace(':id', id)
             $.ajax({
                 url: url,
                 type: 'PUT',
-                data: {cutting_date: cutting_date, remarks: remarks},
+                data: {document_date: document_date, remarks: remarks},
                 beforeSend:function(){
                     $(document).find('span.error-text').text('');
                 },
@@ -218,9 +218,37 @@
                         $('#get_remarks').val(response.cuttindDoc.remarks);
                         $('#allDataTable').DataTable().ajax.reload();
                         toastr.success('Cutting data update successfully.');
+                        $('#updateDocumentBtn').hide();
+                        $('#submitDocumentBtn').show();
                     }
                 }
             });
+        });
+
+        // Submit Data
+        $(document).on('click', '#submitDocumentBtn', function () {
+            var id = $('#get_summary_id').val();
+            var url = "{{ route('employee.new-cutting.submit', ":id") }}";
+            url = url.replace(':id', id)
+            $.ajax({
+                url: url,
+                method: 'GET',
+                success: function(response) {
+                    toastr.success('Cutting data submit successfully.');
+                    $('#submitDocumentBtn').hide();
+                    $('#addStyleModelBtn').attr('disabled', true);
+                    $('#get_document_date').attr('disabled', true);
+                    $('#get_remarks').attr('disabled', true);
+                    $('.deleteBtn').attr('disabled', true);
+                }
+            });
+        });
+
+        // Add Style
+        $(document).on('click', '#addStyleModelBtn', function () {
+            $('#get_search_result').html('');
+            $('#search_unique_id').val('').trigger('change.select2');
+            $('#search_style').val('').trigger('change.select2');
         });
 
         // Get Style Info
@@ -238,7 +266,7 @@
             });
         });
 
-        // Add Style
+        // Store Style
         $(document).on('click', '#addCutingStyleBtn', function () {
             var row = $(this).closest('tr');
             var summary_id = $('#get_summary_id').val();
@@ -263,6 +291,8 @@
                             $('#allDataTable').DataTable().ajax.reload();
                             toastr.success('Cutting style store successfully.');
                             $('#get_search_result').html('');
+                            $('#search_unique_id').val('').trigger('change.select2');
+                            $('#search_style').val('').trigger('change.select2');
                         }
                     }
                 }

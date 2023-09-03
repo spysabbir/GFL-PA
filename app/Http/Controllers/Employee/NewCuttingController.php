@@ -212,6 +212,15 @@ class NewCuttingController extends Controller
         $cuttingStyle->delete();
     }
 
+    public function newCuttingSubmit(string $id)
+    {
+        $cuttingDocument = NewCuttingSummary::findOrFail($id);
+        $cuttingDocument->update([
+            'status' => 'Active',
+            'updated_by' => Auth::user()->id,
+        ]);
+    }
+
     // public function destroy(string $id)
     // {
     //     $buyer = Buyer::findOrFail($id);
