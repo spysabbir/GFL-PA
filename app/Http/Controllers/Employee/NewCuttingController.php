@@ -59,7 +59,7 @@ class NewCuttingController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'cutting_date' => 'required',
+            'document_date' => 'required',
         ]);
 
         if($validator->fails()){
@@ -68,12 +68,13 @@ class NewCuttingController extends Controller
                 'error'=> $validator->errors()->toArray()
             ]);
         }else{
-            $getId = NewCuttingSummary::create($request->all()+[
+            $getData = NewCuttingSummary::create($request->except('document_number')+[
+                'document_number' => date('Y').'/'.Auth::user()->id,
                 'created_by' => Auth::user()->id,
             ]);
 
             return response()->json([
-                'getId' => $getId,
+                'getData' => $getData,
                 'status' => 200,
             ]);
         }
@@ -82,7 +83,7 @@ class NewCuttingController extends Controller
     public function update(Request $request, string $id)
     {
         $validator = Validator::make($request->all(), [
-            'cutting_date' => 'required',
+            'document_date' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -93,7 +94,7 @@ class NewCuttingController extends Controller
         } else {
             $cuttindDoc = NewCuttingSummary::findOrFail($id);
             $cuttindDoc->update([
-                'cutting_date' => $request->cutting_date,
+                'document_date' => $request->document_date,
                 'remarks' => $request->remarks,
                 'updated_by' => Auth::user()->id,
             ]);
@@ -126,6 +127,7 @@ class NewCuttingController extends Controller
             $season_name = $style->season->season_name;
             $color_name = $style->color->color_name;
             $wash_name = $style->wash->wash_name;
+            $total_cutting = NewCuttingDetail::where('unique_id', $style->unique_id)->sum('daily_cutting_qty');
 
             $send_data .= "
             <tr>
@@ -136,9 +138,10 @@ class NewCuttingController extends Controller
                 <td>$color_name</td>
                 <td>$wash_name</td>
                 <td>
-                    <input type='text' name='cutting_qty' value=''>
-                    <span class='text-danger error-text cutting_qty_error'></span>
+                    <input type='text' name='daily_cutting_qty' value=''>
+                    <span class='text-danger error-text daily_cutting_qty_error'></span>
                 </td>
+                <td>$total_cutting</td>
                 <td><button type='button' class='btn btn-secondary' id='addCutingStyleBtn'>Add</button></td>
             </tr>
             ";
@@ -149,7 +152,7 @@ class NewCuttingController extends Controller
     public function addNewCuttingStyle(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'cutting_qty' => 'required|numeric',
+            'daily_cutting_qty' => 'required|numeric',
         ]);
 
         if($validator->fails()){
@@ -158,33 +161,38 @@ class NewCuttingController extends Controller
                 'error'=> $validator->errors()->toArray()
             ]);
         }else{
-            $styleInfo = new NewCuttingDetail();
-            $styleInfo->cutting_summary_id = $request->cutting_doc_no;
-            $styleInfo->unique_id = $request->unique_id;
-            $styleInfo->cutting_qty = $request->cutting_qty;
-            $styleInfo->save();
+            $exists = NewCuttingDetail::where('summary_id', $request->summary_id)->where('unique_id', $request->unique_id)->exists();
+            if($exists){
+                return response()->json([
+                    'status' => 401,
+                ]);
+            }else{
+                $styleInfo = new NewCuttingDetail();
+                $styleInfo->summary_id = $request->summary_id;
+                $styleInfo->unique_id = $request->unique_id;
+                $styleInfo->daily_cutting_qty = $request->daily_cutting_qty;
+                $styleInfo->save();
 
-            return response()->json([
-                'status' => 200,
-            ]);
+                return response()->json([
+                    'status' => 200,
+                ]);
+            }
         }
     }
 
     public function getNewCuttingStyle(Request $request)
     {
         if ($request->ajax()) {
-            $query = NewCuttingDetail::select('new_cutting_details.*');
+            $query = NewCuttingDetail::select('new_cutting_details.*')
+                                ->where('new_cutting_details.summary_id', $request->summary_id)
+                                ->get();
 
-            $query->where('new_cutting_details.cutting_summary_id', $request->cutting_summary_id);
+            $totalCuttingQty = $query->sum('daily_cutting_qty');
 
-            $style = $query->get();
-
-            $totalCuttingQty = $style->sum('cutting_qty');
-
-            return DataTables::of($style)
+            return DataTables::of($query)
                 ->addIndexColumn()
                 ->editColumn('styleWiseTotalCuttingQty', function ($row) {
-                    return '<span class="badge text-white bg-orange">' . NewCuttingDetail::where('unique_id', $row->unique_id)->sum('cutting_qty') . '</span>';
+                    return '<span class="badge text-white bg-orange">' . NewCuttingDetail::where('unique_id', $row->unique_id)->sum('daily_cutting_qty') . '</span>';
                 })
                 ->addColumn('action', function ($row) {
                     $btn = '<button type="button" data-id="' . $row->id . '" class="btn text-white bg-yellow btn-sm deleteBtn"><i class="fe fe-trash"></i></button>';

@@ -15,34 +15,36 @@
                 </div>
             </div>
             <div class="card-body">
-                <form id="createDocForm">
+                <form id="createDocumentForm">
                     @csrf
                     <div class="row d-flex justify-content-between">
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label class="form-label">Cutting Doc No</label>
-                                <input type="text" class="form-control" id="get_doc_no" readonly>
+                                <input type="hidden" class="form-control" id="get_summary_id">
+                                <input type="text" class="form-control" id="get_document_number" readonly>
                             </div>
                             <div class="form-group">
                                 <label class="form-label">Cutting Date</label>
-                                <input type="date" class="form-control" name="cutting_date" id="get_cutting_date">
-                                <span class="text-danger error-text cutting_date_error"></span>
+                                <input type="date" class="form-control" name="document_date" id="get_document_date">
+                                <span class="text-danger error-text document_date_error"></span>
                             </div>
                         </div>
                         <div class="col-md-2">
                             <div class="form-group mt-1">
-                                <button type="submit" class="btn text-white bg-cyan" id="createDocBtn">Create</button>
-                                <button type="button" class="btn text-white bg-cyan" id="updateDocBtn">Update</button>
+                                <button type="submit" class="btn text-white bg-cyan" id="createDocumentBtn">Create</button>
+                                <button type="button" class="btn text-white bg-cyan" id="updateDocumentBtn">Update</button>
+                                <button type="button" class="btn text-white bg-cyan" id="submitDocumentBtn">Submit</button>
                                 <a href="{{ route('employee.new-cutting.index') }}" class="btn text-white bg-pink">Back</a>
                                 <!-- Create Btn -->
-                                <button type="button" class="btn text-white bg-success" data-toggle="modal" data-target="#createModal" id="addStyleBtn" disabled><i class="fe fe-plus-circle"></i></button>
+                                <button type="button" class="btn text-white bg-success" data-toggle="modal" data-target="#createModal" id="addStyleBtn" ><i class="fe fe-plus-circle"></i></button>
                             </div>
                             <span><strong>Total Cutting:</strong> <span id="totalCuttingQty">0</span></span>
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label class="form-label">Remarks</label>
-                                <textarea name="remarks" class="form-control" placeholder="Remarks" id="get_remarks"></textarea>
+                                <textarea name="remarks" class="form-control" rows="4" placeholder="Remarks" id="get_remarks"></textarea>
                             </div>
                         </div>
                     </div>
@@ -84,16 +86,17 @@
                                 </div>
                                 <div class="row">
                                     <div class="table-responsive">
-                                        <table class="table table-striped table-hover table-borderless align-middle">
+                                        <table class="table table-striped table-hover">
                                             <thead>
                                                 <tr>
                                                     <th>Unique Id</th>
+                                                    <th>Buyer</th>
                                                     <th>Style</th>
                                                     <th>Season</th>
                                                     <th>Color</th>
                                                     <th>Wash</th>
-                                                    <th>Wash</th>
                                                     <th>Cutting Qty</th>
+                                                    <th>Total Cutting Qty</th>
                                                     <th>Action</th>
                                                 </tr>
                                             </thead>
@@ -155,11 +158,12 @@
         $('.select_unique_id_js').select2();
         $('.select_style_js').select2();
 
-        $('#createDocBtn').show();
-        $('#updateDocBtn').hide();
+        $('#createDocumentBtn').show();
+        $('#updateDocumentBtn').hide();
+        $('#submitDocumentBtn').hide();
 
-        // Store Doc Data
-        $('#createDocForm').submit(function(event) {
+        // Create Document
+        $('#createDocumentForm').submit(function(event) {
             event.preventDefault();
             var formData = $(this).serialize();
             $.ajax({
@@ -176,12 +180,13 @@
                             $('span.'+prefix+'_error').text(val[0]);
                         })
                     }else{
-                        $('#get_doc_no').val(response.getId.id);
-                        $('#get_cutting_date').val(response.getId.cutting_date);
-                        $('#get_remarks').val(response.getId.remarks);
+                        $('#get_summary_id').val(response.getData.id);
+                        $('#get_document_number').val(response.getData.document_number);
+                        $('#get_document_date').val(response.getData.cutting_date);
+                        $('#get_remarks').val(response.getData.remarks);
                         $('#addStyleBtn').attr('disabled', false);
-                        $('#createDocBtn').hide();
-                        $('#updateDocBtn').show();
+                        $('#createDocumentBtn').hide();
+                        $('#updateDocumentBtn').show();
                         $('#allDataTable').DataTable().ajax.reload();
                         toastr.success('Cutting data store successfully.');
                     }
@@ -189,9 +194,10 @@
             });
         });
 
-        $(document).on('click', '#updateDocBtn', function () {
-            var id = $('#get_doc_no').val();
-            var cutting_date = $('#get_cutting_date').val();
+        // Update Document
+        $(document).on('click', '#updateDocumentBtn', function () {
+            var id = $('#get_summary_id').val();
+            var cutting_date = $('#get_document_date').val();
             var remarks = $('#get_remarks').val();
             var url = "{{ route('employee.new-cutting.update', ":id") }}";
             url = url.replace(':id', id)
@@ -208,7 +214,7 @@
                             $('span.'+prefix+'_error').text(val[0]);
                         })
                     }else{
-                        $('#get_cutting_date').val(response.cuttindDoc.cutting_date);
+                        $('#get_document_date').val(response.cuttindDoc.document_date);
                         $('#get_remarks').val(response.cuttindDoc.remarks);
                         $('#allDataTable').DataTable().ajax.reload();
                         toastr.success('Cutting data update successfully.');
@@ -219,7 +225,7 @@
 
         // Get Style Info
         $(document).on('change', '#search_unique_id, #search_style', function() {
-            // $('#get_search_result').html('');
+            $('#get_search_result').html('');
             var unique_id = $('#search_unique_id').val();
             var style_id = $('#search_style').val();
             $.ajax({
@@ -235,13 +241,13 @@
         // Add Style
         $(document).on('click', '#addCutingStyleBtn', function () {
             var row = $(this).closest('tr');
-            var cutting_doc_no = $('#get_doc_no').val();
+            var summary_id = $('#get_summary_id').val();
             var unique_id = row.find('td:eq(0)').text();
-            var cutting_qty = row.find('input[name="cutting_qty"]').val();
+            var daily_cutting_qty = row.find('input[name="daily_cutting_qty"]').val();
             $.ajax({
                 url: "{{ route('employee.add.new-cutting.style') }}",
                 type: 'POST',
-                data: { cutting_doc_no: cutting_doc_no, unique_id: unique_id, cutting_qty: cutting_qty },
+                data: { summary_id: summary_id, unique_id: unique_id, daily_cutting_qty: daily_cutting_qty },
                 beforeSend:function(){
                     $(document).find('span.error-text').text('');
                 },
@@ -251,8 +257,13 @@
                             row.find('span.'+prefix+'_error').text(val[0]);
                         })
                     }else{
-                        $('#allDataTable').DataTable().ajax.reload();
-                        toastr.success('Cutting data store successfully.');
+                        if (response.status == 401) {
+                            toastr.error('This style already added this document.');
+                        } else {
+                            $('#allDataTable').DataTable().ajax.reload();
+                            toastr.success('Cutting style store successfully.');
+                            $('#get_search_result').html('');
+                        }
                     }
                 }
             });
@@ -266,13 +277,13 @@
             ajax: {
                 url: "{{ route('employee.get.new-cutting.style') }}",
                 "data":function(e){
-                    e.cutting_summary_id = $('#get_doc_no').val();
+                    e.summary_id = $('#get_summary_id').val();
                 },
             },
             columns: [
                 { data: 'DT_RowIndex', name: 'DT_RowIndex' },
                 { data: 'unique_id', name: 'unique_id' },
-                { data: 'cutting_qty', name: 'cutting_qty' },
+                { data: 'daily_cutting_qty', name: 'daily_cutting_qty' },
                 { data: 'styleWiseTotalCuttingQty', name: 'styleWiseTotalCuttingQty' },
                 { data: 'action', name: 'action', orderable: false, searchable: false }
             ],
@@ -305,7 +316,7 @@
                         method: 'DELETE',
                         success: function(response) {
                             $('#allDataTable').DataTable().ajax.reload();
-                            toastr.warning('Cutting data delete successfully.');
+                            toastr.warning('Cutting style delete successfully.');
                         }
                     });
                 }

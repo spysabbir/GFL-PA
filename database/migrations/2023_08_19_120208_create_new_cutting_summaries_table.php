@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('new_cutting_summaries', function (Blueprint $table) {
             $table->id();
-            $table->date('cutting_date');
+            $table->text('document_number');
+            $table->date('document_date');
             $table->longText('remarks')->nullable();
-            $table->enum('status', ['Active', 'Inactive'])->default('Active');
+            $table->enum('status', ['Active', 'Inactive'])->default('Inactive');
             $table->integer('created_by');
             $table->integer('updated_by')->nullable();
             $table->integer('deleted_by')->nullable();
