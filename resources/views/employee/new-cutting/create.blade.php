@@ -34,10 +34,10 @@
                             <div class="form-group mt-1">
                                 <button type="submit" class="btn text-white bg-cyan" id="createDocumentBtn">Create</button>
                                 <button type="button" class="btn text-white bg-cyan" id="updateDocumentBtn">Update</button>
-                                <button type="button" class="btn text-white bg-cyan" id="submitDocumentBtn">Submit</button>
+                                <button type="button" class="btn text-white bg-green" id="submitDocumentBtn">Submit</button>
                                 <a href="{{ route('employee.new-cutting.index') }}" class="btn text-white bg-pink">Back</a>
                                 <!-- Create Btn -->
-                                <button type="button" class="btn text-white bg-success" data-toggle="modal" data-target="#createModal" id="addStyleModelBtn" disabled><i class="fe fe-plus-circle"></i></button>
+                                <button type="button" class="btn text-white bg-pink" data-toggle="modal" data-target="#createModal" id="addStyleModelBtn" disabled><i class="fe fe-plus-circle"></i></button>
                             </div>
                             <span><strong>Total Cutting:</strong> <span id="totalCuttingQty">0</span></span>
                         </div>
@@ -122,6 +122,7 @@
                                     <th>Unique Id</th>
                                     <th>Cutting Qty</th>
                                     <th>Total Cutting Qty</th>
+                                    <th>Total Cutting Percentage</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -134,6 +135,7 @@
                                     <th>Unique Id</th>
                                     <th>Cutting Qty</th>
                                     <th>Total Cutting Qty</th>
+                                    <th>Total Cutting Percentage</th>
                                     <th>Action</th>
                                 </tr>
                             </tfoot>
@@ -187,6 +189,7 @@
                         $('#addStyleModelBtn').attr('disabled', false);
                         $('#createDocumentBtn').hide();
                         $('#updateDocumentBtn').show();
+                        $('#submitDocumentBtn').show();
                         $('#allDataTable').DataTable().ajax.reload();
                         toastr.success('Cutting data store successfully.');
                     }
@@ -218,8 +221,6 @@
                         $('#get_remarks').val(response.cuttindDoc.remarks);
                         $('#allDataTable').DataTable().ajax.reload();
                         toastr.success('Cutting data update successfully.');
-                        $('#updateDocumentBtn').hide();
-                        $('#submitDocumentBtn').show();
                     }
                 }
             });
@@ -230,18 +231,31 @@
             var id = $('#get_summary_id').val();
             var url = "{{ route('employee.new-cutting.submit', ":id") }}";
             url = url.replace(':id', id)
-            $.ajax({
-                url: url,
-                method: 'GET',
-                success: function(response) {
-                    toastr.success('Cutting data submit successfully.');
-                    $('#submitDocumentBtn').hide();
-                    $('#addStyleModelBtn').attr('disabled', true);
-                    $('#get_document_date').attr('disabled', true);
-                    $('#get_remarks').attr('disabled', true);
-                    $('.deleteBtn').attr('disabled', true);
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You can no longer edit it!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, submit it!'
+                }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: url,
+                        method: 'GET',
+                        success: function(response) {
+                            toastr.success('Cutting data submit successfully.');
+                            $('#updateDocumentBtn').hide();
+                            $('#submitDocumentBtn').hide();
+                            $('#addStyleModelBtn').attr('disabled', true);
+                            $('#get_document_date').attr('disabled', true);
+                            $('#get_remarks').attr('disabled', true);
+                            $('.deleteBtn').attr('disabled', true);
+                        }
+                    });
                 }
-            });
+            })
         });
 
         // Add Style
@@ -256,10 +270,12 @@
             $('#get_search_result').html('');
             var unique_id = $('#search_unique_id').val();
             var style_id = $('#search_style').val();
+            var document_date = $('#get_document_date').val();
+
             $.ajax({
                 url: "{{ route('employee.get.search.style.info') }}",
                 type: "POST",
-                data: {unique_id:unique_id, style_id:style_id},
+                data: {unique_id: unique_id, style_id: style_id, document_date: document_date},
                 success: function (response) {
                     $('#get_search_result').html(response);
                 },
@@ -308,6 +324,7 @@
                 url: "{{ route('employee.get.new-cutting.style') }}",
                 "data":function(e){
                     e.summary_id = $('#get_summary_id').val();
+                    e.document_date = $('#get_document_date').val();
                 },
             },
             columns: [
@@ -315,6 +332,7 @@
                 { data: 'unique_id', name: 'unique_id' },
                 { data: 'daily_cutting_qty', name: 'daily_cutting_qty' },
                 { data: 'styleWiseTotalCuttingQty', name: 'styleWiseTotalCuttingQty' },
+                { data: 'styleWiseCuttingPercentage', name: 'styleWiseCuttingPercentage' },
                 { data: 'action', name: 'action', orderable: false, searchable: false }
             ],
             drawCallback: function (settings) {

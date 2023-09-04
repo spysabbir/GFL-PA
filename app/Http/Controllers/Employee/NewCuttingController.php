@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\MasterStyle;
 use App\Models\NewCuttingDetail;
 use App\Models\NewCuttingSummary;
+use App\Models\StyleBpoOrder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -18,8 +19,8 @@ class NewCuttingController extends Controller
         if ($request->ajax()) {
             $query = NewCuttingSummary::select('new_cutting_summaries.*');
 
-            if ($request->cutting_date) {
-                $query->where('new_cutting_summaries.cutting_date', $request->cutting_date);
+            if ($request->document_date) {
+                $query->where('new_cutting_summaries.document_date', $request->document_date);
             }
 
             $query->orderBy('created_at', 'desc');
@@ -28,8 +29,8 @@ class NewCuttingController extends Controller
 
             return DataTables::of($cuttingDoc)
                 ->addIndexColumn()
-                ->editColumn('cutting_qty', function ($row) {
-                    return '<span class="badge text-white bg-orange">' . NewCuttingDetail::where('cutting_summary_id', $row->id)->sum('cutting_qty') . '</span>';
+                ->editColumn('total_cutting_qty', function ($row) {
+                    return '<span class="badge text-white bg-orange">' . NewCuttingDetail::where('summary_id', $row->id)->sum('daily_cutting_qty') . '</span>';
                 })
                 ->editColumn('status', function ($row) {
                     if ($row->status == 'Active') {
@@ -44,7 +45,7 @@ class NewCuttingController extends Controller
                             <button type="button" data-id="' . $row->id . '" class="btn text-white bg-yellow btn-sm deleteBtn"><i class="fe fe-trash"></i></button>';
                     return $btn;
                 })
-                ->rawColumns(['cutting_qty', 'status', 'action'])
+                ->rawColumns(['total_cutting_qty', 'status', 'action'])
                 ->make(true);
         }
 
@@ -129,6 +130,9 @@ class NewCuttingController extends Controller
             $wash_name = $style->wash->wash_name;
             $total_cutting = NewCuttingDetail::where('unique_id', $style->unique_id)->sum('daily_cutting_qty');
 
+            $ids = NewCuttingSummary::where('document_date', '<=', $request->document_date)->pluck('id');
+            $total_cutting = NewCuttingDetail::where('unique_id', $style->unique_id)->whereIn('summary_id', $ids)->sum('daily_cutting_qty');
+
             $send_data .= "
             <tr>
                 <td>$style->unique_id</td>
@@ -189,17 +193,35 @@ class NewCuttingController extends Controller
 
             $totalCuttingQty = $query->sum('daily_cutting_qty');
 
+            $documentDate = "'>=', $request->document_date";
+
+            $ids = NewCuttingSummary::whereDate('document_date', $documentDate)->pluck('id');
+
             return DataTables::of($query)
                 ->addIndexColumn()
-                ->editColumn('styleWiseTotalCuttingQty', function ($row) {
-                    return '<span class="badge text-white bg-orange">' . NewCuttingDetail::where('unique_id', $row->unique_id)->sum('daily_cutting_qty') . '</span>';
+                ->editColumn('styleWiseTotalCuttingQty', function ($row) use ($ids) {
+                    $styleWiseTotalCuttingQty = NewCuttingDetail::where('unique_id', $row->unique_id)
+                        ->whereIn('summary_id', $ids)
+                        ->sum('daily_cutting_qty');
+                    return '<span class="badge text-white bg-orange">' . $styleWiseTotalCuttingQty . '</span>';
                 })
+                ->editColumn('styleWiseCuttingPercentage', function ($row) use ($ids) {
+                    $styleWiseTotalCuttingQty = NewCuttingDetail::where('unique_id', $row->unique_id)
+                        ->whereIn('summary_id', $ids)
+                        ->sum('daily_cutting_qty');
+
+                    $master_style_id = MasterStyle::where('unique_id', $row->unique_id)->first()->id;
+                    $styleWiseTotalOrder = StyleBpoOrder::where('master_style_id', $master_style_id)->sum('order_quantity');
+
+                    return '<span class="badge text-white bg-orange">' . $styleWiseTotalCuttingQty - $styleWiseTotalOrder . '</span>';
+                })
+
                 ->addColumn('action', function ($row) {
                     $btn = '<button type="button" data-id="' . $row->id . '" class="btn text-white bg-yellow btn-sm deleteBtn"><i class="fe fe-trash"></i></button>';
                     return $btn;
                 })
                 ->with('totalCuttingQty', $totalCuttingQty)
-                ->rawColumns(['styleWiseTotalCuttingQty', 'action'])
+                ->rawColumns(['styleWiseTotalCuttingQty', 'styleWiseCuttingPercentage', 'action'])
                 ->make(true);
         }
 

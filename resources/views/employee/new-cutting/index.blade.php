@@ -59,8 +59,8 @@
                 <div class="row">
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label class="form-label">Cutting Date</label>
-                            <input type="date" class="form-control" id="filter_date">
+                            <label class="form-label">Document Date</label>
+                            <input type="date" class="form-control filter_data" id="filter_document_date">
                         </div>
                     </div>
                 </div>
@@ -69,8 +69,10 @@
                         <thead>
                             <tr>
                                 <th>Sl No</th>
-                                <th>Cutting Date</th>
-                                <th>Cutting Qty</th>
+                                <th>Document Number</th>
+                                <th>Document Date</th>
+                                <th>Total Cutting Qty</th>
+                                <th>Remarks</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
@@ -81,8 +83,10 @@
                         <tfoot>
                             <tr>
                                 <th>Sl No</th>
-                                <th>Cutting Date</th>
-                                <th>Cutting Qty</th>
+                                <th>Document Number</th>
+                                <th>Document Date</th>
+                                <th>Total Cutting Qty</th>
+                                <th>Remarks</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
@@ -112,13 +116,15 @@
             ajax: {
                 url: "{{ route('employee.new-cutting.index') }}",
                 "data":function(e){
-                    e.cutting_date = $('#filter_date').val();
+                    e.document_date = $('#filter_document_date').val();
                 },
             },
             columns: [
                 { data: 'DT_RowIndex', name: 'DT_RowIndex' },
-                { data: 'cutting_date', name: 'cutting_date' },
-                { data: 'cutting_qty', name: 'cutting_qty' },
+                { data: 'document_number', name: 'document_number' },
+                { data: 'document_date', name: 'document_date' },
+                { data: 'total_cutting_qty', name: 'total_cutting_qty' },
+                { data: 'remarks', name: 'remarks' },
                 { data: 'status', name: 'status' },
                 { data: 'action', name: 'action', orderable: false, searchable: false }
             ]
