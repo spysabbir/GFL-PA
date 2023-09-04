@@ -27,7 +27,8 @@
                                         <table class="table table-striped" id="trashedDataTable" style="width: 100%">
                                             <thead>
                                                 <tr>
-                                                    <th>Cutting Date</th>
+                                                    <th>Document Number</th>
+                                                    <th>Document Date</th>
                                                     <th>Action</th>
                                                 </tr>
                                             </thead>
@@ -36,7 +37,8 @@
                                             </tbody>
                                             <tfoot>
                                                 <tr>
-                                                    <th>Cutting Date</th>
+                                                    <th>Document Number</th>
+                                                    <th>Document Date</th>
                                                     <th>Action</th>
                                                 </tr>
                                             </tfoot>
@@ -157,7 +159,7 @@
                         success: function(response) {
                             $('#allDataTable').DataTable().ajax.reload();
                             toastr.warning('Cutting data delete successfully.');
-                            $('#trashedDataTable').DataTable().ajax.reload();
+                            // $('#trashedDataTable').DataTable().ajax.reload();
                         }
                     });
                 }
@@ -173,7 +175,8 @@
                 url: "{{ route('employee.new-cutting.trashed') }}",
             },
             columns: [
-                { data: 'cutting_date', name: 'cutting_date' },
+                { data: 'document_number', name: 'document_number' },
+                { data: 'document_date', name: 'document_date' },
                 { data: 'action', name: 'action', orderable: false, searchable: false }
             ]
         });

@@ -63,7 +63,6 @@ class MasterStyleController extends Controller
                 $query->where('master_styles.garment_type_id', $request->garment_type_id);
             }
 
-
             $query->orderBy('created_at', 'desc');
 
             $styles = $query->select('master_styles.*', 'buyers.buyer_name', 'styles.style_name', 'seasons.season_name', 'colors.color_name', 'washes.wash_name')

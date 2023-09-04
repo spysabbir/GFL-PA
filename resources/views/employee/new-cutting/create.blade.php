@@ -35,9 +35,11 @@
                                 <button type="submit" class="btn text-white bg-cyan" id="createDocumentBtn">Create</button>
                                 <button type="button" class="btn text-white bg-cyan" id="updateDocumentBtn">Update</button>
                                 <button type="button" class="btn text-white bg-green" id="submitDocumentBtn">Submit</button>
+                                <br>
+                                <br>
                                 <a href="{{ route('employee.new-cutting.index') }}" class="btn text-white bg-pink">Back</a>
                                 <!-- Create Btn -->
-                                <button type="button" class="btn text-white bg-pink" data-toggle="modal" data-target="#createModal" id="addStyleModelBtn" disabled><i class="fe fe-plus-circle"></i></button>
+                                <button type="button" class="btn text-white bg-green" data-toggle="modal" data-target="#createModal" id="addStyleModelBtn" ><i class="fe fe-plus-circle"></i></button>
                             </div>
                             <span><strong>Total Cutting:</strong> <span id="totalCuttingQty">0</span></span>
                         </div>
@@ -95,8 +97,8 @@
                                                     <th>Season</th>
                                                     <th>Color</th>
                                                     <th>Wash</th>
-                                                    <th>Cutting Qty</th>
-                                                    <th>Total Cutting Qty</th>
+                                                    <th>Day Cutting</th>
+                                                    <th>Total Cutting</th>
                                                     <th>Action</th>
                                                 </tr>
                                             </thead>
@@ -120,9 +122,10 @@
                                 <tr>
                                     <th>Sl No</th>
                                     <th>Unique Id</th>
-                                    <th>Cutting Qty</th>
-                                    <th>Total Cutting Qty</th>
-                                    <th>Total Cutting Percentage</th>
+                                    <th>Order Qty</th>
+                                    <th>Day Cutting</th>
+                                    <th>Total Cutting</th>
+                                    <th>Cutting Percentage</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -133,9 +136,10 @@
                                 <tr>
                                     <th>Sl No</th>
                                     <th>Unique Id</th>
-                                    <th>Cutting Qty</th>
-                                    <th>Total Cutting Qty</th>
-                                    <th>Total Cutting Percentage</th>
+                                    <th>Order Qty</th>
+                                    <th>Day Cutting</th>
+                                    <th>Total Cutting</th>
+                                    <th>Cutting Percentage</th>
                                     <th>Action</th>
                                 </tr>
                             </tfoot>
@@ -330,6 +334,7 @@
             columns: [
                 { data: 'DT_RowIndex', name: 'DT_RowIndex' },
                 { data: 'unique_id', name: 'unique_id' },
+                { data: 'styleWiseTotalOrder', name: 'styleWiseTotalOrder' },
                 { data: 'daily_cutting_qty', name: 'daily_cutting_qty' },
                 { data: 'styleWiseTotalCuttingQty', name: 'styleWiseTotalCuttingQty' },
                 { data: 'styleWiseCuttingPercentage', name: 'styleWiseCuttingPercentage' },
@@ -337,7 +342,7 @@
             ],
             drawCallback: function (settings) {
                 var api = this.api();
-                var totalCuttingQty = api.column(2).data().reduce(function (a, b) {
+                var totalCuttingQty = api.column(3).data().reduce(function (a, b) {
                     return parseInt(a) + parseInt(b);
                 }, 0);
                 $('#totalCuttingQty').text(totalCuttingQty);

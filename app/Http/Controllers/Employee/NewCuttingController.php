@@ -122,34 +122,39 @@ class NewCuttingController extends Controller
 
         $all_style = $query->get();
 
-        foreach ($all_style as $style) {
-            $buyer_name = $style->buyer->buyer_name;
-            $style_name = $style->style->style_name;
-            $season_name = $style->season->season_name;
-            $color_name = $style->color->color_name;
-            $wash_name = $style->wash->wash_name;
-            $total_cutting = NewCuttingDetail::where('unique_id', $style->unique_id)->sum('daily_cutting_qty');
-
-            $ids = NewCuttingSummary::where('document_date', '<=', $request->document_date)->pluck('id');
-            $total_cutting = NewCuttingDetail::where('unique_id', $style->unique_id)->whereIn('summary_id', $ids)->sum('daily_cutting_qty');
-
+        if($all_style->count() > 0){
+            foreach ($all_style as $style) {
+                $buyer_name = $style->buyer->buyer_name;
+                $style_name = $style->style->style_name;
+                $season_name = $style->season->season_name;
+                $color_name = $style->color->color_name;
+                $wash_name = $style->wash->wash_name;
+                $total_cutting = NewCuttingDetail::where('unique_id', $style->unique_id)->sum('daily_cutting_qty');
+                $send_data .= "
+                <tr>
+                    <td>$style->unique_id</td>
+                    <td>$buyer_name</td>
+                    <td>$style_name</td>
+                    <td>$season_name</td>
+                    <td>$color_name</td>
+                    <td>$wash_name</td>
+                    <td>
+                        <input type='text' name='daily_cutting_qty' value=''>
+                        <span class='text-danger error-text daily_cutting_qty_error'></span>
+                    </td>
+                    <td>$total_cutting</td>
+                    <td><button type='button' class='btn btn-secondary' id='addCutingStyleBtn'>Add</button></td>
+                </tr>
+                ";
+            }
+        }else{
             $send_data .= "
             <tr>
-                <td>$style->unique_id</td>
-                <td>$buyer_name</td>
-                <td>$style_name</td>
-                <td>$season_name</td>
-                <td>$color_name</td>
-                <td>$wash_name</td>
-                <td>
-                    <input type='text' name='daily_cutting_qty' value=''>
-                    <span class='text-danger error-text daily_cutting_qty_error'></span>
-                </td>
-                <td>$total_cutting</td>
-                <td><button type='button' class='btn btn-secondary' id='addCutingStyleBtn'>Add</button></td>
+                <td colspan='50' class='text-danger text-center'>Please Select Right Style or System Id</td>
             </tr>
             ";
         }
+
         return response()->json($send_data);
     }
 
@@ -193,9 +198,8 @@ class NewCuttingController extends Controller
 
             $totalCuttingQty = $query->sum('daily_cutting_qty');
 
-            $documentDate = "'>=', $request->document_date";
-
-            $ids = NewCuttingSummary::whereDate('document_date', $documentDate)->pluck('id');
+            $documentDates = (array) $request->document_date;
+            $ids = NewCuttingSummary::whereIn('document_date', $documentDates)->pluck('id');
 
             return DataTables::of($query)
                 ->addIndexColumn()
@@ -205,6 +209,12 @@ class NewCuttingController extends Controller
                         ->sum('daily_cutting_qty');
                     return '<span class="badge text-white bg-orange">' . $styleWiseTotalCuttingQty . '</span>';
                 })
+                ->editColumn('styleWiseTotalOrder', function ($row) {
+                    $master_style_id = MasterStyle::where('unique_id', $row->unique_id)->first()->id;
+                    $styleWiseTotalOrder = StyleBpoOrder::where('master_style_id', $master_style_id)->sum('order_quantity');
+
+                    return '<span class="badge text-white bg-orange">' . $styleWiseTotalOrder . '</span>';
+                })
                 ->editColumn('styleWiseCuttingPercentage', function ($row) use ($ids) {
                     $styleWiseTotalCuttingQty = NewCuttingDetail::where('unique_id', $row->unique_id)
                         ->whereIn('summary_id', $ids)
@@ -213,15 +223,16 @@ class NewCuttingController extends Controller
                     $master_style_id = MasterStyle::where('unique_id', $row->unique_id)->first()->id;
                     $styleWiseTotalOrder = StyleBpoOrder::where('master_style_id', $master_style_id)->sum('order_quantity');
 
-                    return '<span class="badge text-white bg-orange">' . $styleWiseTotalCuttingQty - $styleWiseTotalOrder . '</span>';
-                })
+                    $styleWiseCuttingPercentage = ((($styleWiseTotalCuttingQty - $styleWiseTotalOrder) / $styleWiseTotalOrder) * 100);
 
+                    return '<span class="badge text-white bg-orange">' . $styleWiseCuttingPercentage . ' %'. '</span>';
+                })
                 ->addColumn('action', function ($row) {
                     $btn = '<button type="button" data-id="' . $row->id . '" class="btn text-white bg-yellow btn-sm deleteBtn"><i class="fe fe-trash"></i></button>';
                     return $btn;
                 })
                 ->with('totalCuttingQty', $totalCuttingQty)
-                ->rawColumns(['styleWiseTotalCuttingQty', 'styleWiseCuttingPercentage', 'action'])
+                ->rawColumns(['styleWiseTotalCuttingQty', 'styleWiseTotalOrder', 'styleWiseCuttingPercentage', 'action'])
                 ->make(true);
         }
 
@@ -243,51 +254,51 @@ class NewCuttingController extends Controller
         ]);
     }
 
-    // public function destroy(string $id)
-    // {
-    //     $buyer = Buyer::findOrFail($id);
-    //     $buyer->updated_by = Auth::user()->id;
-    //     $buyer->deleted_by = Auth::user()->id;
-    //     $buyer->save();
-    //     $buyer->delete();
-    // }
+    public function destroy(string $id)
+    {
+        $cuttingDocument = NewCuttingSummary::findOrFail($id);
+        $cuttingDocument->updated_by = Auth::user()->id;
+        $cuttingDocument->deleted_by = Auth::user()->id;
+        $cuttingDocument->save();
+        $cuttingDocument->delete();
+    }
 
-    // public function trashed(Request $request)
-    // {
-    //     if ($request->ajax()) {
-    //         $trashed_buyers = Buyer::onlyTrashed();
+    public function trashed(Request $request)
+    {
+        if ($request->ajax()) {
+            $trashed_cuttingDocuments = NewCuttingSummary::onlyTrashed();
 
-    //         $trashed_buyers->orderBy('deleted_at', 'desc');
+            $trashed_cuttingDocuments->orderBy('deleted_at', 'desc');
 
-    //         return DataTables::of($trashed_buyers)
-    //             ->addColumn('action', function ($row) {
-    //                 $btn = '
-    //                     <button type="button" data-id="'.$row->id.'" class="btn text-white bg-lime restoreBtn"><i class="fe fe-refresh-ccw"></i></button>
-    //                     <button type="button" data-id="'.$row->id.'" class="btn text-white bg-red forceDeleteBtn"><i class="fe fe-delete"></i></button>
-    //                 ';
-    //                 return $btn;
-    //             })
-    //             ->rawColumns(['action'])
-    //             ->make(true);
-    //     }
+            return DataTables::of($trashed_cuttingDocuments)
+                ->addColumn('action', function ($row) {
+                    $btn = '
+                        <button type="button" data-id="'.$row->id.'" class="btn text-white bg-lime restoreBtn"><i class="fe fe-refresh-ccw"></i></button>
+                        <button type="button" data-id="'.$row->id.'" class="btn text-white bg-red forceDeleteBtn"><i class="fe fe-delete"></i></button>
+                    ';
+                    return $btn;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
 
-    //     return view('employee.new-cutting.index');
-    // }
+        return view('employee.new-cutting.index');
+    }
 
-    // public function restore(string $id)
-    // {
-    //     Buyer::onlyTrashed()->where('id', $id)->update([
-    //         'deleted_by' => NULL
-    //     ]);
+    public function restore(string $id)
+    {
+        NewCuttingSummary::onlyTrashed()->where('id', $id)->update([
+            'deleted_by' => NULL
+        ]);
 
-    //     Buyer::onlyTrashed()->where('id', $id)->restore();
-    // }
+        NewCuttingSummary::onlyTrashed()->where('id', $id)->restore();
+    }
 
-    // public function forceDelete(string $id)
-    // {
-    //     $buyer = Buyer::onlyTrashed()->where('id', $id)->first();
-    //     $buyer->forceDelete();
-    // }
+    public function forceDelete(string $id)
+    {
+        $cuttingDocument = NewCuttingSummary::onlyTrashed()->where('id', $id)->first();
+        $cuttingDocument->forceDelete();
+    }
 
     // public function status(string $id)
     // {
