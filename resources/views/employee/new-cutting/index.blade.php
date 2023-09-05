@@ -159,7 +159,7 @@
                         success: function(response) {
                             $('#allDataTable').DataTable().ajax.reload();
                             toastr.warning('Cutting data delete successfully.');
-                            // $('#trashedDataTable').DataTable().ajax.reload();
+                            $('#trashedDataTable').DataTable().ajax.reload();
                         }
                     });
                 }

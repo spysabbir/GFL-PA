@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('new_cutting_summaries', function (Blueprint $table) {
             $table->id();
-            $table->text('document_number');
+            $table->text('document_number')->unique();
             $table->date('document_date');
             $table->longText('remarks')->nullable();
             $table->enum('status', ['Running', 'Updating', 'Submitted' ])->default('Running');

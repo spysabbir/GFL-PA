@@ -69,10 +69,11 @@ class NewCuttingController extends Controller
                 'error'=> $validator->errors()->toArray()
             ]);
         }else{
-            $document_number = NewCuttingSummary::whereYear('document_date', date('Y'))->latest('document_number')->value('document_number')+1;
+            $maxChalan = NewCuttingSummary::whereYear('document_date', date('Y'))->latest('document_number')->value('document_number');
+            $autoValue = ($maxChalan ? (int) explode('/', $maxChalan)[1] : 0) + 1;
 
             $getData = NewCuttingSummary::create($request->all()+[
-                'document_number' => date('Y').'/'.$document_number,
+                'document_number' => date('Y').'/'.$autoValue,
                 'created_by' => Auth::user()->id,
             ]);
 
@@ -182,6 +183,7 @@ class NewCuttingController extends Controller
                 $styleInfo->summary_id = $request->summary_id;
                 $styleInfo->unique_id = $request->unique_id;
                 $styleInfo->daily_cutting_qty = $request->daily_cutting_qty;
+                $styleInfo->created_by = Auth::user()->id;
                 $styleInfo->save();
 
                 return response()->json([
@@ -227,7 +229,7 @@ class NewCuttingController extends Controller
 
                     $styleWiseCuttingPercentage = ((($styleWiseTotalCuttingQty - $styleWiseTotalOrder) / $styleWiseTotalOrder) * 100);
 
-                    return '<span class="badge text-white bg-orange">' . $styleWiseCuttingPercentage . ' %'. '</span>';
+                    return '<span class="badge text-white bg-orange">' . number_format($styleWiseCuttingPercentage, 2) . ' %'. '</span>';
                 })
                 ->addColumn('action', function ($row) {
                     $btn = '<button type="button" data-id="' . $row->id . '" class="btn text-white bg-yellow btn-sm deleteBtn"><i class="fe fe-trash"></i></button>';
@@ -244,14 +246,14 @@ class NewCuttingController extends Controller
     public function newCuttingStyleDestroy(string $id)
     {
         $cuttingStyle = NewCuttingDetail::findOrFail($id);
-        $cuttingStyle->delete();
+        $cuttingStyle->forceDelete();
     }
 
     public function newCuttingSubmit(string $id)
     {
         $cuttingDocument = NewCuttingSummary::findOrFail($id);
         $cuttingDocument->update([
-            'status' => 'Active',
+            'status' => 'Submitted',
             'updated_by' => Auth::user()->id,
         ]);
     }
@@ -263,6 +265,14 @@ class NewCuttingController extends Controller
         $cuttingDocument->deleted_by = Auth::user()->id;
         $cuttingDocument->save();
         $cuttingDocument->delete();
+
+        $cuttingStyles = NewCuttingDetail::where('summary_id', $id)->get();
+        foreach ($cuttingStyles as $cuttingStyle) {
+            $cuttingStyle->updated_by = Auth::user()->id;
+            $cuttingStyle->deleted_by = Auth::user()->id;
+            $cuttingStyle->save();
+            $cuttingStyle->delete();
+        }
     }
 
     public function trashed(Request $request)
@@ -292,12 +302,18 @@ class NewCuttingController extends Controller
         NewCuttingSummary::onlyTrashed()->where('id', $id)->update([
             'deleted_by' => NULL
         ]);
-
         NewCuttingSummary::onlyTrashed()->where('id', $id)->restore();
+
+        NewCuttingDetail::onlyTrashed()->where('summary_id', $id)->update([
+            'deleted_by' => NULL
+        ]);
+        NewCuttingDetail::onlyTrashed()->where('summary_id', $id)->restore();
     }
 
     public function forceDelete(string $id)
     {
+        NewCuttingDetail::where('summary_id', $id)->forceDelete();
+
         $cuttingDocument = NewCuttingSummary::onlyTrashed()->where('id', $id)->first();
         $cuttingDocument->forceDelete();
     }
