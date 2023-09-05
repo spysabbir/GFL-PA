@@ -16,6 +16,11 @@ return new class extends Migration
             $table->integer('summary_id');
             $table->integer('unique_id');
             $table->integer('daily_cutting_qty');
+            $table->integer('created_by');
+            $table->integer('updated_by')->nullable();
+            $table->integer('deleted_by')->nullable();
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -69,8 +69,10 @@ class NewCuttingController extends Controller
                 'error'=> $validator->errors()->toArray()
             ]);
         }else{
-            $getData = NewCuttingSummary::create($request->except('document_number')+[
-                'document_number' => date('Y').'/'.Auth::user()->id,
+            $document_number = NewCuttingSummary::whereYear('document_date', date('Y'))->latest('document_number')->value('document_number')+1;
+
+            $getData = NewCuttingSummary::create($request->all()+[
+                'document_number' => date('Y').'/'.$document_number,
                 'created_by' => Auth::user()->id,
             ]);
 
@@ -110,7 +112,6 @@ class NewCuttingController extends Controller
     public function getSearchStyleInfo(Request $request)
     {
         $send_data = "";
-
         $query = MasterStyle::where('status', 'Running');
 
         if ($request->unique_id) {
@@ -130,6 +131,7 @@ class NewCuttingController extends Controller
                 $color_name = $style->color->color_name;
                 $wash_name = $style->wash->wash_name;
                 $total_cutting = NewCuttingDetail::where('unique_id', $style->unique_id)->sum('daily_cutting_qty');
+
                 $send_data .= "
                 <tr>
                     <td>$style->unique_id</td>

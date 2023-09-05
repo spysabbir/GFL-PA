@@ -35,13 +35,14 @@
                                 <button type="submit" class="btn text-white bg-cyan" id="createDocumentBtn">Create</button>
                                 <button type="button" class="btn text-white bg-cyan" id="updateDocumentBtn">Update</button>
                                 <button type="button" class="btn text-white bg-green" id="submitDocumentBtn">Submit</button>
+                                <button type="button" class="btn text-white bg-green" id="updateRequestDocumentBtn">Update Request</button>
                                 <br>
                                 <br>
                                 <a href="{{ route('employee.new-cutting.index') }}" class="btn text-white bg-pink">Back</a>
                                 <!-- Create Btn -->
-                                <button type="button" class="btn text-white bg-green" data-toggle="modal" data-target="#createModal" id="addStyleModelBtn" ><i class="fe fe-plus-circle"></i></button>
+                                <button type="button" class="btn text-white bg-green" data-toggle="modal" data-target="#createModal" id="addStyleModelBtn" disabled><i class="fe fe-plus-circle"></i></button>
                             </div>
-                            <span><strong>Total Cutting:</strong> <span id="totalCuttingQty">0</span></span>
+                            <span><strong>Total Cutting:</strong> <span id="totalCuttingQty"></span></span>
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
@@ -167,6 +168,7 @@
         $('#createDocumentBtn').show();
         $('#updateDocumentBtn').hide();
         $('#submitDocumentBtn').hide();
+        $('#updateRequestDocumentBtn').hide();
 
         // Create Document
         $('#createDocumentForm').submit(function(event) {
@@ -256,6 +258,7 @@
                             $('#get_document_date').attr('disabled', true);
                             $('#get_remarks').attr('disabled', true);
                             $('.deleteBtn').attr('disabled', true);
+                            $('#updateRequestDocumentBtn').show();
                         }
                     });
                 }
