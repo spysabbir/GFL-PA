@@ -15,89 +15,138 @@
                 </div>
             </div>
             <div class="card-body">
-                {{-- <form id="editForm">
+                <form id="editDocumentForm">
                     @csrf
-                    <div class="row">
-                        <input type="hidden" id="masterStyle_id" value="{{ $masterStyle->id }}">
-                        <div class="col-md-4">
+                    <div class="row d-flex justify-content-between">
+                        <div class="col-md-3">
                             <div class="form-group">
-                                <label class="form-label">Buyer Name</label>
-                                <select name="buyer_id" id="" class="form-control custom-select">
-                                    <option value="">--Select Buyer--</option>
-                                    @foreach ($buyers as $buyer)
-                                    <option value="{{ $buyer->id }}" @selected($masterStyle->buyer_id == $buyer->id)>{{ $buyer->buyer_name }}</option>
-                                    @endforeach
-                                </select>
-                                <span class="text-danger error-text update_buyer_id_error"></span>
+                                <label class="form-label">Document Number</label>
+                                <input type="hidden" class="form-control" id="get_status" value="{{ $cuttingDocument->status }}">
+                                <input type="hidden" class="form-control" id="get_summary_id" value="{{ $cuttingDocument->id }}">
+                                <input type="text" class="form-control" id="get_document_number" value="{{ $cuttingDocument->document_number }}" readonly>
                             </div>
-                        </div>
-                        <div class="col-md-4">
                             <div class="form-group">
-                                <label class="form-label">Style Name</label>
-                                <select name="style_id" id="" class="form-control custom-select">
-                                    <option value="">--Select Style--</option>
-                                    @foreach ($styles as $style)
-                                    <option value="{{ $style->id }}" @selected($masterStyle->style_id == $style->id)>{{ $style->style_name }}</option>
-                                    @endforeach
-                                </select>
-                                <span class="text-danger error-text update_style_id_error"></span>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label class="form-label">Season Name</label>
-                                <select name="season_id" id="" class="form-control custom-select">
-                                    <option value="">--Select Season--</option>
-                                    @foreach ($seasons as $season)
-                                    <option value="{{ $season->id }}" @selected($masterStyle->season_id == $season->id)>{{ $season->season_name }}</option>
-                                    @endforeach
-                                </select>
-                                <span class="text-danger error-text update_season_id_error"></span>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label class="form-label">Color Name</label>
-                                <select name="color_id" id="" class="form-control custom-select">
-                                    <option value="">--Select Color--</option>
-                                    @foreach ($colors as $color)
-                                    <option value="{{ $color->id }}" @selected($masterStyle->color_id == $color->id)>{{ $color->color_name }}</option>
-                                    @endforeach
-                                </select>
-                                <span class="text-danger error-text update_color_id_error"></span>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label class="form-label">Wash Name</label>
-                                <select name="wash_id" id="" class="form-control custom-select">
-                                    <option value="">--Select Wash--</option>
-                                    @foreach ($washs as $wash)
-                                    <option value="{{ $wash->id }}" @selected($masterStyle->wash_id == $wash->id)>{{ $wash->wash_name }}</option>
-                                    @endforeach
-                                </select>
-                                <span class="text-danger error-text update_wash_id_error"></span>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label class="form-label">Type of Garment</label>
-                                <select name="garment_type_id" id="" class="form-control custom-select">
-                                    <option value="">--Select Type--</option>
-                                    @foreach ($garmentTypes as $garmentType)
-                                    <option value="{{ $garmentType->id }}" @selected($masterStyle->garment_type_id == $garmentType->id)>{{ $garmentType->item_name }}</option>
-                                    @endforeach
-                                </select>
-                                <span class="text-danger error-text update_garment_type_id_error"></span>
+                                <label class="form-label">Document Date</label>
+                                <input type="date" class="form-control" name="document_date" value="{{ $cuttingDocument->document_date }}" id="get_document_date" {{ $cuttingDocument->status != 'Running' ? 'disabled' : '' }}>
+                                <span class="text-danger error-text document_date_error"></span>
                             </div>
                         </div>
                         <div class="col-md-2">
                             <div class="form-group mt-1">
-                                <button type="submit" class="btn text-white bg-cyan mt-4">Update</button>
+                                <button type="button" class="btn text-white bg-cyan" id="updateDocumentBtn">Update</button>
+                                <button type="button" class="btn text-white bg-green" id="submitDocumentBtn">Submit</button>
+                                <button type="button" class="btn text-white bg-green" id="updateRequestDocumentBtn">Update Request</button>
+                                <br>
+                                <br>
+                                <a href="{{ route('employee.new-cutting.index') }}" class="btn text-white bg-pink">Back</a>
+                                <!-- Create Btn -->
+                                <button type="button" class="btn text-white bg-green" data-toggle="modal" data-target="#createModal" id="addStyleModelBtn" {{ $cuttingDocument->status != 'Running' ? 'disabled' : '' }}><i class="fe fe-plus-circle"></i></button>
+                            </div>
+                            <span><strong>Total Cutting:</strong> <span id="totalCuttingQty"></span></span>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">Remarks</label>
+                                <textarea name="remarks" class="form-control" rows="4" id="get_remarks" {{ $cuttingDocument->status != 'Running' ? 'disabled' : '' }}>{{ $cuttingDocument->remarks }}</textarea>
                             </div>
                         </div>
                     </div>
-                </form> --}}
+                </form>
+                <!-- Create Modal -->
+                <div class="modal fade bd-example-modal-lg" id="createModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Create</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="form-label">Unique Id</label>
+                                            <select class="form-control custom-select select_unique_id_js" id="search_unique_id" style="width: 100%">
+                                                <option value="">Select Unique Id</option>
+                                                @foreach ($allStyle as $style)
+                                                <option value="{{ $style->unique_id  }}">{{ $style->unique_id  }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="form-group">
+                                            <label class="form-label">Style Name</label>
+                                            <select class="form-control custom-select select_style_js" id="search_style" style="width: 100%">
+                                                <option value="">Select Style</option>
+                                                @foreach ($allStyle as $style)
+                                                <option value="{{ $style->style_id }}">{{ $style->style->style_name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>Unique Id</th>
+                                                    <th>Buyer</th>
+                                                    <th>Style</th>
+                                                    <th>Season</th>
+                                                    <th>Color</th>
+                                                    <th>Wash</th>
+                                                    <th>Day Cutting</th>
+                                                    <th>Total Cutting</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="get_search_result">
+                                                <!-- Content will be inserted here via AJAX -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-striped" id="allDataTable">
+                            <thead>
+                                <tr>
+                                    <th>Sl No</th>
+                                    <th>Unique Id</th>
+                                    <th>Order Qty</th>
+                                    <th>Day Cutting</th>
+                                    <th>Total Cutting</th>
+                                    <th>Cutting Percentage</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th>Sl No</th>
+                                    <th>Unique Id</th>
+                                    <th>Order Qty</th>
+                                    <th>Day Cutting</th>
+                                    <th>Total Cutting</th>
+                                    <th>Cutting Percentage</th>
+                                    <th>Action</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -113,29 +162,222 @@
             }
         });
 
-        // Cutting Data Update
-        $('#editForm').submit(function (event) {
-            event.preventDefault();
-            var id = $('#masterStyle_id').val();
+        $('.select_unique_id_js').select2();
+        $('.select_style_js').select2();
+
+        if ($('#get_status').val() == 'Running') {
+            $('#updateRequestDocumentBtn').hide();
+        } else if($('#get_status').val() == 'Submitted') {
+            $('#updateDocumentBtn').hide();
+            $('#submitDocumentBtn').hide();
+        }else{
+            $('#updateDocumentBtn').hide();
+            $('#submitDocumentBtn').hide();
+            $('#updateRequestDocumentBtn').hide();
+        }
+
+        // Update Document
+        $(document).on('click', '#updateDocumentBtn', function () {
+            var id = $('#get_summary_id').val();
+            var document_date = $('#get_document_date').val();
+            var remarks = $('#get_remarks').val();
             var url = "{{ route('employee.new-cutting.update', ":id") }}";
             url = url.replace(':id', id)
             $.ajax({
                 url: url,
-                type: "PUT",
-                data: $(this).serialize(),
+                type: 'PUT',
+                data: {document_date: document_date, remarks: remarks},
                 beforeSend:function(){
                     $(document).find('span.error-text').text('');
                 },
-                success: function (response) {
+                success: function(response) {
                     if (response.status == 400) {
                         $.each(response.error, function(prefix, val){
-                            $('span.update_'+prefix+'_error').text(val[0]);
+                            $('span.'+prefix+'_error').text(val[0]);
                         })
                     }else{
+                        $('#get_document_date').val(response.cuttindDoc.document_date);
+                        $('#get_remarks').val(response.cuttindDoc.remarks);
+                        $('#get_status').val(response.cuttindDoc.status);
+                        $('#allDataTable').DataTable().ajax.reload();
                         toastr.success('Cutting data update successfully.');
                     }
+                }
+            });
+        });
+
+        // Submit Data
+        $(document).on('click', '#submitDocumentBtn', function () {
+            var id = $('#get_summary_id').val();
+            var url = "{{ route('employee.new-cutting.submit', ":id") }}";
+            url = url.replace(':id', id)
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You can no longer edit it!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, submit it!'
+                }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: url,
+                        method: 'GET',
+                        success: function(response) {
+                            toastr.success('Cutting data submit successfully.');
+                            $('#updateDocumentBtn').hide();
+                            $('#submitDocumentBtn').hide();
+                            $('#addStyleModelBtn').attr('disabled', true);
+                            $('#get_document_date').attr('disabled', true);
+                            $('#get_remarks').attr('disabled', true);
+                            $('.deleteBtn').attr('disabled', true);
+                            $('#updateRequestDocumentBtn').show();
+                        }
+                    });
+                }
+            })
+        });
+
+        // Add Style
+        $(document).on('click', '#addStyleModelBtn', function () {
+            $('#get_search_result').html('');
+            $('#search_unique_id').val('').trigger('change.select2');
+            $('#search_style').val('').trigger('change.select2');
+        });
+
+        // Get Style Info
+        $(document).on('change', '#search_unique_id, #search_style', function() {
+            $('#get_search_result').html('');
+            var unique_id = $('#search_unique_id').val();
+            var style_id = $('#search_style').val();
+            var document_date = $('#get_document_date').val();
+
+            $.ajax({
+                url: "{{ route('employee.get.search.style.info') }}",
+                type: "POST",
+                data: {unique_id: unique_id, style_id: style_id, document_date: document_date},
+                success: function (response) {
+                    $('#get_search_result').html(response);
                 },
             });
+        });
+
+        // Store Style
+        $(document).on('click', '#addCutingStyleBtn', function () {
+            var row = $(this).closest('tr');
+            var summary_id = $('#get_summary_id').val();
+            var unique_id = row.find('td:eq(0)').text();
+            var daily_cutting_qty = row.find('input[name="daily_cutting_qty"]').val();
+            $.ajax({
+                url: "{{ route('employee.add.new-cutting.style') }}",
+                type: 'POST',
+                data: { summary_id: summary_id, unique_id: unique_id, daily_cutting_qty: daily_cutting_qty },
+                beforeSend:function(){
+                    $(document).find('span.error-text').text('');
+                },
+                success: function(response) {
+                    if (response.status == 400) {
+                        $.each(response.error, function(prefix, val){
+                            row.find('span.'+prefix+'_error').text(val[0]);
+                        })
+                    }else{
+                        if (response.status == 401) {
+                            toastr.error('This style already added this document.');
+                        } else {
+                            $('#allDataTable').DataTable().ajax.reload();
+                            toastr.success('Cutting style store successfully.');
+                            $('#get_search_result').html('');
+                            $('#search_unique_id').val('').trigger('change.select2');
+                            $('#search_style').val('').trigger('change.select2');
+                        }
+                    }
+                }
+            });
+        });
+
+        // Get Style Data
+        $('#allDataTable').DataTable({
+            processing: true,
+            serverSide: true,
+            searching: true,
+            ajax: {
+                url: "{{ route('employee.get.new-cutting.style') }}",
+                "data":function(e){
+                    e.summary_id = $('#get_summary_id').val();
+                    e.document_date = $('#get_document_date').val();
+                },
+            },
+            columns: [
+                { data: 'DT_RowIndex', name: 'DT_RowIndex' },
+                { data: 'unique_id', name: 'unique_id' },
+                { data: 'styleWiseTotalOrder', name: 'styleWiseTotalOrder' },
+                { data: 'daily_cutting_qty', name: 'daily_cutting_qty' },
+                { data: 'styleWiseTotalCuttingQty', name: 'styleWiseTotalCuttingQty' },
+                { data: 'styleWiseCuttingPercentage', name: 'styleWiseCuttingPercentage' },
+                { data: 'action', name: 'action', orderable: false, searchable: false }
+            ],
+            drawCallback: function (settings) {
+                var api = this.api();
+                var totalCuttingQty = api.column(3).data().reduce(function (a, b) {
+                    return parseInt(a) + parseInt(b);
+                }, 0);
+                $('#totalCuttingQty').text(totalCuttingQty);
+            },
+        });
+
+        // Delete Data
+        $(document).on('click', '.deleteBtn', function(){
+            var id = $(this).data('id');
+            var url = "{{ route('employee.new-cutting.style.destroy', ":id") }}";
+            url = url.replace(':id', id)
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You can bring it back though!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: url,
+                        method: 'DELETE',
+                        success: function(response) {
+                            $('#allDataTable').DataTable().ajax.reload();
+                            toastr.warning('Cutting style delete successfully.');
+                        }
+                    });
+                }
+            })
+        })
+
+        // Update Request Data
+        $(document).on('click', '#updateRequestDocumentBtn', function () {
+            var id = $('#get_summary_id').val();
+            var url = "{{ route('employee.new-cutting.status', ":id") }}";
+            url = url.replace(':id', id)
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You can no longer edit it!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, submit it!'
+                }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: url,
+                        method: 'GET',
+                        success: function(response) {
+                            $('#updateRequestDocumentBtn').hide();
+                            toastr.success('Cutting data update request successfully.');
+                        }
+                    });
+                }
+            })
         });
 
     });

@@ -33,16 +33,18 @@ class NewCuttingController extends Controller
                     return '<span class="badge text-white bg-orange">' . NewCuttingDetail::where('summary_id', $row->id)->sum('daily_cutting_qty') . '</span>';
                 })
                 ->editColumn('status', function ($row) {
-                    if ($row->status == 'Active') {
-                        $status = '<span class="badge text-white bg-green">' . $row->status . '</span>';
+                    if ($row->status == 'Running') {
+                        $status = '<span class="badge text-white bg-pink">' . $row->status . '</span>';
+                    } elseif ($row->status == 'Updating') {
+                        $status = '<span class="badge text-white bg-red">' . $row->status . '</span>';
                     } else {
-                        $status = '<span class="badge text-white bg-orange">' . $row->status . '</span>';
+                        $status = '<span class="badge text-white bg-green">' . $row->status . '</span>';
                     }
                     return $status;
                 })
                 ->addColumn('action', function ($row) {
-                    $btn = '<button type="button" data-id="' . $row->id . '" class="btn text-white bg-purple btn-sm editBtn" data-toggle="modal" data-target="#editModal"><i class="fe fe-edit"></i></button>
-                            <button type="button" data-id="' . $row->id . '" class="btn text-white bg-yellow btn-sm deleteBtn"><i class="fe fe-trash"></i></button>';
+                    $btn = '<a href="' . route('employee.new-cutting.edit', $row->id) . '" class="btn text-white bg-purple btn-sm"><i class="fe fe-edit"></i></a>
+                            <button type="button" data-id="' . $row->id . '" class="btn text-white bg-yellow btn-sm deleteBtn" ' . ($row->status != "Running" ? "disabled" : "") . '><i class="fe fe-trash"></i></button>';
                     return $btn;
                 })
                 ->rawColumns(['total_cutting_qty', 'status', 'action'])
@@ -55,6 +57,13 @@ class NewCuttingController extends Controller
     public function create(){
         $allStyle = MasterStyle::where('status', 'Running')->get();
         return view('employee.new-cutting.create', compact('allStyle'));
+    }
+
+    public function edit(string $id){
+        $cuttingDocument = NewCuttingSummary::findOrFail($id);
+
+        $allStyle = MasterStyle::where('status', 'Running')->get();
+        return view('employee.new-cutting.edit', compact('cuttingDocument', 'allStyle'));
     }
 
     public function store(Request $request)
@@ -205,6 +214,8 @@ class NewCuttingController extends Controller
             $documentDates = (array) $request->document_date;
             $ids = NewCuttingSummary::whereIn('document_date', $documentDates)->pluck('id');
 
+            $status = NewCuttingSummary::find($request->summary_id)->status;
+
             return DataTables::of($query)
                 ->addIndexColumn()
                 ->editColumn('styleWiseTotalCuttingQty', function ($row) use ($ids) {
@@ -231,8 +242,8 @@ class NewCuttingController extends Controller
 
                     return '<span class="badge text-white bg-orange">' . number_format($styleWiseCuttingPercentage, 2) . ' %'. '</span>';
                 })
-                ->addColumn('action', function ($row) {
-                    $btn = '<button type="button" data-id="' . $row->id . '" class="btn text-white bg-yellow btn-sm deleteBtn"><i class="fe fe-trash"></i></button>';
+                ->addColumn('action', function ($row) use ($status) {
+                    $btn = '<button type="button" data-id="' . $row->id . '" class="btn text-white bg-yellow btn-sm deleteBtn" ' . ($status != "Running" ? "disabled" : "") . '><i class="fe fe-trash"></i></button>';
                     return $btn;
                 })
                 ->with('totalCuttingQty', $totalCuttingQty)
@@ -318,17 +329,11 @@ class NewCuttingController extends Controller
         $cuttingDocument->forceDelete();
     }
 
-    // public function status(string $id)
-    // {
-    //     $buyer = Buyer::findOrFail($id);
-
-    //     if ($buyer->status == "Active") {
-    //         $buyer->status = "Inactive";
-    //     } else {
-    //         $buyer->status = "Active";
-    //     }
-
-    //     $buyer->updated_by = Auth::user()->id;
-    //     $buyer->save();
-    // }
+    public function status(string $id)
+    {
+        $cuttingDocument = NewCuttingSummary::findOrFail($id);
+        $cuttingDocument->status = "Updating";
+        $cuttingDocument->updated_by = Auth::user()->id;
+        $cuttingDocument->save();
+    }
 }

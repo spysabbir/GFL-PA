@@ -379,6 +379,33 @@
             })
         })
 
+        // Update Request Data
+        $(document).on('click', '#updateRequestDocumentBtn', function () {
+            var id = $('#get_summary_id').val();
+            var url = "{{ route('employee.new-cutting.status', ":id") }}";
+            url = url.replace(':id', id)
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You can no longer edit it!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, submit it!'
+                }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: url,
+                        method: 'GET',
+                        success: function(response) {
+                            $('#updateRequestDocumentBtn').hide();
+                            toastr.success('Cutting data update request successfully.');
+                        }
+                    });
+                }
+            })
+        });
+
     });
 </script>
 @endsection

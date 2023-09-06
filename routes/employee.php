@@ -94,6 +94,7 @@ Route::prefix('employee')->middleware(['auth'])->name('employee.')->group(functi
     Route::get('/new-cutting-trashed', [NewCuttingController::class, 'trashed'])->name('new-cutting.trashed');
     Route::get('/new-cutting/submit/{id}', [NewCuttingController::class, 'newCuttingSubmit'])->name('new-cutting.submit');
     Route::get('/new-cutting/restore/{id}', [NewCuttingController::class, 'restore'])->name('new-cutting.restore');
+    Route::get('/new-cutting/status/{id}', [NewCuttingController::class, 'status'])->name('new-cutting.status');
     Route::get('/new-cutting/force/delete/{id}', [NewCuttingController::class, 'forceDelete'])->name('new-cutting.force.delete');
     Route::post('/get-search-style-info', [NewCuttingController::class, 'getSearchStyleInfo'])->name('get.search.style.info');
     Route::post('/add/new-cutting/style', [NewCuttingController::class, 'addNewCuttingStyle'])->name('add.new-cutting.style');
