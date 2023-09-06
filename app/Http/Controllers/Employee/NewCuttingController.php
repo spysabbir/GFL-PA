@@ -173,7 +173,7 @@ class NewCuttingController extends Controller
     public function addNewCuttingStyle(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'daily_cutting_qty' => 'required|numeric',
+            'daily_cutting_qty' => 'required|gt:0',
         ]);
 
         if($validator->fails()){
@@ -202,14 +202,41 @@ class NewCuttingController extends Controller
         }
     }
 
+    public function updateNewCuttingStyle(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'daily_cutting_qty' => 'required',
+        ]);
+
+        if($validator->fails()){
+            return response()->json([
+                'status' => 400,
+            ]);
+        }else{
+            if($request->daily_cutting_qty < 1){
+                return response()->json([
+                    'status' => 401,
+                ]);
+            }else{
+                $styleInfo = NewCuttingDetail::findOrFail($id);
+                $styleInfo->update([
+                    'daily_cutting_qty' => $request->daily_cutting_qty,
+                    'updated_by' => Auth::user()->id,
+                ]);
+
+                return response()->json([
+                    'status' => 200,
+                ]);
+            }
+        }
+    }
+
     public function getNewCuttingStyle(Request $request)
     {
         if ($request->ajax()) {
             $query = NewCuttingDetail::select('new_cutting_details.*')
                                 ->where('new_cutting_details.summary_id', $request->summary_id)
                                 ->get();
-
-            $totalCuttingQty = $query->sum('daily_cutting_qty');
 
             $documentDates = (array) $request->document_date;
             $ids = NewCuttingSummary::whereIn('document_date', $documentDates)->pluck('id');
@@ -218,6 +245,9 @@ class NewCuttingController extends Controller
 
             return DataTables::of($query)
                 ->addIndexColumn()
+                ->editColumn('daily_cutting_qty', function ($row) {
+                    return '<input type="number" data-id="' . $row->id . '" class="updateNewCuttingQty" value="'.$row->daily_cutting_qty.'">';
+                })
                 ->editColumn('styleWiseTotalCuttingQty', function ($row) use ($ids) {
                     $styleWiseTotalCuttingQty = NewCuttingDetail::where('unique_id', $row->unique_id)
                         ->whereIn('summary_id', $ids)
@@ -246,12 +276,9 @@ class NewCuttingController extends Controller
                     $btn = '<button type="button" data-id="' . $row->id . '" class="btn text-white bg-yellow btn-sm deleteBtn" ' . ($status != "Running" ? "disabled" : "") . '><i class="fe fe-trash"></i></button>';
                     return $btn;
                 })
-                ->with('totalCuttingQty', $totalCuttingQty)
-                ->rawColumns(['styleWiseTotalCuttingQty', 'styleWiseTotalOrder', 'styleWiseCuttingPercentage', 'action'])
+                ->rawColumns(['daily_cutting_qty', 'styleWiseTotalCuttingQty', 'styleWiseTotalOrder', 'styleWiseCuttingPercentage', 'action'])
                 ->make(true);
         }
-
-        return view('employee.new-cutting.create');
     }
 
     public function newCuttingStyleDestroy(string $id)

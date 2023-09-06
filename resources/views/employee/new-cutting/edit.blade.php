@@ -296,6 +296,32 @@
             });
         });
 
+        // Update Style
+        $(document).on('change', '.updateNewCuttingQty', function () {
+            var row = $(this).closest('tr');
+            var daily_cutting_qty = row.find('.updateNewCuttingQty').val();
+
+            var id = $(this).data('id');
+            var url = "{{ route('employee.update.new-cutting.style', ":id") }}";
+            url = url.replace(':id', id)
+            $.ajax({
+                url: url,
+                type: "POST",
+                data: {daily_cutting_qty: daily_cutting_qty},
+                success: function (response) {
+                    if (response.status == 400) {
+                            toastr.error('The daily cutting qty field is required.');
+                    } else {
+                        if (response.status == 401) {
+                            toastr.error('Cutting qty is less than 1 please provide right cutting qty.');
+                        } else {
+                            $('#allDataTable').DataTable().ajax.reload();
+                        }
+                    }
+                },
+            });
+        });
+
         // Get Style Data
         $('#allDataTable').DataTable({
             processing: true,
@@ -317,13 +343,6 @@
                 { data: 'styleWiseCuttingPercentage', name: 'styleWiseCuttingPercentage' },
                 { data: 'action', name: 'action', orderable: false, searchable: false }
             ],
-            drawCallback: function (settings) {
-                var api = this.api();
-                var totalCuttingQty = api.column(3).data().reduce(function (a, b) {
-                    return parseInt(a) + parseInt(b);
-                }, 0);
-                $('#totalCuttingQty').text(totalCuttingQty);
-            },
         });
 
         // Delete Data
