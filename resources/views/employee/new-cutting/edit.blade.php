@@ -176,6 +176,7 @@
             $('#updateDocumentBtn').hide();
             $('#submitDocumentBtn').hide();
             $('#updateRequestText').hide();
+            $('#deleteAll').attr('disabled', true);
         }else{
             $('#updateDocumentBtn').hide();
             $('#submitDocumentBtn').hide();
@@ -239,6 +240,8 @@
                             $('#get_document_date').attr('disabled', true);
                             $('#get_remarks').attr('disabled', true);
                             $('.deleteBtn').attr('disabled', true);
+                            $('#deleteAll').attr('disabled', true);
+                            $('.updateNewCuttingQty').attr('disabled', true);
                             $('#updateRequestDocumentBtn').show();
                         }
                     });

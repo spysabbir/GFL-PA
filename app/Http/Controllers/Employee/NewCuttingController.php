@@ -233,30 +233,38 @@ class NewCuttingController extends Controller
 
     public function getNewCuttingStyle(Request $request)
     {
+        if($request->document_date){
+            $ids = NewCuttingSummary::where('document_date', '<=', $request->document_date)->pluck('id');
+        }{
+            $ids = [0];
+        }
+
         if ($request->ajax()) {
             $query = NewCuttingDetail::select('new_cutting_details.*')
                 ->where('new_cutting_details.summary_id', $request->summary_id)
                 ->get();
 
-            $documentDates = (array) $request->document_date;
-            $ids = NewCuttingSummary::whereIn('document_date', $documentDates)->pluck('id');
-
-            $status = NewCuttingSummary::find($request->summary_id)->status;
-
             $totalCuttingQty = $query->sum('daily_cutting_qty');
+
+            if($request->summary_id){
+                $status = NewCuttingSummary::where('id', $request->summary_id)->first()->status;
+            }else{
+                $status = "Running";
+            }
 
             $data = DataTables::of($query)
                 ->addIndexColumn()
                 ->editColumn('checkbox', function ($row) {
                     return '<input type="checkbox" value="' . $row->id . '" class="cuttingStyleChecked">';
                 })
-                ->editColumn('daily_cutting_qty', function ($row) {
-                    return '<input type="number" data-id="' . $row->id . '" class="updateNewCuttingQty" value="'.$row->daily_cutting_qty.'">';
+                ->editColumn('daily_cutting_qty', function ($row) use ($status) {
+                    return '<input type="number" data-id="' . $row->id . '" class="updateNewCuttingQty" ' . ($status != "Running" ? "disabled" : "") . ' value="'.$row->daily_cutting_qty.'">';
                 })
                 ->editColumn('styleWiseTotalCuttingQty', function ($row) use ($ids) {
-                    $styleWiseTotalCuttingQty = NewCuttingDetail::where('unique_id', $row->unique_id)
-                        ->whereIn('summary_id', $ids)
-                        ->sum('daily_cutting_qty');
+                    // $styleWiseTotalCuttingQty = NewCuttingDetail::where('unique_id', $row->unique_id)
+                    //     ->whereIn('summary_id', $ids)
+                    //     ->sum('daily_cutting_qty');
+                    $styleWiseTotalCuttingQty = $ids;
                     return '<span class="badge text-white bg-orange">' . $styleWiseTotalCuttingQty . '</span>';
                 })
                 ->editColumn('styleWiseTotalOrder', function ($row) {

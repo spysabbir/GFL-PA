@@ -42,7 +42,7 @@
                                 <a href="{{ route('employee.new-cutting.index') }}" class="btn text-white bg-pink">Back</a>
                                 <!-- Create Btn -->
                                 <button type="button" class="btn text-white bg-green" data-toggle="modal" data-target="#createModal" id="addStyleModelBtn" disabled><i class="fe fe-plus-circle"></i></button>
-                                <button type="button" class="btn text-white bg-red" id="deleteAll"><i class="fe fe-trash"></i></button>
+                                <button type="button" class="btn text-white bg-red" id="deleteAll" disabled><i class="fe fe-trash"></i></button>
                             </div>
                             <span><strong>Total Cutting:</strong> <span id="totalCuttingQty"></span></span>
                         </div>
@@ -198,6 +198,7 @@
                         $('#get_document_date').val(response.getData.document_date);
                         $('#get_remarks').val(response.getData.remarks);
                         $('#addStyleModelBtn').attr('disabled', false);
+                        $('#deleteAll').attr('disabled', false);
                         $('#createDocumentBtn').hide();
                         $('#updateDocumentBtn').show();
                         $('#submitDocumentBtn').show();
@@ -263,6 +264,8 @@
                             $('#get_document_date').attr('disabled', true);
                             $('#get_remarks').attr('disabled', true);
                             $('.deleteBtn').attr('disabled', true);
+                            $('#deleteAll').attr('disabled', true);
+                            $('.updateNewCuttingQty').attr('disabled', true);
                             $('#updateRequestDocumentBtn').show();
                         }
                     });
@@ -324,6 +327,32 @@
                         }
                     }
                 }
+            });
+        });
+
+        // Update Style
+        $(document).on('change', '.updateNewCuttingQty', function () {
+            var row = $(this).closest('tr');
+            var daily_cutting_qty = row.find('.updateNewCuttingQty').val();
+
+            var id = $(this).data('id');
+            var url = "{{ route('employee.update.new-cutting.style', ":id") }}";
+            url = url.replace(':id', id)
+            $.ajax({
+                url: url,
+                type: "POST",
+                data: {daily_cutting_qty: daily_cutting_qty},
+                success: function (response) {
+                    if (response.status == 400) {
+                            toastr.error('The daily cutting qty field is required.');
+                    } else {
+                        if (response.status == 401) {
+                            toastr.error('Cutting qty is less than 1 please provide right cutting qty.');
+                        } else {
+                            $('#allDataTable').DataTable().ajax.reload();
+                        }
+                    }
+                },
             });
         });
 
