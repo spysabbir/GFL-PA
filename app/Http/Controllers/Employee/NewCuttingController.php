@@ -235,16 +235,21 @@ class NewCuttingController extends Controller
     {
         if ($request->ajax()) {
             $query = NewCuttingDetail::select('new_cutting_details.*')
-                                ->where('new_cutting_details.summary_id', $request->summary_id)
-                                ->get();
+                ->where('new_cutting_details.summary_id', $request->summary_id)
+                ->get();
 
             $documentDates = (array) $request->document_date;
             $ids = NewCuttingSummary::whereIn('document_date', $documentDates)->pluck('id');
 
             $status = NewCuttingSummary::find($request->summary_id)->status;
 
-            return DataTables::of($query)
+            $totalCuttingQty = $query->sum('daily_cutting_qty');
+
+            $data = DataTables::of($query)
                 ->addIndexColumn()
+                ->editColumn('checkbox', function ($row) {
+                    return '<input type="checkbox" value="' . $row->id . '" class="cuttingStyleChecked">';
+                })
                 ->editColumn('daily_cutting_qty', function ($row) {
                     return '<input type="number" data-id="' . $row->id . '" class="updateNewCuttingQty" value="'.$row->daily_cutting_qty.'">';
                 })
@@ -257,7 +262,6 @@ class NewCuttingController extends Controller
                 ->editColumn('styleWiseTotalOrder', function ($row) {
                     $master_style_id = MasterStyle::where('unique_id', $row->unique_id)->first()->id;
                     $styleWiseTotalOrder = StyleBpoOrder::where('master_style_id', $master_style_id)->sum('order_quantity');
-
                     return '<span class="badge text-white bg-orange">' . $styleWiseTotalOrder . '</span>';
                 })
                 ->editColumn('styleWiseCuttingPercentage', function ($row) use ($ids) {
@@ -276,8 +280,12 @@ class NewCuttingController extends Controller
                     $btn = '<button type="button" data-id="' . $row->id . '" class="btn text-white bg-yellow btn-sm deleteBtn" ' . ($status != "Running" ? "disabled" : "") . '><i class="fe fe-trash"></i></button>';
                     return $btn;
                 })
-                ->rawColumns(['daily_cutting_qty', 'styleWiseTotalCuttingQty', 'styleWiseTotalOrder', 'styleWiseCuttingPercentage', 'action'])
-                ->make(true);
+                ->rawColumns(['checkbox', 'daily_cutting_qty', 'styleWiseTotalOrder', 'styleWiseTotalCuttingQty', 'styleWiseCuttingPercentage', 'action'])
+                ->toArray();
+
+            $data['totalCuttingQty'] = $totalCuttingQty;
+
+            return response()->json($data);
         }
     }
 
@@ -294,6 +302,20 @@ class NewCuttingController extends Controller
             'status' => 'Submitted',
             'updated_by' => Auth::user()->id,
         ]);
+    }
+
+    public function newCuttingStyleDestroyAll(Request $request)
+    {
+        if ($request->all_selected_id) {
+            $all_selected_id = explode( ',', $request->all_selected_id );
+            foreach($all_selected_id as $selected_id){
+                NewCuttingDetail::findOrFail($selected_id)->forceDelete();
+            }
+        }else{
+            return response()->json([
+                'status' => 400,
+            ]);
+        }
     }
 
     public function destroy(string $id)

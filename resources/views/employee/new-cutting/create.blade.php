@@ -36,11 +36,13 @@
                                 <button type="button" class="btn text-white bg-cyan" id="updateDocumentBtn">Update</button>
                                 <button type="button" class="btn text-white bg-green" id="submitDocumentBtn">Submit</button>
                                 <button type="button" class="btn text-white bg-green" id="updateRequestDocumentBtn">Update Request</button>
+                                <span class="badge text-white bg-dark p-3" id="updateRequestText">Awaiting update request approval</span>
                                 <br>
                                 <br>
                                 <a href="{{ route('employee.new-cutting.index') }}" class="btn text-white bg-pink">Back</a>
                                 <!-- Create Btn -->
                                 <button type="button" class="btn text-white bg-green" data-toggle="modal" data-target="#createModal" id="addStyleModelBtn" disabled><i class="fe fe-plus-circle"></i></button>
+                                <button type="button" class="btn text-white bg-red" id="deleteAll"><i class="fe fe-trash"></i></button>
                             </div>
                             <span><strong>Total Cutting:</strong> <span id="totalCuttingQty"></span></span>
                         </div>
@@ -121,6 +123,7 @@
                         <table class="table table-hover table-striped" id="allDataTable">
                             <thead>
                                 <tr>
+                                    <th><input type="checkbox" id="allcuttingStyleChecked"></th>
                                     <th>Sl No</th>
                                     <th>Unique Id</th>
                                     <th>Order Qty</th>
@@ -135,6 +138,7 @@
                             </tbody>
                             <tfoot>
                                 <tr>
+                                    <th><input type="checkbox" id="allcuttingStyleChecked"></th>
                                     <th>Sl No</th>
                                     <th>Unique Id</th>
                                     <th>Order Qty</th>
@@ -169,6 +173,7 @@
         $('#updateDocumentBtn').hide();
         $('#submitDocumentBtn').hide();
         $('#updateRequestDocumentBtn').hide();
+        $('#updateRequestText').hide();
 
         // Create Document
         $('#createDocumentForm').submit(function(event) {
@@ -325,16 +330,17 @@
         // Get Style Data
         $('#allDataTable').DataTable({
             processing: true,
-            serverSide: true,
+            // serverSide: true,
             searching: true,
             ajax: {
                 url: "{{ route('employee.get.new-cutting.style') }}",
-                "data":function(e){
+                data: function (e) {
                     e.summary_id = $('#get_summary_id').val();
                     e.document_date = $('#get_document_date').val();
                 },
             },
             columns: [
+                { data: 'checkbox', name: 'checkbox' },
                 { data: 'DT_RowIndex', name: 'DT_RowIndex' },
                 { data: 'unique_id', name: 'unique_id' },
                 { data: 'styleWiseTotalOrder', name: 'styleWiseTotalOrder' },
@@ -349,6 +355,11 @@
                     return parseInt(a) + parseInt(b);
                 }, 0);
                 $('#totalCuttingQty').text(totalCuttingQty);
+
+                var responseData = api.ajax.json();
+                if (responseData && responseData.totalCuttingQty !== undefined) {
+                    $('#totalCuttingQty').text(responseData.totalCuttingQty);
+                }
             },
         });
 
@@ -379,6 +390,37 @@
             })
         })
 
+        // Select All Checkbox
+        $(document).on('click', '#allcuttingStyleChecked', function(){
+            $('.cuttingStyleChecked').prop('checked', $(this).prop('checked'));
+        })
+
+        // Select Bpo & Order Delete
+        $(document).on('click', '#deleteAll', function (e) {
+            e.preventDefault();
+            var all_selected_id = [];
+            $('.cuttingStyleChecked').each(function(){
+                if($(this).is(":checked")){
+                    all_selected_id.push($(this).val());
+                }
+            });
+            var all_selected_id = all_selected_id.toString();
+            $.ajax({
+                url: "{{ route('employee.new-cutting.style.destroy.all') }}",
+                type: "POST",
+                data: {all_selected_id:all_selected_id},
+                success: function (response) {
+                    if(response.status == 400){
+                        toastr.warning('Please select minimum 1 item.');
+                    }else{
+                        toastr.error('Style delete successfully.');
+                        $('#allcuttingStyleChecked').prop('checked', false);
+                        $('#allDataTable').DataTable().ajax.reload();
+                    }
+                },
+            });
+        });
+
         // Update Request Data
         $(document).on('click', '#updateRequestDocumentBtn', function () {
             var id = $('#get_summary_id').val();
@@ -386,7 +428,7 @@
             url = url.replace(':id', id)
             Swal.fire({
                 title: 'Are you sure?',
-                text: "You can no longer edit it!",
+                text: "You can edit it!",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -399,6 +441,7 @@
                         method: 'GET',
                         success: function(response) {
                             $('#updateRequestDocumentBtn').hide();
+                            $('#updateRequestText').show();
                             toastr.success('Cutting data update request successfully.');
                         }
                     });
