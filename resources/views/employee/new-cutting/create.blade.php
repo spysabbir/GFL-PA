@@ -119,6 +119,19 @@
                     </div>
                 </div>
                 <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="form-label">Unique Id</label>
+                            <select class="form-control custom-select filter_data select_unique_id_js" id="filter_unique_id">
+                                <option value="">--All--</option>
+                                @foreach ($allStyle as $style)
+                                    <option value="{{ $style->unique_id }}">{{ $style->unique_id }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
                     <div class="table-responsive">
                         <table class="table table-hover table-striped" id="allDataTable">
                             <thead>
@@ -366,6 +379,7 @@
                 data: function (e) {
                     e.summary_id = $('#get_summary_id').val();
                     e.document_date = $('#get_document_date').val();
+                    e.unique_id = $('#filter_unique_id').val();
                 },
             },
             columns: [
@@ -391,6 +405,12 @@
                 }
             },
         });
+
+        // Filter Data
+        $(document).on('change', '.filter_data', function(e){
+            e.preventDefault();
+            $('#allDataTable').DataTable().ajax.reload();
+        })
 
         // Delete Data
         $(document).on('click', '.deleteBtn', function(){
@@ -453,7 +473,7 @@
         // Update Request Data
         $(document).on('click', '#updateRequestDocumentBtn', function () {
             var id = $('#get_summary_id').val();
-            var url = "{{ route('employee.new-cutting.status', ":id") }}";
+            var url = "{{ route('employee.new-cutting.updating.request', ":id") }}";
             url = url.replace(':id', id)
             Swal.fire({
                 title: 'Are you sure?',

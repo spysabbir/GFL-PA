@@ -55,6 +55,47 @@
                     <a href="#" class="card-options-fullscreen btn text-white bg-indigo btn-sm" data-toggle="card-fullscreen"><i class="fe fe-maximize"></i></a>
                     <!-- Close Btn -->
                     <a href="javascript:void(0)" class="card-options-remove btn text-white bg-orange btn-sm" data-toggle="card-remove"><i class="fe fe-x"></i></a>
+                    <!-- Status Btn -->
+                    <button type="button" class="btn text-white bg-pink ml-3" data-toggle="modal" data-target="#statusModal"><i class="fe fe-trash-2"></i></button>
+                    <!-- Status Modal -->
+                    <div class="modal fade bd-example-modal-lg" id="statusModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Status</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped" id="statusDataTable" style="width: 100%">
+                                            <thead>
+                                                <tr>
+                                                    <th>Document Number</th>
+                                                    <th>Document Date</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <th>Document Number</th>
+                                                    <th>Document Date</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="card-body">
@@ -63,6 +104,28 @@
                         <div class="form-group">
                             <label class="form-label">Document Date</label>
                             <input type="date" class="form-control filter_data" id="filter_document_date">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="form-label">Select Status</label>
+                            <select class="form-control custom-select filter_data" id="filter_status">
+                                <option value="">--All--</option>
+                                <option value="Running">Running</option>
+                                <option value="Updating">Updating</option>
+                                <option value="Submitted">Submitted</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="form-label">Unique Id</label>
+                            <select class="form-control custom-select filter_data select_unique_id_js" id="filter_unique_id">
+                                <option value="">--All--</option>
+                                @foreach ($allStyle as $style)
+                                    <option value="{{ $style->unique_id }}">{{ $style->unique_id }}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                 </div>
@@ -110,6 +173,8 @@
             }
         });
 
+        $('.select_unique_id_js').select2();
+
         // Read Data
         $('#allDataTable').DataTable({
             processing: true,
@@ -119,6 +184,8 @@
                 url: "{{ route('employee.new-cutting.index') }}",
                 "data":function(e){
                     e.document_date = $('#filter_document_date').val();
+                    e.status = $('#filter_status').val();
+                    e.unique_id = $('#filter_unique_id').val();
                 },
             },
             columns: [
@@ -173,6 +240,21 @@
             searching: true,
             ajax: {
                 url: "{{ route('employee.new-cutting.trashed') }}",
+            },
+            columns: [
+                { data: 'document_number', name: 'document_number' },
+                { data: 'document_date', name: 'document_date' },
+                { data: 'action', name: 'action', orderable: false, searchable: false }
+            ]
+        });
+
+        // Style Status Data
+        $('#statusDataTable').DataTable({
+            processing: true,
+            serverSide: true,
+            searching: true,
+            ajax: {
+                url: "{{ route('employee.new-cutting.style.status.data') }}",
             },
             columns: [
                 { data: 'document_number', name: 'document_number' },

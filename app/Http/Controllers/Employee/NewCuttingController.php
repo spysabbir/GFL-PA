@@ -22,6 +22,13 @@ class NewCuttingController extends Controller
             if ($request->document_date) {
                 $query->where('new_cutting_summaries.document_date', $request->document_date);
             }
+            if ($request->status) {
+                $query->where('new_cutting_summaries.status', $request->status);
+            }
+            if ($request->unique_id) {
+                $ids = NewCuttingDetail::where('unique_id', $request->unique_id)->pluck('summary_id');
+                $query->whereIn('new_cutting_summaries.id', $ids);
+            }
 
             $query->orderBy('created_at', 'desc');
 
@@ -51,7 +58,8 @@ class NewCuttingController extends Controller
                 ->make(true);
         }
 
-        return view('employee.new-cutting.index');
+        $allStyle = MasterStyle::where('status', 'Running')->get();
+        return view('employee.new-cutting.index', compact('allStyle'));
     }
 
     public function create(){
@@ -235,10 +243,16 @@ class NewCuttingController extends Controller
     {
         if ($request->ajax()) {
             $query = NewCuttingDetail::select('new_cutting_details.*')
-            ->where('new_cutting_details.summary_id', $request->summary_id)
-            ->get();
+            ->where('new_cutting_details.summary_id', $request->summary_id);
+
+            if($request->unique_id){
+                $query->where('new_cutting_details.unique_id', $request->unique_id);
+            }
+
+            $query = $query->get();
 
             $totalCuttingQty = $query->sum('daily_cutting_qty');
+
 
             if($request->summary_id){
                 $status = NewCuttingSummary::where('id', $request->summary_id)->first()->status;
@@ -360,6 +374,26 @@ class NewCuttingController extends Controller
         return view('employee.new-cutting.index');
     }
 
+    public function styleStatusData(Request $request)
+    {
+        if ($request->ajax()) {
+            $cuttingDocuments = NewCuttingSummary::where('status', 'Updating')->get();;
+
+            return DataTables::of($cuttingDocuments)
+                ->addColumn('action', function ($row) {
+                    $btn = '
+                        <button type="button" data-id="'.$row->id.'" class="btn text-white bg-lime restoreBtn"><i class="fe fe-refresh-ccw"></i></button>
+                        <button type="button" data-id="'.$row->id.'" class="btn text-white bg-red forceDeleteBtn"><i class="fe fe-delete"></i></button>
+                    ';
+                    return $btn;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+
+        return view('employee.new-cutting.index');
+    }
+
     public function restore(string $id)
     {
         NewCuttingSummary::onlyTrashed()->where('id', $id)->update([
@@ -381,7 +415,7 @@ class NewCuttingController extends Controller
         $cuttingDocument->forceDelete();
     }
 
-    public function status(string $id)
+    public function updatingRequest(string $id)
     {
         $cuttingDocument = NewCuttingSummary::findOrFail($id);
         $cuttingDocument->status = "Updating";
