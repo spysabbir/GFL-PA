@@ -246,9 +246,7 @@ class NewCuttingController extends Controller
                 $status = "Running";
             }
 
-            $start_date = NewCuttingSummary::orderBy('document_date', 'asc')->first()->document_date;
-            $end_date = $request->document_date;
-            $ids = NewCuttingSummary::whereBetween('document_date', [$start_date, $end_date])->pluck('id');
+            $ids = NewCuttingSummary::whereBetween('document_date', ["2023-01-01", $request->document_date])->pluck('id');
 
             $data = DataTables::of($query)
                 ->addIndexColumn()
