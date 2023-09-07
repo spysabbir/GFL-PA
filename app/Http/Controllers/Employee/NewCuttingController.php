@@ -233,16 +233,10 @@ class NewCuttingController extends Controller
 
     public function getNewCuttingStyle(Request $request)
     {
-        if($request->document_date){
-            $ids = NewCuttingSummary::where('document_date', '<=', $request->document_date)->pluck('id');
-        }{
-            $ids = [0];
-        }
-
         if ($request->ajax()) {
             $query = NewCuttingDetail::select('new_cutting_details.*')
-                ->where('new_cutting_details.summary_id', $request->summary_id)
-                ->get();
+            ->where('new_cutting_details.summary_id', $request->summary_id)
+            ->get();
 
             $totalCuttingQty = $query->sum('daily_cutting_qty');
 
@@ -251,6 +245,10 @@ class NewCuttingController extends Controller
             }else{
                 $status = "Running";
             }
+
+            $start_date = NewCuttingSummary::orderBy('document_date', 'asc')->first()->document_date;
+            $end_date = $request->document_date;
+            $ids = NewCuttingSummary::whereBetween('document_date', [$start_date, $end_date])->pluck('id');
 
             $data = DataTables::of($query)
                 ->addIndexColumn()
@@ -261,10 +259,9 @@ class NewCuttingController extends Controller
                     return '<input type="number" data-id="' . $row->id . '" class="updateNewCuttingQty" ' . ($status != "Running" ? "disabled" : "") . ' value="'.$row->daily_cutting_qty.'">';
                 })
                 ->editColumn('styleWiseTotalCuttingQty', function ($row) use ($ids) {
-                    // $styleWiseTotalCuttingQty = NewCuttingDetail::where('unique_id', $row->unique_id)
-                    //     ->whereIn('summary_id', $ids)
-                    //     ->sum('daily_cutting_qty');
-                    $styleWiseTotalCuttingQty = $ids;
+                    $styleWiseTotalCuttingQty = NewCuttingDetail::where('unique_id', $row->unique_id)
+                        ->whereIn('summary_id', $ids)
+                        ->sum('daily_cutting_qty');
                     return '<span class="badge text-white bg-orange">' . $styleWiseTotalCuttingQty . '</span>';
                 })
                 ->editColumn('styleWiseTotalOrder', function ($row) {
