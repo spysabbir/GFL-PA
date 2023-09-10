@@ -55,14 +55,14 @@
                     <a href="#" class="card-options-fullscreen btn text-white bg-indigo btn-sm" data-toggle="card-fullscreen"><i class="fe fe-maximize"></i></a>
                     <!-- Close Btn -->
                     <a href="javascript:void(0)" class="card-options-remove btn text-white bg-orange btn-sm" data-toggle="card-remove"><i class="fe fe-x"></i></a>
-                    <!-- updating Requesting Btn -->
-                    <button type="button" class="btn text-white bg-pink ml-3" data-toggle="modal" data-target="#statusModal"><i class="fe fe-trash-2"></i></button>
-                    <!-- updating Requesting Modal -->
-                    <div class="modal fade bd-example-modal-lg" id="statusModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <!-- Updating Requesting Btn -->
+                    <button type="button" class="btn text-white bg-blue ml-3" data-toggle="modal" data-target="#updatingRequestingModal"><i class="fe fe-file"></i></button>
+                    <!-- Updating Requesting Modal -->
+                    <div class="modal fade bd-example-modal-lg" id="updatingRequestingModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-lg" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Status</h5>
+                                    <h5 class="modal-title" id="exampleModalLabel">Updating Requesting</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
@@ -74,6 +74,7 @@
                                                 <tr>
                                                     <th>Document Number</th>
                                                     <th>Document Date</th>
+                                                    <th>Requester</th>
                                                     <th>Action</th>
                                                 </tr>
                                             </thead>
@@ -84,6 +85,7 @@
                                                 <tr>
                                                     <th>Document Number</th>
                                                     <th>Document Date</th>
+                                                    <th>Requester</th>
                                                     <th>Action</th>
                                                 </tr>
                                             </tfoot>
@@ -216,6 +218,7 @@
             columns: [
                 { data: 'document_number', name: 'document_number' },
                 { data: 'document_date', name: 'document_date' },
+                { data: 'requester', name: 'requester' },
                 { data: 'action', name: 'action', orderable: false, searchable: false }
             ]
         });
@@ -229,6 +232,7 @@
                 url: url,
                 method: 'GET',
                 success: function(response) {
+                    $("#updatingRequestingModal").modal('hide');
                     $('#allDataTable').DataTable().ajax.reload();
                     toastr.success('Updating Requesting Accept Successfully.');
                     $('#updatingRequestingDataTable').DataTable().ajax.reload();
@@ -245,6 +249,7 @@
                 url: url,
                 method: 'GET',
                 success: function(response) {
+                    $("#updatingRequestingModal").modal('hide');
                     $('#allDataTable').DataTable().ajax.reload();
                     toastr.warning('Updating Requesting Reject Successfully.');
                     $('#updatingRequestingDataTable').DataTable().ajax.reload();

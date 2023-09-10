@@ -150,14 +150,17 @@ class NewCuttingController extends Controller
             $cuttingDocuments = NewCuttingSummary::where('status', 'Updating Request')->get();;
 
             return DataTables::of($cuttingDocuments)
+                ->editColumn('requester', function ($row) {
+                    return '<span class="badge text-white bg-green">' . $row->updater->name . '</span>';
+                })
                 ->addColumn('action', function ($row) {
                     $btn = '
-                        <button type="button" data-id="'.$row->id.'" class="btn text-white bg-lime updatingRequestingRejectBtn"><i class="fe fe-refresh-ccw"></i></button>
-                        <button type="button" data-id="'.$row->id.'" class="btn text-white bg-red updatingRequestingAcceptBtn"><i class="fe fe-delete"></i></button>
+                        <button type="button" data-id="'.$row->id.'" class="btn text-white bg-lime updatingRequestingRejectBtn"><i class="fe fe-slash"></i></button>
+                        <button type="button" data-id="'.$row->id.'" class="btn text-white bg-red updatingRequestingAcceptBtn"><i class="fe fe-check"></i></button>
                     ';
                     return $btn;
                 })
-                ->rawColumns(['action'])
+                ->rawColumns(['requester', 'action'])
                 ->make(true);
         }
 

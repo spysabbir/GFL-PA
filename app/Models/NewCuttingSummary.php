@@ -11,4 +11,9 @@ class NewCuttingSummary extends Model
 {
     use HasFactory, SoftDeletes;
     protected $guarded = [];
+
+    public function updater()
+    {
+        return $this->belongsTo(User::class, 'updated_by');
+    }
 }
