@@ -16,7 +16,7 @@ return new class extends Migration
             $table->text('document_number')->unique();
             $table->date('document_date');
             $table->longText('remarks')->nullable();
-            $table->enum('status', ['Running', 'Updating', 'Submitted' ])->default('Running');
+            $table->enum('status', ['Running', 'Updating Request', 'Submitted' ])->default('Running');
             $table->integer('created_by');
             $table->integer('updated_by')->nullable();
             $table->integer('deleted_by')->nullable();

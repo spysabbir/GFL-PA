@@ -42,7 +42,7 @@ class NewCuttingController extends Controller
                 ->editColumn('status', function ($row) {
                     if ($row->status == 'Running') {
                         $status = '<span class="badge text-white bg-pink">' . $row->status . '</span>';
-                    } elseif ($row->status == 'Updating') {
+                    } elseif ($row->status == 'Updating Request') {
                         $status = '<span class="badge text-white bg-red">' . $row->status . '</span>';
                     } else {
                         $status = '<span class="badge text-white bg-green">' . $row->status . '</span>';
@@ -65,13 +65,6 @@ class NewCuttingController extends Controller
     public function create(){
         $allStyle = MasterStyle::where('status', 'Running')->get();
         return view('employee.new-cutting.create', compact('allStyle'));
-    }
-
-    public function edit(string $id){
-        $cuttingDocument = NewCuttingSummary::findOrFail($id);
-
-        $allStyle = MasterStyle::where('status', 'Running')->get();
-        return view('employee.new-cutting.edit', compact('cuttingDocument', 'allStyle'));
     }
 
     public function store(Request $request)
@@ -101,6 +94,13 @@ class NewCuttingController extends Controller
         }
     }
 
+    public function edit(string $id){
+        $cuttingDocument = NewCuttingSummary::findOrFail($id);
+
+        $allStyle = MasterStyle::where('status', 'Running')->get();
+        return view('employee.new-cutting.edit', compact('cuttingDocument', 'allStyle'));
+    }
+
     public function update(Request $request, string $id)
     {
         $validator = Validator::make($request->all(), [
@@ -126,6 +126,122 @@ class NewCuttingController extends Controller
             ]);
         }
     }
+
+    public function submit(string $id)
+    {
+        $cuttingDocument = NewCuttingSummary::findOrFail($id);
+        $cuttingDocument->update([
+            'status' => 'Submitted',
+            'updated_by' => Auth::user()->id,
+        ]);
+    }
+
+    public function updatingRequest(string $id)
+    {
+        $cuttingDocument = NewCuttingSummary::findOrFail($id);
+        $cuttingDocument->status = "Updating Request";
+        $cuttingDocument->updated_by = Auth::user()->id;
+        $cuttingDocument->save();
+    }
+
+    public function updatingRequestingDocument(Request $request)
+    {
+        if ($request->ajax()) {
+            $cuttingDocuments = NewCuttingSummary::where('status', 'Updating Request')->get();;
+
+            return DataTables::of($cuttingDocuments)
+                ->addColumn('action', function ($row) {
+                    $btn = '
+                        <button type="button" data-id="'.$row->id.'" class="btn text-white bg-lime updatingRequestingRejectBtn"><i class="fe fe-refresh-ccw"></i></button>
+                        <button type="button" data-id="'.$row->id.'" class="btn text-white bg-red updatingRequestingAcceptBtn"><i class="fe fe-delete"></i></button>
+                    ';
+                    return $btn;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+
+        return view('employee.new-cutting.index');
+    }
+
+    public function updatingRequestAccept(string $id)
+    {
+        $cuttingDocument = NewCuttingSummary::findOrFail($id);
+        $cuttingDocument->status = "Running";
+        $cuttingDocument->updated_by = Auth::user()->id;
+        $cuttingDocument->save();
+    }
+
+    public function updatingRequestReject(string $id)
+    {
+        $cuttingDocument = NewCuttingSummary::findOrFail($id);
+        $cuttingDocument->status = "Submitted";
+        $cuttingDocument->updated_by = Auth::user()->id;
+        $cuttingDocument->save();
+    }
+
+    public function destroy(string $id)
+    {
+        $cuttingDocument = NewCuttingSummary::findOrFail($id);
+        $cuttingDocument->updated_by = Auth::user()->id;
+        $cuttingDocument->deleted_by = Auth::user()->id;
+        $cuttingDocument->save();
+        $cuttingDocument->delete();
+
+        $cuttingStyles = NewCuttingDetail::where('summary_id', $id)->get();
+        foreach ($cuttingStyles as $cuttingStyle) {
+            $cuttingStyle->updated_by = Auth::user()->id;
+            $cuttingStyle->deleted_by = Auth::user()->id;
+            $cuttingStyle->save();
+            $cuttingStyle->delete();
+        }
+    }
+
+    public function trashed(Request $request)
+    {
+        if ($request->ajax()) {
+            $trashed_cuttingDocuments = NewCuttingSummary::onlyTrashed();
+
+            $trashed_cuttingDocuments->orderBy('deleted_at', 'desc');
+
+            return DataTables::of($trashed_cuttingDocuments)
+                ->addColumn('action', function ($row) {
+                    $btn = '
+                        <button type="button" data-id="'.$row->id.'" class="btn text-white bg-lime restoreBtn"><i class="fe fe-refresh-ccw"></i></button>
+                        <button type="button" data-id="'.$row->id.'" class="btn text-white bg-red forceDeleteBtn"><i class="fe fe-delete"></i></button>
+                    ';
+                    return $btn;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+
+        return view('employee.new-cutting.index');
+    }
+
+    public function restore(string $id)
+    {
+        NewCuttingSummary::onlyTrashed()->where('id', $id)->update([
+            'deleted_by' => NULL
+        ]);
+        NewCuttingSummary::onlyTrashed()->where('id', $id)->restore();
+
+        NewCuttingDetail::onlyTrashed()->where('summary_id', $id)->update([
+            'deleted_by' => NULL
+        ]);
+        NewCuttingDetail::onlyTrashed()->where('summary_id', $id)->restore();
+    }
+
+    public function forceDelete(string $id)
+    {
+        NewCuttingDetail::where('summary_id', $id)->forceDelete();
+
+        $cuttingDocument = NewCuttingSummary::onlyTrashed()->where('id', $id)->first();
+        $cuttingDocument->forceDelete();
+    }
+
+
+
 
     public function getSearchStyleInfo(Request $request)
     {
@@ -178,7 +294,7 @@ class NewCuttingController extends Controller
         return response()->json($send_data);
     }
 
-    public function addNewCuttingStyle(Request $request)
+    public function addStyle(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'daily_cutting_qty' => 'required|gt:0',
@@ -210,36 +326,7 @@ class NewCuttingController extends Controller
         }
     }
 
-    public function updateNewCuttingStyle(Request $request, $id)
-    {
-        $validator = Validator::make($request->all(), [
-            'daily_cutting_qty' => 'required',
-        ]);
-
-        if($validator->fails()){
-            return response()->json([
-                'status' => 400,
-            ]);
-        }else{
-            if($request->daily_cutting_qty < 1){
-                return response()->json([
-                    'status' => 401,
-                ]);
-            }else{
-                $styleInfo = NewCuttingDetail::findOrFail($id);
-                $styleInfo->update([
-                    'daily_cutting_qty' => $request->daily_cutting_qty,
-                    'updated_by' => Auth::user()->id,
-                ]);
-
-                return response()->json([
-                    'status' => 200,
-                ]);
-            }
-        }
-    }
-
-    public function getNewCuttingStyle(Request $request)
+    public function getAllStyleList(Request $request)
     {
         if ($request->ajax()) {
             $query = NewCuttingDetail::select('new_cutting_details.*')
@@ -306,22 +393,42 @@ class NewCuttingController extends Controller
         }
     }
 
-    public function newCuttingStyleDestroy(string $id)
+    public function updateStyle(Request $request, string $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'daily_cutting_qty' => 'required',
+        ]);
+
+        if($validator->fails()){
+            return response()->json([
+                'status' => 400,
+            ]);
+        }else{
+            if($request->daily_cutting_qty < 1){
+                return response()->json([
+                    'status' => 401,
+                ]);
+            }else{
+                $styleInfo = NewCuttingDetail::findOrFail($id);
+                $styleInfo->update([
+                    'daily_cutting_qty' => $request->daily_cutting_qty,
+                    'updated_by' => Auth::user()->id,
+                ]);
+
+                return response()->json([
+                    'status' => 200,
+                ]);
+            }
+        }
+    }
+
+    public function deleteStyle(string $id)
     {
         $cuttingStyle = NewCuttingDetail::findOrFail($id);
         $cuttingStyle->forceDelete();
     }
 
-    public function newCuttingSubmit(string $id)
-    {
-        $cuttingDocument = NewCuttingSummary::findOrFail($id);
-        $cuttingDocument->update([
-            'status' => 'Submitted',
-            'updated_by' => Auth::user()->id,
-        ]);
-    }
-
-    public function newCuttingStyleDestroyAll(Request $request)
+    public function deleteSelectedStyle(Request $request)
     {
         if ($request->all_selected_id) {
             $all_selected_id = explode( ',', $request->all_selected_id );
@@ -335,91 +442,4 @@ class NewCuttingController extends Controller
         }
     }
 
-    public function destroy(string $id)
-    {
-        $cuttingDocument = NewCuttingSummary::findOrFail($id);
-        $cuttingDocument->updated_by = Auth::user()->id;
-        $cuttingDocument->deleted_by = Auth::user()->id;
-        $cuttingDocument->save();
-        $cuttingDocument->delete();
-
-        $cuttingStyles = NewCuttingDetail::where('summary_id', $id)->get();
-        foreach ($cuttingStyles as $cuttingStyle) {
-            $cuttingStyle->updated_by = Auth::user()->id;
-            $cuttingStyle->deleted_by = Auth::user()->id;
-            $cuttingStyle->save();
-            $cuttingStyle->delete();
-        }
-    }
-
-    public function trashed(Request $request)
-    {
-        if ($request->ajax()) {
-            $trashed_cuttingDocuments = NewCuttingSummary::onlyTrashed();
-
-            $trashed_cuttingDocuments->orderBy('deleted_at', 'desc');
-
-            return DataTables::of($trashed_cuttingDocuments)
-                ->addColumn('action', function ($row) {
-                    $btn = '
-                        <button type="button" data-id="'.$row->id.'" class="btn text-white bg-lime restoreBtn"><i class="fe fe-refresh-ccw"></i></button>
-                        <button type="button" data-id="'.$row->id.'" class="btn text-white bg-red forceDeleteBtn"><i class="fe fe-delete"></i></button>
-                    ';
-                    return $btn;
-                })
-                ->rawColumns(['action'])
-                ->make(true);
-        }
-
-        return view('employee.new-cutting.index');
-    }
-
-    public function styleStatusData(Request $request)
-    {
-        if ($request->ajax()) {
-            $cuttingDocuments = NewCuttingSummary::where('status', 'Updating')->get();;
-
-            return DataTables::of($cuttingDocuments)
-                ->addColumn('action', function ($row) {
-                    $btn = '
-                        <button type="button" data-id="'.$row->id.'" class="btn text-white bg-lime restoreBtn"><i class="fe fe-refresh-ccw"></i></button>
-                        <button type="button" data-id="'.$row->id.'" class="btn text-white bg-red forceDeleteBtn"><i class="fe fe-delete"></i></button>
-                    ';
-                    return $btn;
-                })
-                ->rawColumns(['action'])
-                ->make(true);
-        }
-
-        return view('employee.new-cutting.index');
-    }
-
-    public function restore(string $id)
-    {
-        NewCuttingSummary::onlyTrashed()->where('id', $id)->update([
-            'deleted_by' => NULL
-        ]);
-        NewCuttingSummary::onlyTrashed()->where('id', $id)->restore();
-
-        NewCuttingDetail::onlyTrashed()->where('summary_id', $id)->update([
-            'deleted_by' => NULL
-        ]);
-        NewCuttingDetail::onlyTrashed()->where('summary_id', $id)->restore();
-    }
-
-    public function forceDelete(string $id)
-    {
-        NewCuttingDetail::where('summary_id', $id)->forceDelete();
-
-        $cuttingDocument = NewCuttingSummary::onlyTrashed()->where('id', $id)->first();
-        $cuttingDocument->forceDelete();
-    }
-
-    public function updatingRequest(string $id)
-    {
-        $cuttingDocument = NewCuttingSummary::findOrFail($id);
-        $cuttingDocument->status = "Updating";
-        $cuttingDocument->updated_by = Auth::user()->id;
-        $cuttingDocument->save();
-    }
 }

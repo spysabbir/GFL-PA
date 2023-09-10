@@ -251,7 +251,7 @@
             });
         });
 
-        // Submit Data
+        // Submit Document
         $(document).on('click', '#submitDocumentBtn', function () {
             var id = $('#get_summary_id').val();
             var url = "{{ route('employee.new-cutting.submit', ":id") }}";
@@ -286,7 +286,7 @@
             })
         });
 
-        // Add Style
+        // Add Style Btn
         $(document).on('click', '#addStyleModelBtn', function () {
             $('#get_search_result').html('');
             $('#search_unique_id').val('').trigger('change.select2');
@@ -412,7 +412,7 @@
             $('#allDataTable').DataTable().ajax.reload();
         })
 
-        // Delete Data
+        // Delete Style
         $(document).on('click', '.deleteBtn', function(){
             var id = $(this).data('id');
             var url = "{{ route('employee.new-cutting.style.destroy', ":id") }}";
@@ -439,12 +439,12 @@
             })
         })
 
-        // Select All Checkbox
+        // Select All Style Checkbox
         $(document).on('click', '#allcuttingStyleChecked', function(){
             $('.cuttingStyleChecked').prop('checked', $(this).prop('checked'));
         })
 
-        // Select Bpo & Order Delete
+        // Selected Style Delete
         $(document).on('click', '#deleteAll', function (e) {
             e.preventDefault();
             var all_selected_id = [];
@@ -470,7 +470,7 @@
             });
         });
 
-        // Update Request Data
+        // Update Request Document
         $(document).on('click', '#updateRequestDocumentBtn', function () {
             var id = $('#get_summary_id').val();
             var url = "{{ route('employee.new-cutting.updating.request', ":id") }}";

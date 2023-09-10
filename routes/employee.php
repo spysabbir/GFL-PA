@@ -91,21 +91,22 @@ Route::prefix('employee')->middleware(['auth'])->name('employee.')->group(functi
     Route::get('/employee/status/{id}', [EmployeeController::class, 'status'])->name('employee.status');
 
     Route::resource('new-cutting', NewCuttingController::class);
-    Route::get('/new-cutting-trashed', [NewCuttingController::class, 'trashed'])->name('new-cutting.trashed');
-    Route::get('/new-cutting/submit/{id}', [NewCuttingController::class, 'newCuttingSubmit'])->name('new-cutting.submit');
-    Route::get('/new-cutting/restore/{id}', [NewCuttingController::class, 'restore'])->name('new-cutting.restore');
+    Route::get('/new-cutting/submit/{id}', [NewCuttingController::class, 'submit'])->name('new-cutting.submit');
     Route::get('/new-cutting/updating/request/{id}', [NewCuttingController::class, 'updatingRequest'])->name('new-cutting.updating.request');
+    Route::get('/new-cutting-trashed', [NewCuttingController::class, 'trashed'])->name('new-cutting.trashed');
+    Route::get('/new-cutting/restore/{id}', [NewCuttingController::class, 'restore'])->name('new-cutting.restore');
     Route::get('/new-cutting/force/delete/{id}', [NewCuttingController::class, 'forceDelete'])->name('new-cutting.force.delete');
 
-    Route::get('/new-cutting-style-status-data', [NewCuttingController::class, 'styleStatusData'])->name('new-cutting.style.status.data');
-    Route::get('/new-cutting/style/status/update/{id}', [NewCuttingController::class, 'styleStatusUpdate'])->name('new-cutting.style.status.update');
+    Route::get('/new-cutting-updating-requesting-document', [NewCuttingController::class, 'updatingRequestingDocument'])->name('new-cutting.updating.requesting.document');
+    Route::get('/new-cutting/updating/request/accept/{id}', [NewCuttingController::class, 'updatingRequestAccept'])->name('new-cutting.updating.request.accept');
+    Route::get('/new-cutting/updating/request/reject/{id}', [NewCuttingController::class, 'updatingRequestReject'])->name('new-cutting.updating.request.reject');
 
     Route::post('/get-search-style-info', [NewCuttingController::class, 'getSearchStyleInfo'])->name('get.search.style.info');
-    Route::post('/add/new-cutting/style', [NewCuttingController::class, 'addNewCuttingStyle'])->name('add.new-cutting.style');
-    Route::get('/get/new-cutting/style', [NewCuttingController::class, 'getNewCuttingStyle'])->name('get.new-cutting.style');
-    Route::post('/update/new-cutting/style/{id}', [NewCuttingController::class, 'updateNewCuttingStyle'])->name('update.new-cutting.style');
-    Route::delete('/new-cutting/style/destroy/{id}', [NewCuttingController::class, 'newCuttingStyleDestroy'])->name('new-cutting.style.destroy');
-    Route::post('/new-cutting/style/destroy/all', [NewCuttingController::class, 'newCuttingStyleDestroyAll'])->name('new-cutting.style.destroy.all');
+    Route::post('/add/new-cutting/style', [NewCuttingController::class, 'addStyle'])->name('add.new-cutting.style');
+    Route::get('/get/new-cutting/style', [NewCuttingController::class, 'getAllStyleList'])->name('get.new-cutting.style');
+    Route::post('/update/new-cutting/style/{id}', [NewCuttingController::class, 'updateStyle'])->name('update.new-cutting.style');
+    Route::delete('/new-cutting/style/destroy/{id}', [NewCuttingController::class, 'deleteStyle'])->name('new-cutting.style.destroy');
+    Route::post('/new-cutting/style/destroy/all', [NewCuttingController::class, 'deleteSelectedStyle'])->name('new-cutting.style.destroy.all');
 
     Route::resource('sewing-input', SewingInputController::class);
 
